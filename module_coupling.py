@@ -1,6 +1,7 @@
 #----------------------------------------------------------------------------------------
 
 import numpy as np
+import numpy.ma as ma
 import os as os
 import sys as sys
 from netCDF4 import Dataset
@@ -267,6 +268,31 @@ def sort_in_diam_order_3D(in_latitudes, in_longitudes, in_variable):
 
         out_variable[icell, :] = in_variable[:, ilat, ilon].reshape(nyears)
         icell += 1
+
+    return out_variable
+
+
+def from_diam_order_to_grid(in_variable):
+
+    ncells = in_variable.shape[0]
+    na = -999.9  # fill values for cells without data
+
+    out_latitudes = np.arange(-90., 90., 1)
+    out_longitudes = np.arange(-180., 180., 1)
+
+    diam_latitudes, diam_longitudes = read_coordinate_data()
+
+    out_variable = np.full((180, 360), na)
+
+    for icell in range(ncells):
+
+        index_lat = np.where(out_latitudes == diam_latitudes[icell])
+        index_lon = np.where(out_longitudes == diam_longitudes[icell])
+
+        out_variable[index_lat, index_lon] = in_variable[icell]
+
+    # Make into masked array:
+    out_variable = ma.masked_equal(out_variable, na)
 
     return out_variable
 
