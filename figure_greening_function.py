@@ -1,4 +1,4 @@
-# Plot the DIAM damage function
+# Plot the DIAM greening function
 
 #-----------------------------------------------------------------------
 
