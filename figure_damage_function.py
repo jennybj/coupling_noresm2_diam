@@ -7,6 +7,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from module_coupling import damage_function
+
 #-----------------------------------------------------------------------
 
 # PARAMETERS
@@ -15,33 +17,6 @@ temp_opt = 12.609  # degC
 kappa_plus = 0.00327721
 kappa_minus = 0.00362887
 alpha = 0.36  # capital’s share of income (capital share + labor share = 1)
-
-#-----------------------------------------------------------------------
-
-# FUNCTIONS
-
-def damage_function(temp, temp_opt, kappa_plus, kappa_minus):
-    """ Calculating the productivity as function of temperature. """
-
-    lower_bound = 0.02
-
-    N = len(temp)
-    productivity = np.zeros(N)
-
-    for i in range(N):
-
-        if temp[i] > temp_opt:
-            productivity[i] = ((1 - lower_bound) * np.exp(
-                -kappa_plus * (temp[i] - temp_opt)**2) + lower_bound)**(1 / (1 - alpha))
-
-        elif temp[i] <= temp_opt:
-            productivity[i] = ((1 - lower_bound) * np.exp(
-                -kappa_minus * (temp[i] - temp_opt)**2) + lower_bound)**(1 / (1 - alpha))
-
-        else:
-            print('Problem with temperature value: ', temp[i])
-
-    return productivity
 
 
 #-----------------------------------------------------------------------

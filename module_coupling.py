@@ -172,6 +172,31 @@ def get_coordinate_data():
     return diam_latitudes, diam_longitudes
 
 
+def damage_function(temp, temp_opt, kappa_plus, kappa_minus):
+    """ Calculating the productivity as function of temperature. """
+
+    lower_bound = 0.02
+
+    N = len(temp)
+    productivity = np.zeros(N)
+
+    for i in range(N):
+
+        if temp[i] > temp_opt:
+            productivity[i] = ((1 - lower_bound) * np.exp(
+                -kappa_plus * (temp[i] - temp_opt)**2) + lower_bound)**(1 / (1 - alpha))
+
+        elif temp[i] <= temp_opt:
+            productivity[i] = ((1 - lower_bound) * np.exp(
+                -kappa_minus * (temp[i] - temp_opt)**2) + lower_bound)**(1 / (1 - alpha))
+
+        else:
+            print('Problem with temperature value: ', temp[i])
+
+    return productivity
+
+
+
 def regrid_from_noresm_to_diam(noresm_variable):
     """ Function for changing grid of noresm_variable from NorESM2s 2x2 grid to DIAMs 1x1 grid. 
     noresm_variable must be 2D with (lat,lon)"""
