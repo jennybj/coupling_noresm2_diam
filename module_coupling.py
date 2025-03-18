@@ -23,10 +23,26 @@ ncells = len(lines)
 all_indices = np.arange(ncells)
 
 # Arrays:
-diam_latitudes, diam_longitudes = np.loadtxt('parse2.gin5', usecols=(1,2), unpack=True)
+diam_latitudes = np.zeros(ncells)
+diam_longitudes = np.zeros(ncells)
 pop = np.zeros(ncells)
 gdpnetper = np.zeros(ncells)
 country_names = []
+
+# Add coordinates:
+for i in range(ncells):
+
+    line = lines[i].split()
+
+    diam_latitudes[i] = float(line[1])
+    diam_longitudes[i] = float(line[2])
+    pop[i] = float(line[-3])
+    gdpnetper[i] = float(line[-1]) * 1e-3
+
+    name = ' '.join(line[3:-6])
+    country_names.append(name)
+
+
 
 cumulative_emissions = np.loadtxt(
     file_path +
