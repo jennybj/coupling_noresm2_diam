@@ -43,11 +43,10 @@ for i in range(ncells):
     country_names.append(name)
 
 
-
 cumulative_emissions = np.loadtxt(
     file_path +
-    'NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt',
-    usecols=1)
+    'NorESM2_HIST_SSP370_cumulative_emissions_global_temperature_v2.txt',
+    usecols=1, comments='#')
 
 orig_emissions = cumulative_emissions[1:] - cumulative_emissions[:-1]
 
@@ -132,20 +131,19 @@ def get_initial_ai():
 def get_pi_temperature():
 
     pi_temperature = np.loadtxt(file_path +
-                                'NorESM2_picontrol_regional_temperatures.txt',
-                                usecols=2)
+                                'NorESM2_picontrol_regional_temperatures_v2.txt',
+                                usecols=2, comments='#')
 
     return pi_temperature
 
 
 def get_coefficients():
 
-    coefficients_emissions, coefficients_shocks = np.loadtxt(
-        file_path + 'NorESM2_HIST_SSP370_coefficients_and_RMSE.txt',
-        usecols=(2, 4),
-        unpack=True)
+    gamma1, gamma2, rho = np.loadtxt(file_path +
+                              'NorESM2_HIST_SSP370_coefficients_v2.txt', comments='#',
+                              usecols=(2,3,4), unpack=True)
 
-    return coefficients_emissions, coefficients_shocks
+    return gamma1, gamma2, rho
 
 
 def get_country_names():
@@ -524,7 +522,7 @@ def make_emissions_file(case_name, emissions_file):
     # READ IN CO2 DATA
 
     # Read CO2 vaules from file:
-    diam_co2 = np.loadtxt(emissions_file)
+    diam_co2 = np.loadtxt(emissions_file, comments='#')
     nyears = diam_co2.shape[0] - 2 + extra_years
 
     # Extract the values:
