@@ -11,7 +11,7 @@ from datetime import datetime
 
 #-----------------------------------------------------------------------------------------------
 
-file_path = ''  # '/cluster/home/jennybj/coupling/'
+file_path = '/home/jennybj/Documents/coupling_noresm2_diam/'  # '/cluster/home/jennybj/coupling/'
 
 # READ IN ECONOMIC DATA:
 
@@ -26,6 +26,7 @@ all_indices = np.arange(ncells)
 diam_latitudes = np.zeros(ncells)
 diam_longitudes = np.zeros(ncells)
 pop = np.zeros(ncells)
+gdpnet = np.zeros(ncells)
 gdpnetper = np.zeros(ncells)
 country_names = []
 
@@ -37,6 +38,7 @@ for i in range(ncells):
     diam_latitudes[i] = float(line[1])
     diam_longitudes[i] = float(line[2])
     pop[i] = float(line[-3])
+    gdpnet[i] = float(line[-2]) * 1e-3
     gdpnetper[i] = float(line[-1]) * 1e-3
 
     name = ' '.join(line[3:-6])
@@ -114,6 +116,14 @@ def get_price():
 
 def get_initial_population():
     return pop
+
+
+def get_initial_gdpnet():
+    return gdpnet
+
+
+def get_initial_gdpnetper():
+    return gdpnetper
 
 
 def get_initial_ai():
