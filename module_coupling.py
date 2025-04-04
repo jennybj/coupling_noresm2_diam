@@ -304,7 +304,7 @@ def from_diam_order_to_grid(in_variable):
     out_latitudes = np.arange(-90., 90., 1)
     out_longitudes = np.arange(-180., 180., 1)
 
-    diam_latitudes, diam_longitudes = read_coordinate_data()
+    diam_latitudes, diam_longitudes = get_coordinate_data()
 
     out_variable = np.full((180, 360), na)
 
