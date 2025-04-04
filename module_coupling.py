@@ -119,11 +119,11 @@ def get_initial_population():
 
 
 def get_initial_gdpnet():
-    return gdpnet
+    return gdpnet*1e3
 
 
 def get_initial_gdpnetper():
-    return gdpnetper
+    return gdpnetper*1e3
 
 
 def get_initial_ai():
