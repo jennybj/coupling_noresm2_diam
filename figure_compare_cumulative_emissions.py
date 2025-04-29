@@ -26,8 +26,7 @@ ssp_co2_files = [
     path + 'emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc',
     path + 'emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc'
 ]  #
-diam_co2_file1 = '../Smith_PreDoc_2024/decisions1/time_series.txt'
-diam_co2_file2 = '../Smith_PreDoc_2024/decisions2/time_series.txt'
+diam_co2_file1 = '/home/jennybj/uio/home/coupling/full_couple_baseline_v2_cumulative_emissions.txt'
 
 colors = ['lightsteelblue', 'cornflowerblue', 'royalblue', 'navy']
 
@@ -38,8 +37,7 @@ earth_radius = 6.3781e6
 # READ IN DATA
 
 # Read in DIAM cumulative emissions:
-cumulative_co2_diam1 = np.loadtxt(diam_co2_file1, usecols=5)
-cumulative_co2_diam2 = np.loadtxt(diam_co2_file2, usecols=5)
+cumulative_co2_diam1 = np.loadtxt(diam_co2_file1, usecols=1)
 dyears = cumulative_co2_diam1.shape[0]
 
 # Read in NorESM2 historical emissions:
@@ -186,14 +184,14 @@ ax1.plot(years_noresm[nyears_hist:],
          linewidth=3)
 ax1.plot(years_diam[:110],
          cumulative_co2_diam1[:110],
-         label='NorESM2-DIAM 1%',
+         label='NorESM2-DIAM',
          color='#f4d570',
          linewidth=3)
-ax1.plot(years_diam[:110],
-         cumulative_co2_diam2[:110],
-         label='NorESM2-DIAM 2.5%',
-         color='#d4a610',
-         linewidth=3)
+#ax1.plot(years_diam[:110],
+#         cumulative_co2_diam2[:110],
+#         label='NorESM2-DIAM 2.5%',
+#         color='#d4a610',
+#         linewidth=3)
 """
 ax1.plot(years_gcb[130:],
          cumulative_co2_gcb[130:],
@@ -209,6 +207,7 @@ ax1.yaxis.set_tick_params(labelsize=16)
 
 fig1.savefig('figures/figure_compare_cumulative_emissions.pdf')
 
+"""
 # Where does DIAM cross SSP126:
 a = np.abs(cumulative_co2_noresm_ssp126[:-1] - cumulative_co2_diam1[25:110])
 b = np.where(a == a.min())[0]
@@ -221,5 +220,6 @@ print(years_noresm[nyears_hist + b])
 
 print(cumulative_co2_noresm_hist[140:])
 print(cumulative_co2_noresm_ssp585)
+"""
 
 #-------------------------------------------------------------------------------------------
