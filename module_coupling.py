@@ -39,7 +39,7 @@ for i in range(ncells):
     diam_longitudes[i] = float(line[2])
     pop[i] = float(line[-3])
     gdpnet[i] = float(line[-2]) * 1e-3
-    gdpnetper[i] = float(line[-1]) * 1e-3
+    gdpnetper[i] = round(float(line[-1]) * 1e-3,6) # NB!! To be consistent with number of decimals Henri use
 
     name = ' '.join(line[3:-6])
     country_names.append(name)
