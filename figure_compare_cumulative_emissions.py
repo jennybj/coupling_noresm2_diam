@@ -27,6 +27,7 @@ ssp_co2_files = [
     path + 'emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc'
 ]  #
 diam_co2_file1 = '/home/jennybj/uio/home/coupling/full_couple_baseline_v2_cumulative_emissions.txt'
+diam_co2_file2 = '/home/jennybj/uio/home/coupling/decision_rules_test_1_cumulative_emissions.txt'
 
 colors = ['lightsteelblue', 'cornflowerblue', 'royalblue', 'navy']
 
@@ -38,7 +39,9 @@ earth_radius = 6.3781e6
 
 # Read in DIAM cumulative emissions:
 cumulative_co2_diam1 = np.loadtxt(diam_co2_file1, usecols=1)
+cumulative_co2_diam2 = np.loadtxt(diam_co2_file2, usecols=1)
 dyears = cumulative_co2_diam1.shape[0]
+dyears2 = cumulative_co2_diam2.shape[0]
 
 # Read in NorESM2 historical emissions:
 ncfile = Dataset(hist_co2_file)
@@ -152,6 +155,7 @@ print(diff_emiss)
 
 years_noresm = np.arange(1850, 1850 + nyears)
 years_diam = np.arange(1990, 1990 + dyears)
+years_diam2 = np.arange(1990, 1990 + dyears2)
 years_gcb = np.arange(1850, 1850 + cyears)
 nyears_hist = cumulative_co2_noresm_hist.shape[0]
 
@@ -187,9 +191,9 @@ ax1.plot(years_diam[:110],
          label='NorESM2-DIAM',
          color='#f4d570',
          linewidth=3)
-#ax1.plot(years_diam[:110],
-#         cumulative_co2_diam2[:110],
-#         label='NorESM2-DIAM 2.5%',
+#ax1.plot(years_diam2,
+#         cumulative_co2_diam2,
+#         label='old',
 #         color='#d4a610',
 #         linewidth=3)
 """
