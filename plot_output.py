@@ -44,6 +44,8 @@ years, ss_emissions = np.loadtxt(file_path + 'coupling/emissions.txt', unpack=Tr
 output_files = sorted(
     glob.glob(file_path + 'coupling/output_year_*.txt'))
 nyears = len(output_files)
+fp_output_files = sorted(glob.glob(file_path +
+                                   'coupling/fp_output_year_*.txt'))
 
 # Make empty arrays:
 expected_temperature = np.zeros((nyears, ncells))
@@ -54,11 +56,16 @@ ai = np.zeros((nyears, ncells))
 energy_scaled = np.zeros((nyears, ncells))
 expected_emissions = np.zeros((nyears, ncells))
 actual_emissions = np.zeros((nyears, ncells))
+fp_wealth_scaled = np.zeros((nyears, ncells))
+fp_capital_scaled = np.zeros((nyears, ncells))
+fp_ai = np.zeros((nyears, ncells))
+fp_energy_scaled = np.zeros((nyears, ncells))
+fp_emissions = np.zeros((nyears, ncells))
 
 # Read in output:
 
 
-for i, file in enumerate(output_files):
+for i, file in enumerate(output_files[:nyears]):
 
     print(file)
 
@@ -70,6 +77,14 @@ for i, file in enumerate(output_files):
                     skiprows=15,
                     usecols=(2, 3, 5, 6, 8, 10, 12, 13),
                     unpack=True)
+
+for i, file in enumerate(fp_output_files[:nyears]):
+
+    print(file)
+
+    fp_wealth_scaled[i, :], fp_capital_scaled[i, :], fp_ai[
+        i, :], fp_energy_scaled[i, :], fp_emissions[i, :] = np.loadtxt(
+            file, skiprows=15, usecols=(5, 6, 8, 10, 12), unpack=True)
 
 global_temperature = np.loadtxt(
     file_path + '/coupling/full_couple_baseline_v2_global_temp.txt', usecols=1)
@@ -124,30 +139,6 @@ def descale(in_variable, in_ai):
     return out_variable
 
 
-#--------------------------------------------------------------------------------------
-
-# PLOT A FEW REGIONS
-
-years = np.arange(1990, 1990 + nyears)
-print(years)
-
-for ireg in range(5):
-
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(7, 5))
-
-    ax.plot(years,
-            temperature[:, ireg],
-            label='NorESM2-DIAM')
-    ax.plot(years,
-            expected_temperature[:, ireg],
-            label='Expectation')
-
-    ax.legend()
-
-    fig.savefig('figures/temperature_region_' + str(diam_latitudes[ireg]) + '_' +
-                str(diam_longitudes[ireg]) + '.pdf')
-
-plt.close()
 
 #--------------------------------------------------------------------------------------
 
@@ -174,6 +165,7 @@ plt.close()
 
 # Calculate wealth:
 wealth = descale(wealth_scaled, ai)
+fp_wealth = descale(fp_wealth_scaled, ai)
 sum_wealth = np.sum(wealth, axis=1)
 sum_wealth_scaled = np.sum(wealth_scaled, axis=1)
 
@@ -191,9 +183,14 @@ diff_emissions = sum_actual_emissions / 1e3 - ss_emissions[:nyears]  #* 1e3
 # Calculate aggregate energy use:
 energy_use = descale(energy_scaled, ai)
 aggregate_energy_use = np.sum(energy_use, axis=1)
+fp_energy_use = descale(fp_energy_scaled, fp_ai)
+fp_aggregate_energy_use = np.sum(fp_energy_use, axis=1)
+
+fp_sum_emissions = np.sum(fp_emissions, axis=1)
 
 ss_energy_use = ss_emissions[:nyears] * 1e3 / chi[:nyears]
 
+print('Total diff', np.sum(sum_actual_emissions - fp_sum_emissions))
 
 # Read and calculate GDP:
 capital = descale(capital_scaled, ai)
@@ -202,15 +199,23 @@ sum_gdp = np.sum(gdp, axis=1)
 gdp_scaled = wealth_scaled - (1 - delta) * capital_scaled
 sum_gdp_scaled = np.sum(gdp_scaled, axis=1)
 
+fp_gdp = descale(fp_wealth_scaled,
+                 fp_ai) - (1 - delta) * descale(fp_capital_scaled, fp_ai)
+fp_sum_gdp = np.sum(fp_gdp, axis=1)
+
 
 # Detrend the GDP:
 gdp_detrended = np.zeros((nyears, ncells))
 sum_gdp_detrended = np.zeros((nyears))
+fp_gdp_detrended = np.zeros((nyears, ncells))
+fp_sum_gdp_detrended = np.zeros((nyears))
 
 for iyear in range(nyears):
 
     gdp_detrended[iyear, :] = gdp[iyear, :] / (1 + grate)**iyear
     sum_gdp_detrended[iyear] = sum_gdp[iyear] / (1 + grate)**iyear
+    fp_gdp_detrended[iyear, :] = fp_gdp[iyear, :] / (1 + grate)**iyear
+    fp_sum_gdp_detrended[iyear] = fp_sum_gdp[iyear] / (1 + grate)**iyear
 
 print('Percentage change in GDP (detrended):')
 print(
@@ -218,6 +223,11 @@ print(
     sum_gdp_detrended[0],
     np.mean(100 * (sum_gdp_detrended[-10:] - sum_gdp_detrended[0]) /
             sum_gdp_detrended[0]))
+print(
+    100 * (fp_sum_gdp_detrended - fp_sum_gdp_detrended[0]) /
+    fp_sum_gdp_detrended[0],
+    np.mean(100 * (fp_sum_gdp_detrended[-10:] - fp_sum_gdp_detrended[0]) /
+            fp_sum_gdp_detrended[0]))
 
 
 
@@ -262,6 +272,7 @@ for index, country in enumerate(country_names):
     country_pop[country] = country_pop[country] + population[index]
     country_pops[country].append(population[index])
     country_gdp[country] = country_gdp[country] + gdp_detrended[:, index]
+    fp_country_gdp[country] = fp_country_gdp[country] + fp_gdp_detrended[:, index]
 
 
 # Make list of all countries without duplicates:
@@ -281,6 +292,7 @@ chosen_countries = all_countries
 
 # Make arrays with the GDP, damages, and PI temperature of the chosen countries:
 gdp_country = np.zeros((nyears, len(chosen_countries)))
+fp_gdp_country = np.zeros((nyears, len(chosen_countries)))
 pi_temp_countries = np.zeros((len(chosen_countries)))
 temp_countries = np.zeros((nyears, len(chosen_countries)))
 expected_temp_countries = np.zeros((nyears, len(chosen_countries)))
@@ -291,6 +303,7 @@ for c, country in enumerate(chosen_countries):
     pops = np.asarray(country_pops[country])
 
     gdp_country[:, c] = country_gdp[country] * 1e9
+    fp_gdp_country[:, c] = fp_country_gdp[country] * 1e9
 
     pi_temp_countries[c] = calculate_regional_mean(pi_temperatures[:],
                                                    indices,
@@ -561,142 +574,140 @@ print(np.max(expected_dgdp), np.min(expected_dgdp))
 colors = sns.color_palette('plasma', 11).as_hex()
 my_cmap = ListedColormap(colors)
 
-for irun in range(nruns):
+for iyear in range(nyears):  #nyears):
 
-    for iyear in range(nyears):  #nyears):
+    fig4, ax4 = plt.subplots(nrows=1, ncols=2, figsize=(14, 5.5))
 
-        fig4, ax4 = plt.subplots(nrows=1, ncols=2, figsize=(14, 5.5))
+    pscat1 = ax4[0].scatter(expected_dtemp[iyear, :],
+                            expected_dgdp[iyear, :],
+                            cmap=my_cmap,
+                            vmin=-3,
+                            vmax=30,
+                            edgecolors='none',
+                            alpha=0.8,
+                            label=None,
+                            c=pi_temp_countries,
+                            s=np.sqrt(gdp_country[0, :] / 1e7))
 
-        pscat1 = ax4[0].scatter(expected_dtemp[irun, iyear, :],
-                                expected_dgdp[iyear, :],
-                                cmap=my_cmap,
-                                vmin=-3,
-                                vmax=30,
-                                edgecolors='none',
-                                alpha=0.8,
-                                label=None,
-                                c=pi_temp_countries,
-                                s=np.sqrt(gdp_country[irun, 0, :] / 1e7))
+    pscat2 = ax4[1].scatter(dtemp[iyear, :],
+                            dgdp[iyear, :],
+                            cmap=my_cmap,
+                            vmin=-3,
+                            vmax=30,
+                            edgecolors='none',
+                            alpha=0.8,
+                            label=None,
+                            c=pi_temp_countries,
+                            s=np.sqrt(gdp_country[0, :] / 1e7))
+    """
+    for c, country in enumerate(chosen_countries):
 
-        pscat2 = ax4[1].scatter(dtemp[irun, iyear, :],
-                                dgdp[irun, iyear, :],
-                                cmap=my_cmap,
-                                vmin=-3,
-                                vmax=30,
-                                edgecolors='none',
-                                alpha=0.8,
-                                label=None,
-                                c=pi_temp_countries,
-                                s=np.sqrt(gdp_country[irun, 0, :] / 1e7))
-        """
-        for c, country in enumerate(chosen_countries):
+        # Add country names:
+        ax4[0].text(expected_temp_countries[0, :] - pi_temp_countries,
+                    expected_gdp_country[0, :] - expected_gdp_country[0, :],
+                    country,
+                    fontsize=5)
+        ax4[1].text(temp_countries[0, :] - pi_temp_countries,
+                    gdp_country[0, :] - gdp_country[0, :],
+                    country,
+                    fontsize=5)
+    """
+    """
+        # Add circle around chosen courtries:
+        pscat = ax4.scatter(dtemp_countries,
+                            gdp_countries_change_damage,
+                            cmap=my_cmap,
+                            edgecolors='k',
+                            linewidth=0.2,
+                            alpha=0.8,
+                            label=None,
+                            c=pi_temp_countries,
+                            s=np.sqrt(gdp_country_1990[c] * 1e3))
+    """
 
-            # Add country names:
-            ax4[0].text(expected_temp_countries[0, :] - pi_temp_countries,
-                        expected_gdp_country[0, :] - expected_gdp_country[0, :],
-                        country,
-                        fontsize=5)
-            ax4[1].text(temp_countries[0, :] - pi_temp_countries,
-                        gdp_country[0, :] - gdp_country[0, :],
-                        country,
-                        fontsize=5)
-        """
-        """
-            # Add circle around chosen courtries:
-            pscat = ax4.scatter(dtemp_countries,
-                                gdp_countries_change_damage,
-                                cmap=my_cmap,
-                                edgecolors='k',
-                                linewidth=0.2,
-                                alpha=0.8,
-                                label=None,
-                                c=pi_temp_countries,
-                                s=np.sqrt(gdp_country_1990[c] * 1e3))
-        """
+    # Add global value:
+    pscat3 = ax4[0].scatter(
+        np.average(expected_temperature[iyear, :],
+                    weights=population) -
+        np.average(pi_temperatures, weights=population),
+        100 * (fp_sum_gdp_detrended[iyear] - fp_sum_gdp_detrended[0]) /
+        fp_sum_gdp_detrended[0],
+        c='black',
+        s=50,
+        alpha=0.8)
+    pscat4 = ax4[1].scatter(
+        np.average(temperature[iyear, :], weights=population) -
+        np.average(pi_temperatures, weights=population),
+        100 *
+        (sum_gdp_detrended[iyear] - sum_gdp_detrended[0]) /
+        sum_gdp_detrended[0],
+        c='black',
+        s=50,
+        alpha=0.8)
 
-        # Add global value:
-        pscat3 = ax4[0].scatter(
-            np.average(expected_temperature[irun, iyear, :],
-                       weights=population) -
-            np.average(pi_temperatures, weights=population),
-            100 * (fp_sum_gdp_detrended[iyear] - fp_sum_gdp_detrended[0]) /
-            fp_sum_gdp_detrended[0],
-            c='black',
-            s=50,
-            alpha=0.8)
-        pscat4 = ax4[1].scatter(
-            np.average(temperature[irun, iyear, :], weights=population) -
-            np.average(pi_temperatures, weights=population),
-            100 *
-            (sum_gdp_detrended[irun, iyear] - sum_gdp_detrended[irun, 0]) /
-            sum_gdp_detrended[irun, 0],
-            c='black',
-            s=50,
-            alpha=0.8)
+    # Generate color bar to indicate 2000 temperature:
+    cbar_ax = fig4.add_axes([0.93, 0.13, 0.02, 0.39])
+    cbar = fig4.colorbar(pscat1,
+                            ticks=[0, 3, 6, 9, 12, 15, 18, 21, 24, 27],
+                            cax=cbar_ax)
+    cbar.set_label('Temperature (\N{DEGREE SIGN}C)',
+                    fontsize=12,
+                    rotation=270,
+                    labelpad=18)
+    cbar.ax.tick_params(labelsize=10)
 
-        # Generate color bar to indicate 2000 temperature:
-        cbar_ax = fig4.add_axes([0.93, 0.13, 0.02, 0.39])
-        cbar = fig4.colorbar(pscat1,
-                             ticks=[0, 3, 6, 9, 12, 15, 18, 21, 24, 27],
-                             cax=cbar_ax)
-        cbar.set_label('Temperature (\N{DEGREE SIGN}C)',
-                       fontsize=12,
-                       rotation=270,
-                       labelpad=18)
-        cbar.ax.tick_params(labelsize=10)
+    # Generate legend to indicate GDP size:
+    gdp_ax = fig4.add_axes([0.92, 0.52, 0.02, 0.4], frameon=False)
+    gdp_ax.set_yticks([]), gdp_ax.set_xticks([])
+    gdp_labels = [
+        '10$^9$', '10$^{10}$', '10$^{11}$', '10$^{12}$', '10$^{13}$'
+    ]
+    for igdp, gdp in enumerate([1e9, 1e10, 1e11, 1e12, 1e13]):
+        gdp_ax.scatter([], [],
+                        c='',
+                        edgecolor='k',
+                        linewidths=0.7,
+                        s=np.sqrt(gdp / 1e7),
+                        label=gdp_labels[igdp])
+    glegend = gdp_ax.legend(scatterpoints=1,
+                            frameon=False,
+                            labelspacing=0.7,
+                            title='GDP ($)',
+                            loc=2,
+                            fontsize=10)
+    glegend.get_title().set_fontsize('12')
 
-        # Generate legend to indicate GDP size:
-        gdp_ax = fig4.add_axes([0.92, 0.52, 0.02, 0.4], frameon=False)
-        gdp_ax.set_yticks([]), gdp_ax.set_xticks([])
-        gdp_labels = [
-            '10$^9$', '10$^{10}$', '10$^{11}$', '10$^{12}$', '10$^{13}$'
-        ]
-        for igdp, gdp in enumerate([1e9, 1e10, 1e11, 1e12, 1e13]):
-            gdp_ax.scatter([], [],
-                           c='',
-                           edgecolor='k',
-                           linewidths=0.7,
-                           s=np.sqrt(gdp / 1e7),
-                           label=gdp_labels[igdp])
-        glegend = gdp_ax.legend(scatterpoints=1,
-                                frameon=False,
-                                labelspacing=0.7,
-                                title='GDP ($)',
-                                loc=2,
-                                fontsize=10)
-        glegend.get_title().set_fontsize('12')
+    ax4[0].xaxis.set_tick_params(labelsize=12)
+    ax4[0].yaxis.set_tick_params(labelsize=12)
+    ax4[1].xaxis.set_tick_params(labelsize=12)
+    ax4[1].yaxis.set_tick_params(labelsize=12)
 
-        ax4[0].xaxis.set_tick_params(labelsize=12)
-        ax4[0].yaxis.set_tick_params(labelsize=12)
-        ax4[1].xaxis.set_tick_params(labelsize=12)
-        ax4[1].yaxis.set_tick_params(labelsize=12)
+    ax4[0].set_xlim(-1.3, 6)
+    ax4[0].set_ylim(-50, 60)
+    ax4[1].set_xlim(-1.3, 6)
+    ax4[1].set_ylim(-50, 60)
 
-        ax4[0].set_xlim(-1.3, 6)
-        ax4[0].set_ylim(-50, 60)
-        ax4[1].set_xlim(-1.3, 6)
-        ax4[1].set_ylim(-50, 60)
+    # Add the 0-line:
+    ax4[0].axhline(0, color='grey', alpha=0.6, linestyle='--', linewidth=1)
+    ax4[1].axhline(0, color='grey', alpha=0.6, linestyle='--', linewidth=1)
 
-        # Add the 0-line:
-        ax4[0].axhline(0, color='grey', alpha=0.6, linestyle='--', linewidth=1)
-        ax4[1].axhline(0, color='grey', alpha=0.6, linestyle='--', linewidth=1)
+    ax4[0].set_xlabel(r'$\Delta$temperature ' + '(\N{DEGREE SIGN}C)',
+                        fontsize=14)
+    ax4[0].set_ylabel(r'$\Delta$GDP (%)', fontsize=14)
+    ax4[1].set_xlabel(r'$\Delta$temperature ' + '(\N{DEGREE SIGN}C)',
+                        fontsize=14)
 
-        ax4[0].set_xlabel(r'$\Delta$temperature ' + '(\N{DEGREE SIGN}C)',
-                          fontsize=14)
-        ax4[0].set_ylabel(r'$\Delta$GDP (%)', fontsize=14)
-        ax4[1].set_xlabel(r'$\Delta$temperature ' + '(\N{DEGREE SIGN}C)',
-                          fontsize=14)
+    ax4[0].set_title('DIAM expectation', fontsize=14)
+    ax4[1].set_title('NorESM2-DIAM', fontsize=14)
 
-        ax4[0].set_title('DIAM expectation', fontsize=14)
-        ax4[1].set_title('NorESM2-DIAM', fontsize=14)
+    fig4.subplots_adjust(left=0.06, right=0.9, top=0.9, bottom=0.1)
 
-        fig4.subplots_adjust(left=0.06, right=0.9, top=0.9, bottom=0.1)
+    fig4.suptitle('Year {:d}'.format(1990 + iyear), x=0.06)
 
-        fig4.suptitle('Year {:d}'.format(1990 + iyear), x=0.06)
+    fig4.savefig('figures/countries_year_{:d}.png'.format(
+        1990 + iyear))
 
-        fig4.savefig('figures/countries_year_{:d}_run_{:d}.png'.format(
-            1990 + iyear, irun + 1))
-
-        plt.close()
+    plt.close()
 
 #--------------------------------------------------------------------------------------
 
@@ -707,8 +718,8 @@ my_cmap = ListedColormap(colors)
 
 polyline = np.linspace(-60, 60, 100)
 
-temp_start = np.average(temp_countries[:, :10, :], axis=1)
-expected_temp_start = np.average(expected_temp_countries[:, :10, :], axis=1)
+temp_start = np.average(temp_countries[:10, :], axis=0)
+expected_temp_start = np.average(expected_temp_countries[:10, :], axis=0)
 expected_gdp_start = np.average(fp_gdp_country[:10, :], axis=0)
 gdp_start = np.average(gdp_country[:10, :], axis=0)
 
@@ -721,210 +732,210 @@ text_countires = [
     'Iceland'
 ]  #'Algeria', 'Indonesia'
 
-for irun in range(nruns):
 
-    for idec in range(1, ndecades1):
 
-        print('Decade:', 1990 + idec * 10, '-', 2000 + idec * 10)
+for idec in range(1, ndecades1):
 
-        expected_dtemp_countries = np.average(
-            expected_temp_countries[irun, 10 * idec:10 * (idec + 1), :],
-            axis=0) - expected_temp_start[irun, :]
-        dtemp_countries = np.average(temp_countries[irun, 10 * idec:10 *
-                                                    (idec + 1), :],
-                                     axis=0) - temp_start[irun, :]
+    print('Decade:', 1990 + idec * 10, '-', 2000 + idec * 10)
 
-        print(np.max(expected_dtemp_countries),
-              all_countries[np.argmax(expected_dtemp_countries)])
+    expected_dtemp_countries = np.average(
+        expected_temp_countries[10 * idec:10 * (idec + 1), :],
+        axis=0) - expected_temp_start
+    dtemp_countries = np.average(temp_countries[10 * idec:10 *
+                                                (idec + 1), :],
+                                    axis=0) - temp_start
 
-        expected_dgdp_countries = 100 * (
-            np.average(fp_gdp_country[10 * idec:10 * (idec + 1), :], axis=0) -
-            expected_gdp_start) / expected_gdp_start
-        dgdp_countries = 100 * (
-            np.average(gdp_country[irun, 10 * idec:10 *
-                                   (idec + 1), :], axis=0) -
-            gdp_start[irun, :]) / gdp_start[irun, :]
+    print(np.max(expected_dtemp_countries),
+            all_countries[np.argmax(expected_dtemp_countries)])
 
-        # Degree 2 polynomial fit or quadratic fit:
-        print(dgdp_countries.shape, dtemp_countries.shape)
-        expected_model = np.poly1d(
-            np.polyfit(expected_dgdp_countries, expected_dtemp_countries, 2))
-        model = np.poly1d(np.polyfit(dgdp_countries, dtemp_countries, 2))
-        #print(expected_model)
-        #print(model)
+    expected_dgdp_countries = 100 * (
+        np.average(fp_gdp_country[10 * idec:10 * (idec + 1), :], axis=0) -
+        expected_gdp_start) / expected_gdp_start
+    dgdp_countries = 100 * (
+        np.average(gdp_country[10 * idec:10 *
+                                (idec + 1), :], axis=0) -
+        gdp_start) / gdp_start
 
-        #fig5, ax5 = plt.subplots(nrows=1, ncols=2, figsize=(14, 5.5))
-        fig5, ax5 = plt.subplots(nrows=1, ncols=1, figsize=(7, 5.5))
-        fig6, ax6 = plt.subplots(nrows=1, ncols=1, figsize=(7, 5.5))
+    # Degree 2 polynomial fit or quadratic fit:
+    print(dgdp_countries.shape, dtemp_countries.shape)
+    expected_model = np.poly1d(
+        np.polyfit(expected_dgdp_countries, expected_dtemp_countries, 2))
+    model = np.poly1d(np.polyfit(dgdp_countries, dtemp_countries, 2))
+    #print(expected_model)
+    #print(model)
 
-        pscat1 = ax5.scatter(expected_dtemp_countries,
-                             expected_dgdp_countries,
-                             cmap=my_cmap,
-                             vmin=-3,
-                             vmax=30,
-                             edgecolors='none',
-                             alpha=0.8,
-                             label=None,
-                             c=temp_start[irun, :],
-                             s=np.sqrt(gdp_country[irun, 0, :] / 1e7))
+    #fig5, ax5 = plt.subplots(nrows=1, ncols=2, figsize=(14, 5.5))
+    fig5, ax5 = plt.subplots(nrows=1, ncols=1, figsize=(7, 5.5))
+    fig6, ax6 = plt.subplots(nrows=1, ncols=1, figsize=(7, 5.5))
 
-        pscat2 = ax6.scatter(dtemp_countries,
-                             dgdp_countries,
-                             cmap=my_cmap,
-                             vmin=-3,
-                             vmax=30,
-                             edgecolors='none',
-                             alpha=0.8,
-                             label=None,
-                             c=temp_start[irun, :],
-                             s=np.sqrt(gdp_country[irun, 0, :] / 1e7))
-
-        for c, country in enumerate(all_countries):
-
-            if country in text_countires:
-
-                # Add country names:
-                ax5.text(expected_dtemp_countries[c],
-                         expected_dgdp_countries[c],
-                         country,
-                         fontsize=5)
-                ax6.text(dtemp_countries[c],
-                         dgdp_countries[c],
-                         country,
-                         fontsize=5)
-                """
-                # Add circle around chosen courtries:
-                ax5[0].scatter(expected_dtemp_countries[c],
-                            expected_dgdp_countries[c],
+    pscat1 = ax5.scatter(expected_dtemp_countries,
+                            expected_dgdp_countries,
                             cmap=my_cmap,
-                            edgecolors='k',
-                            linewidth=0.2,
+                            vmin=-3,
+                            vmax=30,
+                            edgecolors='none',
                             alpha=0.8,
                             label=None,
                             c=temp_start,
-                            s=np.sqrt(gdp_country[0, c] / 1e7))
-                ax5[1].scatter(dtemp_countries[c],
-                            dgdp_countries[c],
+                            s=np.sqrt(gdp_country[0, :] / 1e7))
+
+    pscat2 = ax6.scatter(dtemp_countries,
+                            dgdp_countries,
                             cmap=my_cmap,
-                            edgecolors='k',
-                            linewidth=0.2,
+                            vmin=-3,
+                            vmax=30,
+                            edgecolors='none',
                             alpha=0.8,
                             label=None,
                             c=temp_start,
-                            s=np.sqrt(gdp_country[0, c] / 1e7))
-                """
+                            s=np.sqrt(gdp_country[0, :] / 1e7))
 
-        ax5.plot(expected_model(polyline), polyline)
-        ax6.plot(model(polyline), polyline)
+    for c, country in enumerate(all_countries):
 
-        # Add global value:
-        ax5.scatter(np.average(
-            np.average(expected_temperature[irun, 10 * idec:10 *
-                                            (idec + 1), :],
-                       weights=population,
-                       axis=1)) - np.average(
-                           np.average(expected_temperature[irun, :10, :],
-                                      weights=population,
-                                      axis=1)),
-                    100 * (np.average(fp_sum_gdp_detrended[10 * idec:10 *
-                                                           (idec + 1)]) -
-                           np.average(fp_sum_gdp_detrended[:10])) /
-                    np.average(fp_sum_gdp_detrended[:10]),
-                    c='black',
-                    s=50,
-                    alpha=0.8)
-        ax6.scatter(
+        if country in text_countires:
+
+            # Add country names:
+            ax5.text(expected_dtemp_countries[c],
+                        expected_dgdp_countries[c],
+                        country,
+                        fontsize=5)
+            ax6.text(dtemp_countries[c],
+                        dgdp_countries[c],
+                        country,
+                        fontsize=5)
+            """
+            # Add circle around chosen courtries:
+            ax5[0].scatter(expected_dtemp_countries[c],
+                        expected_dgdp_countries[c],
+                        cmap=my_cmap,
+                        edgecolors='k',
+                        linewidth=0.2,
+                        alpha=0.8,
+                        label=None,
+                        c=temp_start,
+                        s=np.sqrt(gdp_country[0, c] / 1e7))
+            ax5[1].scatter(dtemp_countries[c],
+                        dgdp_countries[c],
+                        cmap=my_cmap,
+                        edgecolors='k',
+                        linewidth=0.2,
+                        alpha=0.8,
+                        label=None,
+                        c=temp_start,
+                        s=np.sqrt(gdp_country[0, c] / 1e7))
+            """
+
+    ax5.plot(expected_model(polyline), polyline)
+    ax6.plot(model(polyline), polyline)
+
+    # Add global value:
+    ax5.scatter(np.average(
+        np.average(expected_temperature[10 * idec:10 *
+                                        (idec + 1), :],
+                    weights=population,
+                    axis=1)) - np.average(
+                        np.average(expected_temperature[:10, :],
+                                    weights=population,
+                                    axis=1)),
+                100 * (np.average(fp_sum_gdp_detrended[10 * idec:10 *
+                                                        (idec + 1)]) -
+                        np.average(fp_sum_gdp_detrended[:10])) /
+                np.average(fp_sum_gdp_detrended[:10]),
+                c='black',
+                s=50,
+                alpha=0.8)
+    ax6.scatter(
+        np.average(
+            np.average(temperature[10 * idec:10 * (idec + 1), :],
+                        weights=population,
+                        axis=1)) -
+        np.average(
             np.average(
-                np.average(temperature[irun, 10 * idec:10 * (idec + 1), :],
-                           weights=population,
-                           axis=1)) -
-            np.average(
-                np.average(
-                    temperature[irun, :10, :], weights=population, axis=1)),
-            100 * (np.average(sum_gdp_detrended[irun, 10 * idec:10 *
-                                                (idec + 1)]) -
-                   np.average(sum_gdp_detrended[irun, :10])) /
-            np.average(sum_gdp_detrended[irun, :10]),
-            c='black',
-            s=50,
-            alpha=0.8)
+                temperature[:10, :], weights=population, axis=1)),
+        100 * (np.average(sum_gdp_detrended[10 * idec:10 *
+                                            (idec + 1)]) -
+                np.average(sum_gdp_detrended[:10])) /
+        np.average(sum_gdp_detrended[:10]),
+        c='black',
+        s=50,
+        alpha=0.8)
 
-        for fig, ax in zip([fig5, fig6], [ax5, ax6]):
+    for fig, ax in zip([fig5, fig6], [ax5, ax6]):
 
-            # Add the 0-line:
-            ax.axhline(0, color='grey', alpha=0.6, linestyle='--', linewidth=1)
+        # Add the 0-line:
+        ax.axhline(0, color='grey', alpha=0.6, linestyle='--', linewidth=1)
 
-            # Generate legend to indicate GDP size:
-            gdp_ax = fig.add_axes([0.86, 0.52, 0.02, 0.4], frameon=False)
-            gdp_ax.set_yticks([]), gdp_ax.set_xticks([])
-            gdp_labels = [
-                '10$^9$', '10$^{10}$', '10$^{11}$', '10$^{12}$', '10$^{13}$'
-            ]
-            for igdp, gdp in enumerate([1e9, 1e10, 1e11, 1e12, 1e13]):
-                gdp_ax.scatter([], [],
-                               c='',
-                               edgecolor='k',
-                               linewidths=0.7,
-                               s=np.sqrt(gdp / 1e7),
-                               label=gdp_labels[igdp])
-            glegend = gdp_ax.legend(scatterpoints=1,
-                                    frameon=False,
-                                    labelspacing=0.7,
-                                    title='GDP ($)',
-                                    loc=2,
-                                    fontsize=10)
-            glegend.get_title().set_fontsize('12')
+        # Generate legend to indicate GDP size:
+        gdp_ax = fig.add_axes([0.86, 0.52, 0.02, 0.4], frameon=False)
+        gdp_ax.set_yticks([]), gdp_ax.set_xticks([])
+        gdp_labels = [
+            '10$^9$', '10$^{10}$', '10$^{11}$', '10$^{12}$', '10$^{13}$'
+        ]
+        for igdp, gdp in enumerate([1e9, 1e10, 1e11, 1e12, 1e13]):
+            gdp_ax.scatter([], [],
+                            c='',
+                            edgecolor='k',
+                            linewidths=0.7,
+                            s=np.sqrt(gdp / 1e7),
+                            label=gdp_labels[igdp])
+        glegend = gdp_ax.legend(scatterpoints=1,
+                                frameon=False,
+                                labelspacing=0.7,
+                                title='GDP ($)',
+                                loc=2,
+                                fontsize=10)
+        glegend.get_title().set_fontsize('12')
 
-            # Generate color bar to indicate 2000 temperature:
-            cbar_ax = fig.add_axes([0.88, 0.13, 0.02, 0.39])
-            cbar = fig.colorbar(pscat1,
-                                ticks=[0, 3, 6, 9, 12, 15, 18, 21, 24, 27],
-                                cax=cbar_ax)
-            cbar.set_label('Temperature (\N{DEGREE SIGN}C)',
-                           fontsize=12,
-                           rotation=270,
-                           labelpad=18)
-            cbar.ax.tick_params(labelsize=10)
+        # Generate color bar to indicate 2000 temperature:
+        cbar_ax = fig.add_axes([0.88, 0.13, 0.02, 0.39])
+        cbar = fig.colorbar(pscat1,
+                            ticks=[0, 3, 6, 9, 12, 15, 18, 21, 24, 27],
+                            cax=cbar_ax)
+        cbar.set_label('Temperature (\N{DEGREE SIGN}C)',
+                        fontsize=12,
+                        rotation=270,
+                        labelpad=18)
+        cbar.ax.tick_params(labelsize=10)
 
-            ax.xaxis.set_tick_params(labelsize=12)
-            ax.yaxis.set_tick_params(labelsize=12)
+        ax.xaxis.set_tick_params(labelsize=12)
+        ax.yaxis.set_tick_params(labelsize=12)
 
-            ax.set_xlabel(r'$\Delta$temperature ' + '(\N{DEGREE SIGN}C)',
-                          fontsize=14)
-            ax.set_ylabel(r'$\Delta$GDP (%)', fontsize=14)
-
-            ax.set_xlim(-0.5, 4.5)
-            ax.set_ylim(-50, 50)
-
-            fig.subplots_adjust(left=0.1, right=0.85, top=0.95, bottom=0.1)
-        """
-        ax5[0].set_title('DIAM expectation: {:d}-{:d}'.format(
-            1990 + idec * 10, 1999 + idec * 10),
+        ax.set_xlabel(r'$\Delta$temperature ' + '(\N{DEGREE SIGN}C)',
                         fontsize=14)
-        ax5[1].set_title('NorESM2-DIAM: {:d}-{:d}'.format(1990 + idec * 10,
-                                                        1999 + idec * 10),
-                        fontsize=14)
+        ax.set_ylabel(r'$\Delta$GDP (%)', fontsize=14)
 
-        fig5.subplots_adjust(left=0.06, right=0.9, top=0.9, bottom=0.1)
+        ax.set_xlim(-0.5, 4.5)
+        ax.set_ylim(-50, 50)
 
-        fig5.savefig('country_gdp_change_damage_compare_{:d}_{:d}.pdf'.format(
-            1990 + idec * 10, 2000 + idec * 10))
-        """
+        fig.subplots_adjust(left=0.1, right=0.85, top=0.95, bottom=0.1)
+    """
+    ax5[0].set_title('DIAM expectation: {:d}-{:d}'.format(
+        1990 + idec * 10, 1999 + idec * 10),
+                    fontsize=14)
+    ax5[1].set_title('NorESM2-DIAM: {:d}-{:d}'.format(1990 + idec * 10,
+                                                    1999 + idec * 10),
+                    fontsize=14)
 
-        fig5.savefig(
-            'figures/country_gdp_change_expectation_same_axes_{:d}_{:d}_run_{:d}.pdf'
-            .format(1990 + idec * 10, 1999 + idec * 10, irun + 1))
-        fig5.savefig(
-            'figures/country_gdp_change_expectation_same_axes_{:d}_{:d}_run_{:d}.png'
-            .format(1990 + idec * 10, 1999 + idec * 10, irun + 1))
-        fig6.savefig(
-            'figures/country_gdp_change_damage_noresm2-diam_same_axes_{:d}_{:d}_run_{:d}.pdf'
-            .format(1990 + idec * 10, 1999 + idec * 10, irun + 1))
-        fig6.savefig(
-            'figures/country_gdp_change_damage_noresm2-diam_same_axes_{:d}_{:d}_run_{:d}.png'
-            .format(1990 + idec * 10, 1999 + idec * 10, irun + 1))
+    fig5.subplots_adjust(left=0.06, right=0.9, top=0.9, bottom=0.1)
 
-        plt.close()
+    fig5.savefig('country_gdp_change_damage_compare_{:d}_{:d}.pdf'.format(
+        1990 + idec * 10, 2000 + idec * 10))
+    """
+
+    fig5.savefig(
+        'figures/country_gdp_change_expectation_same_axes_{:d}_{:d}.pdf'
+        .format(1990 + idec * 10, 1999 + idec * 10))
+    fig5.savefig(
+        'figures/country_gdp_change_expectation_same_axes_{:d}_{:d}.png'
+        .format(1990 + idec * 10, 1999 + idec * 10))
+    fig6.savefig(
+        'figures/country_gdp_change_damage_noresm2-diam_same_axes_{:d}_{:d}.pdf'
+        .format(1990 + idec * 10, 1999 + idec * 10))
+    fig6.savefig(
+        'figures/country_gdp_change_damage_noresm2-diam_same_axes_{:d}_{:d}.png'
+        .format(1990 + idec * 10, 1999 + idec * 10))
+
+    plt.close()
 exit()
 
 #--------------------------------------------------------------------------------------
