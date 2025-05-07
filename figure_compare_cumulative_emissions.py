@@ -46,7 +46,7 @@ dyears2 = cumulative_co2_diam2.shape[0]
 # Read in NorESM2 historical emissions:
 ncfile = Dataset(hist_co2_file)
 in_co2_hist = ncfile.variables['CO2_flux'][
-    100 * 12:-12]  # last year repeated (not include 2015)
+    100 * 12:-1*12]  # last year repeated (not include 2015)
 latitudes = ncfile.variables['lat'][:]
 longitudes = ncfile.variables['lon'][:]
 ncfile.close()
@@ -132,7 +132,7 @@ for i, run in enumerate(runs):
     # = (pi/180)R^2 |sin(lat1)-sin(lat2)| |lon1-lon2|
 
     # Convert from CO2 kg s-1 to GtC:
-    co2_noresm = co2_noresm * (365 * 24 * 60 * 60) / 3.664e12  # kg s-1 to GtC
+    co2_noresm = co2_noresm * (365 * 24 * 60 * 60) / 3.67e12  # kg s-1 to GtC
 
     co2_noresm = np.sum(co2_noresm, axis=(1, 2))
 
@@ -145,6 +145,7 @@ for i, run in enumerate(runs):
             co2_noresm) + cumulative_co2_noresm_hist[-1]
 
     exec('cumulative_co2_noresm_' + names[i] + '= cumulative_co2_noresm')
+
 
 diff_emiss = cumulative_co2_diam1[0] - cumulative_co2_noresm_hist[140]
 print(diff_emiss)
@@ -227,3 +228,35 @@ print(cumulative_co2_noresm_ssp585)
 """
 
 #-------------------------------------------------------------------------------------------
+
+# WRITE SSP CUMULATIVE EMISSIONS TO FILE
+
+for name in names[1:]:
+
+    exec('print(cumulative_co2_noresm_' + name + '[0])')
+
+    exec('cumulative_co2_noresm_' + name + '= np.concatenate((cumulative_co2_noresm_hist, cumulative_co2_noresm_' + name + '))')
+
+start_year = 140 # 1990
+
+with open('SSP_cumulative_emissions.txt', 'w') as f:
+
+    f.write('Column 1: Year \n')
+    f.write('Column 2: SSP1-2.6 \n')
+    f.write('Column 3: SSP2-4.5 \n')
+    f.write('Column 4: SSP3-7.0 \n')
+    f.write('Column 5: SSP5-8.5 \n')
+
+    f.write('\n')
+
+    for iyear in range(start_year, nyears):
+
+        f.write('%16i' % years_noresm[iyear])
+        f.write('%16.8f' % cumulative_co2_noresm_ssp126[iyear])
+        f.write('%16.8f' % cumulative_co2_noresm_ssp245[iyear])
+        f.write('%16.8f' % cumulative_co2_noresm_ssp370[iyear])
+        f.write('%16.8f' % cumulative_co2_noresm_ssp585[iyear])
+        f.write('\n')
+
+#-------------------------------------------------------------------------------------------
+
