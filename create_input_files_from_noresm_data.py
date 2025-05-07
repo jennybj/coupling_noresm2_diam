@@ -69,7 +69,7 @@ for i, temp_file in enumerate(temperature_files):
     ncfile.close()
 
 ncfile = Dataset(hist_co2_file)
-in_co2_hist = ncfile.variables['CO2_flux'][100 * 12:-2 * 12]
+in_co2_hist = ncfile.variables['CO2_flux'][100 * 12:-12]
 ncfile.close()
 
 ncfile = Dataset(ssp_co2_file)
@@ -193,7 +193,7 @@ file.close()
 file = open('NorESM2_HIST_SSP370_cumulative_emissions_global_temperature_v2.txt',
             'w')
 
-cum = np.zeros(nyears)
+cum = np.zeros(nyears + 1)
 cum[1:] = cumulative_co2[:-1]
 
 file.writelines('# Column 1: Year\n')
@@ -217,7 +217,7 @@ for iyear in range(nyears):
 # CALCULATE REGRESSION
 
 x1 = np.zeros(nyears)
-x1[1:] = cumulative_co2[:-1]
+x1[1:] = cumulative_co2[:-2]
 
 all_co2 = np.concatenate((cumulative_co2_e1[:-1], cumulative_co2_e2[:-1]))
 
@@ -236,7 +236,7 @@ for icell in range(ncells):
     regression = model.fit()
     coeffs[icell,1:] = regression.params[:]
 
-expected_temperature_all = np.zeros((ncells, nyears))
+expected_temperature_all = np.zeros((ncells, nyears + 1))
 expected_temperature_e1 = np.zeros((ncells, cumulative_co2_e1[:-1].shape[0]))
 expected_temperature_e2 = np.zeros((ncells, cumulative_co2_e2[:-1].shape[0]))
 
@@ -256,7 +256,7 @@ zi_e2 = np.zeros(temperatures[2].shape)
 
 for icell in range(ncells):
 
-    zi_all[icell,:] = temperatures[0][icell,:] - temperature_pi[icell] - expected_temperature_all[icell,:]
+    zi_all[icell,:] = temperatures[0][icell,:] - temperature_pi[icell] - expected_temperature_all[icell,:-1]
     zi_e1[icell,:] = temperatures[1][icell,:] - temperature_pi[icell] - expected_temperature_e1[icell,:]
     zi_e2[icell,:] = temperatures[2][icell,:] - temperature_pi[icell] - expected_temperature_e2[icell,:]
     
