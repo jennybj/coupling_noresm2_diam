@@ -2,3 +2,5 @@ __pycache__
 *.nc
 *.pdf
 *.png
+*.txt
+DIAM/

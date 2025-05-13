@@ -165,7 +165,7 @@ dtemp_all_land = temp_all_land - temp_pi_land
 
 # WRITE TEMPERATURES TO FILES
 
-file = open('NorESM2_HIST_SSP370_regional_temperatures_v2.txt', 'w')
+file = open('NorESM2_HIST_SSP370_regional_temperatures_v3.txt', 'w')
 
 for icell in range(ncells):
 
@@ -176,7 +176,7 @@ for icell in range(ncells):
 
 file.close()
 
-file = open('NorESM2_picontrol_regional_temperatures_v2.txt', 'w')
+file = open('NorESM2_picontrol_regional_temperatures_v3.txt', 'w')
 
 for icell in range(ncells):
 
@@ -190,7 +190,7 @@ file.close()
 
 # WRITE CUMULATIVE EMISSIONS TO FILE
 
-file = open('NorESM2_HIST_SSP370_cumulative_emissions_global_temperature_v2.txt',
+file = open('NorESM2_HIST_SSP370_cumulative_emissions_global_temperature_v3.txt',
             'w')
 
 cum = np.zeros(nyears + 1)
@@ -279,7 +279,7 @@ for icell in range(ncells):
 
 # WRITE COEFFICIENTS AND RMSE TO FILE
 
-file = open('NorESM2_HIST_SSP370_coefficients_v2.txt', 'w')
+file = open('NorESM2_HIST_SSP370_coefficients_v3.txt', 'w')
 
 file.writelines('# Column 1: Latitude\n')
 file.writelines('# Column 2: Longitude\n')
