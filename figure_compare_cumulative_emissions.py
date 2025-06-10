@@ -1,4 +1,4 @@
-# Plot cumulative emissions against time. 
+# Plot cumulative emissions against time.
 # Compare the coupled NorESM2-DIAM run emissions with the SSPs.
 
 #-------------------------------------------------------------------------------------------
@@ -26,8 +26,8 @@ ssp_co2_files = [
     path + 'emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc',
     path + 'emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc'
 ]  #
-diam_co2_file1 = '/home/jennybj/uio/home/coupling/full_couple_baseline_v2_cumulative_emissions.txt'
-diam_co2_file2 = '/home/jennybj/uio/home/coupling/decision_rules_test_1_cumulative_emissions.txt'
+diam_co2_file1 = '/home/jennybj/uio/home/coupling/emissions.txt'
+diam_co2_file2 = 'emissions-3.txt'
 
 colors = ['lightsteelblue', 'cornflowerblue', 'royalblue', 'navy']
 
@@ -42,6 +42,14 @@ cumulative_co2_diam1 = np.loadtxt(diam_co2_file1, usecols=1)
 cumulative_co2_diam2 = np.loadtxt(diam_co2_file2, usecols=1)
 dyears = cumulative_co2_diam1.shape[0]
 dyears2 = cumulative_co2_diam2.shape[0]
+
+cumulative_co2_diam1 = np.concatenate((np.array([216.8650]),cumulative_co2_diam1))
+cumulative_co2_diam1 = np.cumsum(cumulative_co2_diam1)
+print(cumulative_co2_diam1)
+
+cumulative_co2_diam2 = np.concatenate((np.array([216.8650]),cumulative_co2_diam2))
+cumulative_co2_diam2 = np.cumsum(cumulative_co2_diam2)
+print(cumulative_co2_diam2)
 
 # Read in NorESM2 historical emissions:
 ncfile = Dataset(hist_co2_file)
@@ -189,14 +197,14 @@ ax1.plot(years_noresm[nyears_hist:],
          linewidth=3)
 ax1.plot(years_diam[:110],
          cumulative_co2_diam1[:110],
-         label='NorESM2-DIAM',
+         label='2%',
          color='#f4d570',
          linewidth=3)
-#ax1.plot(years_diam2,
-#         cumulative_co2_diam2,
-#         label='old',
-#         color='#d4a610',
-#         linewidth=3)
+ax1.plot(years_diam2[:110],
+cumulative_co2_diam2[:110],
+         label='1.5%',
+         color='#d4a610',
+         linewidth=3)
 """
 ax1.plot(years_gcb[130:],
          cumulative_co2_gcb[130:],
@@ -259,4 +267,3 @@ with open('SSP_cumulative_emissions.txt', 'w') as f:
         f.write('\n')
 
 #-------------------------------------------------------------------------------------------
-
