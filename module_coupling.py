@@ -16,7 +16,7 @@ file_path = '/home/jennybj/Documents/coupling_noresm2_diam/'  # '/cluster/home/j
 # READ IN ECONOMIC DATA:
 
 # Read lines from file:
-with open(file_path + 'parse2.gin5', 'r') as myfile:
+with open(file_path + 'parse2.gin6', 'r') as myfile:
     lines = myfile.readlines()
 
 ncells = len(lines)
@@ -47,7 +47,7 @@ for i in range(ncells):
 
 cumulative_emissions = np.loadtxt(
     file_path +
-    'NorESM2_HIST_SSP370_cumulative_emissions_global_temperature_v2.txt',
+    'NorESM2_HIST_SSP370_cumulative_emissions_global_temperature_v3.txt',
     usecols=1, comments='#')
 
 orig_emissions = cumulative_emissions[1:] - cumulative_emissions[:-1]
@@ -56,14 +56,14 @@ orig_emissions = cumulative_emissions[1:] - cumulative_emissions[:-1]
 
 # DEFINE CONSTANTS
 
-ga = 0.01
-beta = 0.985
-delta = 0.06
-alpha = 0.36
+ga = 0.02 # TFP growth
+beta = 0.985 # discount factor
+delta = 0.06 # depreciation
+alpha = 0.36 # capital share
 energyshare = 0.062
 rss = (1 + ga) / beta - 1
 theta = 1 / (1 + energyshare)
-b = 0.4
+b = 0.4 # production scaling
 
 #----------------------------------------------------------------------------------------
 
@@ -88,6 +88,11 @@ def stop_due_to_error():
     sys.exit()
 
     return
+
+
+def get_constants():
+
+    return ga, beta, delta, alpha, energyshare, rss, theta, b
 
 
 def get_chit():
@@ -141,8 +146,8 @@ def get_initial_ai():
 def get_pi_temperature():
 
     pi_temperature = np.loadtxt(file_path +
-                                'NorESM2_picontrol_regional_temperatures_v2.txt',
-                                usecols=2, comments='#')
+                                'NorESM2_picontrol_regional_temperatures_v4.txt',
+                                usecols=3, comments='#')
 
     return pi_temperature
 
@@ -150,8 +155,8 @@ def get_pi_temperature():
 def get_coefficients():
 
     gamma1, gamma2, rho = np.loadtxt(file_path +
-                              'NorESM2_HIST_SSP370_coefficients_v2.txt', comments='#',
-                              usecols=(2,3,4), unpack=True)
+                              'NorESM2_HIST_SSP370_coefficients_and_RMSE_v4.txt', comments='#',
+                              usecols=(3,4,5), unpack=True)
 
     return gamma1, gamma2, rho
 
@@ -223,7 +228,7 @@ def damage_function(temp, temp_opt, kappa_plus, kappa_minus):
 
 
 def regrid_from_noresm_to_diam(noresm_variable):
-    """ Function for changing grid of noresm_variable from NorESM2s 2x2 grid to DIAMs 1x1 grid. 
+    """ Function for changing grid of noresm_variable from NorESM2s 2x2 grid to DIAMs 1x1 grid.
     noresm_variable must be 2D with (lat,lon)"""
 
     # Stagger ESM grid to match DIAM:
@@ -383,10 +388,10 @@ def calculate_annual_mean(variable):
 
 
 def calculate_regional_mean(variable, indices, weights):
-    """ 
-    Calculate the mean for a region. 
-    Indices are the indices to calculate average for. 
-    Weighting must be specified. 
+    """
+    Calculate the mean for a region.
+    Indices are the indices to calculate average for.
+    Weighting must be specified.
     """
 
     ncells = len(indices)

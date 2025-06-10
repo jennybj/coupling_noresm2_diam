@@ -15,7 +15,7 @@ from module_coupling import *
 
 # DEFINE
 
-case_name = 'full_couple_baseline_v2'
+case_name = 'full_couple_population'
 
 # File names:
 outfile = 'input_emissions_' + case_name + '.nc'
@@ -33,14 +33,7 @@ noresm_longitudes = np.linspace(0, 357.5, nlons)
 
 # INPUT DATA AND PARAMETERS
 
-ga = 0.01
-beta = 0.985
-delta = 0.06
-alpha = 0.36
-energyshare = 0.062
-rss = (1 + ga) / beta - 1
-theta = 1 / (1 + energyshare)
-b = 0.4
+ga, beta, delta, alpha, energyshare, rss, theta, b = get_constants()
 
 # Array of all corrdinates from DIAM:
 diam_latitudes, diam_longitudes = get_coordinate_data()
@@ -49,7 +42,7 @@ ai = get_initial_ai()
 price = get_price()
 
 chi = 1  # percentage of energy use that is dirty in 1990
-kss = ((((rss + delta)/(alpha*theta))*(b**(-1/theta))*((price/(1-theta))**((1-theta)/theta)))**(1/(alpha-1)))  
+kss = ((((rss + delta)/(alpha*theta))*(b**(-1/theta))*((price/(1-theta))**((1-theta)/theta)))**(1/(alpha-1)))
 xss = ((1-theta)*b/price)**(1/theta) * kss**alpha #0.08042639   # total energy use in 1990?
 
 print('price = ', price)
