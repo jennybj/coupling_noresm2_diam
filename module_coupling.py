@@ -56,7 +56,7 @@ orig_emissions = cumulative_emissions[1:] - cumulative_emissions[:-1]
 
 # DEFINE CONSTANTS
 
-ga = 0.02 # TFP growth
+ga = 0.015 # TFP growth
 beta = 0.985 # discount factor
 delta = 0.06 # depreciation
 alpha = 0.36 # capital share
@@ -121,6 +121,15 @@ def get_price():
 
 def get_initial_population():
     return pop
+
+
+def get_population():
+
+    population = np.loadtxt(file_path + 'regpop4.pop')[:,3:].T
+    #nyears = population.shape[0]
+    #population = np.tile(pop,(nyears,1))
+
+    return population
 
 
 def get_initial_gdpnet():
