@@ -26,7 +26,7 @@ ssp_co2_files = [
     path + 'emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc',
     path + 'emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc'
 ]  #
-diam_co2_file1 = '/home/jennybj/uio/home/coupling/emissions.txt'
+diam_co2_file1 = 'emissions-3.txt'#'/home/jennybj/uio/home/coupling/emissions.txt'
 diam_co2_file2 = 'emissions-3.txt'
 
 colors = ['lightsteelblue', 'cornflowerblue', 'royalblue', 'navy']
@@ -195,15 +195,15 @@ ax1.plot(years_noresm[nyears_hist:],
          label='SSP5-8.5',
          color=colors[3],
          linewidth=3)
-ax1.plot(years_diam[:110],
-         cumulative_co2_diam1[:110],
-         label='2%',
-         color='#f4d570',
-         linewidth=3)
+#ax1.plot(years_diam[:110],
+#         cumulative_co2_diam1[:110],
+#         label='2%',
+#         color='#d4a610',
+#         linewidth=3)
 ax1.plot(years_diam2[:110],
 cumulative_co2_diam2[:110],
-         label='1.5%',
-         color='#d4a610',
+         label='NorESM2-DIAM',
+         color='#f4d570',
          linewidth=3)
 """
 ax1.plot(years_gcb[130:],
