@@ -150,14 +150,14 @@ for i in range(1,len(in_temperature)):
         temp[iyear, :, :] = regrid_from_noresm_to_diam(temperature[iyear, :, :])
     temperatures.append(sort_in_diam_order_3D(diam_latitudes, diam_longitudes,
                                     temp))  # T it
-    
+
 print(temperatures[0].shape)
 
 temp_pi_land = np.average(temperature_pi, weights=weights)
 temp_land_all = np.average(temperatures[0], axis=0, weights=weights)
 temp_land_e1 = np.average(temperatures[1], axis=0, weights=weights)
 temp_land_e2 = np.average(temperatures[2], axis=0, weights=weights)
-                                
+
 #-------------------------------------------------------------------------------------------
 
 # CALCULATE REGRESSION
@@ -177,7 +177,7 @@ xs = np.vstack((x2,x2**2)).T
 for icell in range(ncells):
 
     y = np.concatenate((temperatures[1][icell,:] -temperature_pi[icell], temperatures[2][icell,:] -temperature_pi[icell], temperatures[0][icell,:] - temperature_pi[icell]))
-    
+
     model = sm.OLS(y, xs)
     regression = model.fit()
     coeffs[icell,:] = regression.params[:]
@@ -198,8 +198,8 @@ cm = 1/2.54  # centimeters in inches
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(6*cm, 4.5*cm))
 
 ax.scatter(cumulative_co2, temp_land_all - temp_pi_land, s=1, color='k', label='HIST+SSP370')
-ax.scatter(cumulative_co2_e1[:-1], temp_land_e1 - temp_pi_land, s=1, color='grey', label='1990-2100 run 1')
-ax.scatter(cumulative_co2_e2[:-1], temp_land_e2 - temp_pi_land, s=1, color='silver', label='1990-2100 run 2')
+ax.scatter(cumulative_co2_e1[:-1], temp_land_e1 - temp_pi_land, s=1, color='grey', label='DIAM run 1')
+ax.scatter(cumulative_co2_e2[:-1], temp_land_e2 - temp_pi_land, s=1, color='silver', label='DIAM run 2')
 ax.plot(cumulative_co2, expected_temp_land, color='r', label='Simple model', linewidth=1)
 
 ax.set_xlabel('Cumulative emissions (GtC)', fontsize=6)
