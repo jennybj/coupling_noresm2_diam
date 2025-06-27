@@ -409,7 +409,7 @@ print("Sum of emission difference: ", np.sum(diff_emissions))
 
 # PLOT AVERAGE TEMPERATURE AGAINST TIME
 
-fig2, ax2 = plt.subplots(nrows=1, ncols=2, figsize=(20, 7))
+fig2, ax2 = plt.subplots(nrows=2, ncols=1, figsize=(10, 13))
 
 # Plot temperature:
 ax2[0].plot(years[:-1], pop_temp, label="NorESM2-DIAM", linewidth=3, color="darkblue")
@@ -440,19 +440,19 @@ ax2[1].plot(
 )
 ax2[1].set_title("Global GDP per capita change", fontsize=20)
 
+ax2[1].set_xlabel("Year", fontsize=20)
 ax2[0].set_ylabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=20)
 ax2[1].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=20)
 for ax in ax2:
-    ax.set_xlabel("Year", fontsize=20)
     ax.xaxis.set_tick_params(labelsize=16)
     ax.yaxis.set_tick_params(labelsize=16)
 
 ax2[0].legend(fontsize=20)
 
-fig2.text(0.01, 0.95, "(a)", fontsize=18, wrap=True)
-fig2.text(0.5, 0.95, "(b)", fontsize=18, wrap=True)
+fig2.text(0.01, 0.98, "(a)", fontsize=18, wrap=True)
+fig2.text(0.01, 0.49, "(b)", fontsize=18, wrap=True)
 
-fig2.subplots_adjust(left=0.05, right=0.98, top=0.9, bottom=0.1, wspace=0.15)
+fig2.subplots_adjust(left=0.1, right=0.98, top=0.96, bottom=0.05, hspace=0.18)
 
 fig2.savefig("figures/population_weighted_temperature_and_GDP_per_capita.pdf")
 fig2.savefig("figures/population_weighted_temperature_and_GDP_per_capita.png")
