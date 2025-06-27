@@ -129,7 +129,7 @@ def add_bubble_label(fig, position, labels, label_values, title):
 
 
 def add_global_value(
-    ax, x, y, color, size, cmap, vmin="None", vmax="None", norm="None", text=True
+    ax, x, y, color, size, cmap, vmin=None, vmax=None, norm=None, text=True
 ):
     ax.scatter(
         x,
@@ -229,15 +229,20 @@ for iyear in range(nyears):
 sum_gdp_detrended = np.sum(gdp_detrended, axis=1)
 sum_fp_gdp_detrended = np.sum(fp_gdp_detrended, axis=1)
 
-print("Percentage change in GDP (detrended):")
-print(
-    100 * (sum_gdpper_detrended - sum_gdpper_detrended[0]) / sum_gdpper_detrended[0],
+global_gdpper_change = (
+    100
+    * (sum_gdpper_detrended - sum_fp_gdpper_detrended[0])
+    / sum_fp_gdpper_detrended[0]
 )
-print(
+global_fp_gdpper_change = (
     100
     * (sum_fp_gdpper_detrended - sum_fp_gdpper_detrended[0])
     / sum_fp_gdpper_detrended[0]
 )
+print(sum_gdpper_detrended[0], sum_fp_gdpper_detrended[0])
+print("Percentage change in GDP (detrended):")
+print(global_gdpper_change)
+print(global_fp_gdpper_change)
 global_change = (
     100
     * (sum_fp_gdpper_detrended[-1] - sum_fp_gdpper_detrended[0])
@@ -404,27 +409,53 @@ print("Sum of emission difference: ", np.sum(diff_emissions))
 
 # PLOT AVERAGE TEMPERATURE AGAINST TIME
 
-fig2, ax2 = plt.subplots(nrows=1, ncols=1, figsize=(14, 10))
+fig2, ax2 = plt.subplots(nrows=1, ncols=2, figsize=(20, 7))
 
-ax2.plot(years[:-1], pop_temp, label="NorESM2-DIAM", linewidth=3, color="darkblue")
-ax2.scatter(years[:-1], pop_temp, color="darkblue", s=75)
-
-ax2.plot(
+# Plot temperature:
+ax2[0].plot(years[:-1], pop_temp, label="NorESM2-DIAM", linewidth=3, color="darkblue")
+ax2[0].scatter(years[:-1], pop_temp, color="darkblue", s=75)
+ax2[0].plot(
     years[:-1],
     expected_pop_temp,
     label="DIAM expectation",
     linewidth=3,
     color="cornflowerblue",
 )
+ax2[0].set_title("Global temperature change", fontsize=20)
 
-ax2.set_xlabel("Year", fontsize=20)
-ax2.set_ylabel("Temperature change (\N{DEGREE SIGN}C)", fontsize=20)
-ax2.xaxis.set_tick_params(labelsize=16)
-ax2.yaxis.set_tick_params(labelsize=16)
-ax2.legend(fontsize=20)
+ax2[1].plot(
+    years[:-2],
+    global_gdpper_change[:-1],
+    label="NorESM2-DIAM",
+    linewidth=3,
+    color="darkblue",
+)
+ax2[1].scatter(years[:-2], global_gdpper_change[:-1], color="darkblue", s=75)
+ax2[1].plot(
+    years[:-2],
+    global_fp_gdpper_change[:-1],
+    label="DIAM expectation",
+    linewidth=3,
+    color="cornflowerblue",
+)
+ax2[1].set_title("Global GDP per capita change", fontsize=20)
 
-fig2.savefig("figures/population_weighted_temperature.pdf")
-fig2.savefig("figures/population_weighted_temperature.png")
+ax2[0].set_ylabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=20)
+ax2[1].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=20)
+for ax in ax2:
+    ax.set_xlabel("Year", fontsize=20)
+    ax.xaxis.set_tick_params(labelsize=16)
+    ax.yaxis.set_tick_params(labelsize=16)
+
+ax2[0].legend(fontsize=20)
+
+fig2.text(0.01, 0.95, "(a)", fontsize=18, wrap=True)
+fig2.text(0.5, 0.95, "(b)", fontsize=18, wrap=True)
+
+fig2.subplots_adjust(left=0.05, right=0.98, top=0.9, bottom=0.1, wspace=0.15)
+
+fig2.savefig("figures/population_weighted_temperature_and_GDP_per_capita.pdf")
+fig2.savefig("figures/population_weighted_temperature_and_GDP_per_capita.png")
 
 fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(14, 10))
 
@@ -456,8 +487,7 @@ colors = sns.color_palette("YlOrRd", ncolors).as_hex()
 vmin = -3
 vmax = 30
 color_bins = np.linspace(vmin, vmax, ncolors + 1)
-index_global_color = np.where(color_bins < expected_pop_temp_start)[0][-1]
-color_global = colors[index_global_color]
+
 
 gdp_cmap = ListedColormap(colors)
 
@@ -675,17 +705,30 @@ for c, country in enumerate(all_countries):
 # ax4[0, 0].plot(expected_model(polyline), polyline)
 # ax4[0, 1].plot(model(polyline), polyline)
 
-# Add global value:
-add_global_value(
-    ax=ax4[0, 0],
-    x=np.average(expected_pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
-    y=100
+global_gdpper_change = (
+    100
+    * (
+        np.average(sum_gdpper_detrended[10 * (ndecades - 1) : 10 * ndecades])
+        - np.average(sum_fp_gdpper_detrended[:10])
+    )
+    / np.average(sum_fp_gdpper_detrended[:10])
+)
+global_fp_gdpper_change = (
+    100
     * (
         np.average(sum_fp_gdpper_detrended[10 * (ndecades - 1) : 10 * ndecades])
         - np.average(sum_fp_gdpper_detrended[:10])
     )
-    / np.average(sum_fp_gdpper_detrended[:10]),
-    color=color_global,
+    / np.average(sum_fp_gdpper_detrended[:10])
+)
+print(global_gdpper_change, global_fp_gdpper_change)
+
+# Add global value:
+add_global_value(
+    ax=ax4[0, 0],
+    x=np.average(expected_pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
+    y=global_fp_gdpper_change,
+    color=expected_pop_temp_start,
     size=np.sqrt(np.average(sum_fp_gdpper_detrended[:10])),
     cmap=gdp_cmap,
     vmin=vmin,
@@ -695,13 +738,8 @@ add_global_value(
 add_global_value(
     ax=ax4[0, 1],
     x=np.average(pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
-    y=100
-    * (
-        np.average(sum_gdpper_detrended[10 * (ndecades - 1) : 10 * ndecades])
-        - np.average(sum_fp_gdpper_detrended[:10])
-    )
-    / np.average(sum_fp_gdpper_detrended[:10]),
-    color=color_global,
+    y=global_gdpper_change,
+    color=expected_pop_temp_start,
     size=np.sqrt(np.average(sum_fp_gdpper_detrended[:10])),
     cmap=gdp_cmap,
     vmin=vmin,
@@ -711,12 +749,7 @@ add_global_value(
 add_global_value(
     ax=ax4[1, 0],
     x=np.average(expected_pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
-    y=100
-    * (
-        np.average(sum_fp_gdpper_detrended[10 * (ndecades - 1) : 10 * ndecades])
-        - np.average(sum_fp_gdpper_detrended[:10])
-    )
-    / np.average(sum_fp_gdpper_detrended[:10]),
+    y=global_gdpper_change,
     color=100
     * (
         np.average(global_population[10 * (ndecades - 1) : 10 * ndecades])
@@ -725,20 +758,13 @@ add_global_value(
     / np.average(global_population[:10]),
     size=50,
     cmap=population_cmap,
-    vmin=-200,
-    vmax=1000,
     norm=divnorm,
     text=True,
 )
 add_global_value(
     ax=ax4[1, 1],
     x=np.average(pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
-    y=100
-    * (
-        np.average(sum_gdpper_detrended[10 * (ndecades - 1) : 10 * ndecades])
-        - np.average(sum_fp_gdpper_detrended[:10])
-    )
-    / np.average(sum_fp_gdpper_detrended[:10]),
+    y=global_gdpper_change,
     color=100
     * (
         np.average(global_population[10 * (ndecades - 1) : 10 * ndecades])
@@ -747,8 +773,6 @@ add_global_value(
     / np.average(global_population[:10]),
     size=50,
     cmap=population_cmap,
-    vmin=-100,
-    vmax=1000,
     norm=divnorm,
     text=True,
 )
