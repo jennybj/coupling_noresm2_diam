@@ -197,9 +197,9 @@ cm = 1/2.54  # centimeters in inches
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(6*cm, 4.5*cm))
 
-ax.scatter(cumulative_co2, temp_land_all - temp_pi_land, s=1, color='k', label='HIST+SSP370')
-ax.scatter(cumulative_co2_e1[:-1], temp_land_e1 - temp_pi_land, s=1, color='grey', label='DIAM run 1')
-ax.scatter(cumulative_co2_e2[:-1], temp_land_e2 - temp_pi_land, s=1, color='silver', label='DIAM run 2')
+ax.scatter(cumulative_co2, temp_land_all - temp_pi_land, s=1, color='k', label='HIST + SSP3-7.0')
+ax.scatter(cumulative_co2_e1[:-1], temp_land_e1 - temp_pi_land, s=1, color='grey', label='Low emissions 1')
+ax.scatter(cumulative_co2_e2[:-1], temp_land_e2 - temp_pi_land, s=1, color='silver', label='Low emissions 2')
 ax.plot(cumulative_co2, expected_temp_land, color='r', label='Simple model', linewidth=1)
 
 ax.set_xlabel('Cumulative emissions (GtC)', fontsize=6)
