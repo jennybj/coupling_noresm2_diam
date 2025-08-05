@@ -212,4 +212,21 @@ fig.subplots_adjust(bottom=0.2, left=0.13, top=0.95, right=0.95)
 
 fig.savefig('figures/figure_temperature_regression.pdf')
 
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12*cm, 9*cm))
+
+ax.scatter(cumulative_co2, temp_land_all - temp_pi_land, s=2, color='k', label='HIST + SSP3-7.0')
+ax.scatter(cumulative_co2_e1[:-1], temp_land_e1 - temp_pi_land, s=2, color='grey', label='Low emissions 1')
+ax.scatter(cumulative_co2_e2[:-1], temp_land_e2 - temp_pi_land, s=2, color='silver', label='Low emissions 2')
+ax.plot(cumulative_co2, expected_temp_land, color='r', label='Simple model', linewidth=2)
+
+ax.set_xlabel('Cumulative emissions (GtC)', fontsize=12)
+ax.set_ylabel('Temperature change', fontsize=12)
+ax.xaxis.set_tick_params(labelsize=10)
+ax.yaxis.set_tick_params(labelsize=10)
+
+ax.legend(fontsize=10)
+fig.subplots_adjust(bottom=0.2, left=0.13, top=0.95, right=0.95)
+
+fig.savefig('figures/figure_temperature_regression.png')
+
 #-------------------------------------------------------------------------------------------

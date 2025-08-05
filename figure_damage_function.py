@@ -49,4 +49,17 @@ fig.subplots_adjust(bottom=0.2, left=0.18, top=0.95, right=0.95)
 
 fig.savefig('figures/figure_damage_function.pdf')
 
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12*cm, 9*cm))
+
+ax.plot(temp, shape, color='r', linewidth=2)
+ax.set_ylabel('Fraction of optimum productivity', fontsize=12)
+ax.set_xlabel(r'Temperature ($^\circ$C)', fontsize=12)
+ax.axvline(temp_opt, linestyle='--', color='#A9A9A9', linewidth=1.4)
+ax.xaxis.set_tick_params(labelsize=10)
+ax.yaxis.set_tick_params(labelsize=10)
+
+
+fig.subplots_adjust(bottom=0.2, left=0.18, top=0.95, right=0.95)
+fig.savefig('figures/figure_damage_function.png')
+
 #--------------------------------------------------------------------
