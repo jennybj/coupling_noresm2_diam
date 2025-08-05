@@ -826,7 +826,7 @@ cbar.ax.tick_params(labelsize=10)
 for ax in ax4.flatten():
     ax.xaxis.set_tick_params(labelsize=12)
     ax.yaxis.set_tick_params(labelsize=12)
-    ax.set_xlim(-0.5, 7)
+    ax.set_xlim(1, 7)
     ax.set_ylim(-60, 50)
 
     # Add the 0-line:
