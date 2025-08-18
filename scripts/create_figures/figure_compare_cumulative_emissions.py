@@ -18,8 +18,10 @@ from module_coupling import calculate_annual_mean
 
 # SPECIFY
 
-path = "../NorESM-DIAM/"
+path = "../../../NorESM-DIAM/" # CHANGE to local path
 
+# These emissions files can be downloaded by following the instructions here:
+# # https://noresm-docs.readthedocs.io/en/noresm2/access/download_input.html#download-input
 hist_co2_file = (
     path + "emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc"
 )
@@ -33,8 +35,8 @@ ssp_co2_files = [
     path
     + "emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc",
 ]  #
-diam_co2_file1 = "emissions-3.txt"  #'/home/jennybj/uio/home/coupling/emissions.txt'
-diam_co2_file2 = "emissions-3.txt"
+diam_co2_file1 = "../../data/DIAM_stand-alone_output/emissions-3.txt"  # input emissions from DIAM stand-alone #'/home/jennybj/uio/home/coupling/emissions.txt'
+diam_co2_file2 = "../../data/DIAM_stand-alone_output/emissions-3.txt"  # for comparison
 
 colors = ["lightsteelblue", "cornflowerblue", "royalblue", "navy"]
 
@@ -80,6 +82,7 @@ nlats = latitudes.shape[0]
 diff_lon = longitudes[1] - longitudes[0]
 diff_lat = latitudes[1] - latitudes[0]
 
+# Historical cumulative emissions data from https://ourworldindata.org/grapher/cumulative-co-emissions
 cumulative_co2_gcb = np.array(
     [
         4572663000,
@@ -356,15 +359,10 @@ ax1.plot(
     color=colors[3],
     linewidth=3,
 )
-# ax1.plot(years_diam[:110],
-#         cumulative_co2_diam1[:110],
-#         label='2%',
-#         color='#d4a610',
-#         linewidth=3)
 ax1.plot(
     years_diam2[:110],
     cumulative_co2_diam2[:110],
-    label="DIAM expectation",
+    label="DIAM stand-alone",
     color="#f4d570",
     linewidth=3,
 )
@@ -381,7 +379,7 @@ ax1.set_ylabel("Cumulative emissions (GtC)", fontsize=20)
 ax1.xaxis.set_tick_params(labelsize=16)
 ax1.yaxis.set_tick_params(labelsize=16)
 
-fig1.savefig("figures/figure_compare_cumulative_emissions.pdf")
+fig1.savefig("../../figures/figure_compare_cumulative_emissions.pdf")
 
 """
 # Where does DIAM cross SSP126:
