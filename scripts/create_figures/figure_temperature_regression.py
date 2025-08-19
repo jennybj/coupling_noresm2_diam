@@ -16,15 +16,15 @@ from module_coupling import get_coordinate_data, sort_in_diam_order, sort_in_dia
 
 # SPECIFY
 
-path = '/home/jennybj/Documents/koding/filer/scenarios/'
+path = '/home/jennybj/Documents/koding/filer/scenarios/' # CHANGE path to local
 
 pi_file = path + 'N1850_f19_tn14_20190730esm.nc'
 histssp_file = path + 'onlyCO2.nc'
 couple_e1_file = path + 'full_couple_baseline.nc'
 couple_e2_file = path + 'full_couple_baseline_e2.nc'
 
-hist_co2_file = '/home/jennybj/Documents/NorESM-DIAM/emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc'
-ssp_co2_file = '/home/jennybj/Documents/NorESM-DIAM/emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc'
+hist_co2_file = '/home/jennybj/Documents/NorESM-DIAM/emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc' # CHANGE paths to local
+ssp_co2_file = '/home/jennybj/Documents/NorESM-DIAM/emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc' # CHANGE paths to local
 
 temperature_files = [pi_file, histssp_file, couple_e1_file, couple_e2_file]
 co2_files = [hist_co2_file, ssp_co2_file]
@@ -210,7 +210,7 @@ ax.yaxis.set_tick_params(labelsize=5)
 ax.legend(fontsize=5)
 fig.subplots_adjust(bottom=0.2, left=0.13, top=0.95, right=0.95)
 
-fig.savefig('figures/figure_temperature_regression.pdf')
+fig.savefig('../../figures/figure_temperature_regression.pdf')
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12*cm, 9*cm))
 
@@ -227,6 +227,6 @@ ax.yaxis.set_tick_params(labelsize=10)
 ax.legend(fontsize=10)
 fig.subplots_adjust(bottom=0.2, left=0.13, top=0.95, right=0.95)
 
-fig.savefig('figures/figure_temperature_regression.png')
+fig.savefig('../../figures/figure_temperature_regression.png')
 
 #-------------------------------------------------------------------------------------------
