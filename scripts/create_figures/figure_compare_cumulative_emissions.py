@@ -18,10 +18,9 @@ from module_coupling import calculate_annual_mean
 
 # SPECIFY
 
-path = "../../../NorESM-DIAM/" # CHANGE to local path
+path = "../../data/input_emission_data/" # CHANGE to local path
 
-# These emissions files can be downloaded by following the instructions here:
-# # https://noresm-docs.readthedocs.io/en/noresm2/access/download_input.html#download-input
+# The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_emission_data
 hist_co2_file = (
     path + "emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc"
 )
