@@ -47,7 +47,7 @@ ax.yaxis.set_tick_params(labelsize=5)
 
 fig.subplots_adjust(bottom=0.2, left=0.18, top=0.95, right=0.95)
 
-fig.savefig('figures/figure_damage_function.pdf')
+fig.savefig('../../figures/figure_damage_function.pdf')
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12*cm, 9*cm))
 
@@ -60,6 +60,6 @@ ax.yaxis.set_tick_params(labelsize=10)
 
 
 fig.subplots_adjust(bottom=0.2, left=0.18, top=0.95, right=0.95)
-fig.savefig('figures/figure_damage_function.png')
+fig.savefig('../../figures/figure_damage_function.png')
 
 #--------------------------------------------------------------------

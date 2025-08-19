@@ -34,6 +34,6 @@ ax.yaxis.set_tick_params(labelsize=5)
 
 fig.subplots_adjust(bottom=0.2, left=0.18, top=0.95, right=0.95)
 
-fig.savefig('figures/figure_greening_function.pdf')
+fig.savefig('../../figures/figure_greening_function.pdf')
 
 #--------------------------------------------------------------------
