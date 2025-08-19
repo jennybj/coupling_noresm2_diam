@@ -439,7 +439,7 @@ ax2[0].scatter(years[:-1], pop_temp, color="darkblue", s=75)
 ax2[0].plot(
     years[:-1],
     expected_pop_temp,
-    label="DIAM expectation",
+    label="DIAM stand-alone",
     linewidth=3,
     color="cornflowerblue",
 )
@@ -505,7 +505,7 @@ fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(14, 10))
 ax3.plot(
     years[:-1],
     expected_area_temp,
-    label="DIAM expectation",
+    label="DIAM stand-alone",
     linewidth=3,
     color="cornflowerblue",
 )
@@ -880,7 +880,7 @@ ax4[1, 1].set_xlabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=14
 ax4[0, 0].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=14)
 ax4[1, 0].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=14)
 
-ax4[0, 0].set_title("DIAM expectation", fontsize=14)
+ax4[0, 0].set_title("DIAM stand-alone", fontsize=14)
 ax4[0, 1].set_title("NorESM2-DIAM", fontsize=14)
 
 fig4.text(0.01, 0.98, "(a)", fontsize=12, wrap=True)
