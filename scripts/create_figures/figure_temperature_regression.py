@@ -16,15 +16,17 @@ from module_coupling import get_coordinate_data, sort_in_diam_order, sort_in_dia
 
 # SPECIFY
 
-path = '/home/jennybj/Documents/koding/filer/scenarios/' # CHANGE path to local
+# # The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_from_NorESM2/
+path = '../../data/input_from_NorESM2/' # CHANGE path to local
 
-pi_file = path + 'N1850_f19_tn14_20190730esm.nc'
+pi_file = path + 'N1850_f19_tn14_20190730esm.TREFHT.nc'
 histssp_file = path + 'onlyCO2.nc'
 couple_e1_file = path + 'full_couple_baseline.nc'
 couple_e2_file = path + 'full_couple_baseline_e2.nc'
 
-hist_co2_file = '/home/jennybj/Documents/NorESM-DIAM/emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc' # CHANGE paths to local
-ssp_co2_file = '/home/jennybj/Documents/NorESM-DIAM/emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc' # CHANGE paths to local
+# # The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_emission_data/
+hist_co2_file = '../../data/input_emission_data/emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc' # CHANGE paths to local
+ssp_co2_file = '../../data/input_emission_data/emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc' # CHANGE paths to local
 
 temperature_files = [pi_file, histssp_file, couple_e1_file, couple_e2_file]
 co2_files = [hist_co2_file, ssp_co2_file]
@@ -50,8 +52,8 @@ for icell in range(ncells):
 
 # READ IN DATA
 
-cumulative_co2_e1 = np.loadtxt('full_couple_baseline_cumulative_emissions.txt', usecols=1)
-cumulative_co2_e2 = np.loadtxt('full_couple_baseline_e2_cumulative_emissions.txt', usecols=1)
+cumulative_co2_e1 = np.loadtxt(path + 'full_couple_baseline_cumulative_emissions.txt', usecols=1)
+cumulative_co2_e2 = np.loadtxt(path + 'full_couple_baseline_e2_cumulative_emissions.txt', usecols=1)
 
 in_temperature = []
 in_co2 = []
