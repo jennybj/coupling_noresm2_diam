@@ -366,6 +366,28 @@ for c, country in enumerate(chosen_countries):
 
 start_temp_countries = np.average(expected_temp_countries[:10, :], axis=0)
 
+# --------------------------------------------------------------------------------------
+
+# DECOMPOSITION INTO POPULATION AND CLIMATE CHANGE
+
+gdpcap_full, gdpcap_npop, gdpcap_ncc = np.loadtxt("gdp_file.txt", skiprows=11, usecols=(5,6,7), unpack=True)
+
+pct_change_full = (gdpcap_full/gdpcap_full[0] -1) * 100
+pct_change_npop = (gdpcap_npop/gdpcap_npop[0] -1) * 100
+pct_change_ncc = (gdpcap_ncc/gdpcap_ncc[0] -1) * 100
+print("DECOMPOSE:")
+print(pct_change_full)
+print(global_fp_gdpper_change)
+print(gdpcap_full[0], gdpcap_npop[0], gdpcap_ncc[0], sum_fp_gdpper_detrended[0])
+
+pct_change_full = ((gdpcap_full - 1e-6*sum_fp_gdpper_detrended[0])/(1e-6*sum_fp_gdpper_detrended[0])) * 100
+pct_change_npop = ((gdpcap_npop - 1e-6*sum_fp_gdpper_detrended[0])/(1e-6*sum_fp_gdpper_detrended[0])) * 100
+pct_change_ncc = ((gdpcap_ncc - 1e-6*sum_fp_gdpper_detrended[0])/(1e-6*sum_fp_gdpper_detrended[0])) * 100
+print(pct_change_full)
+
+print("Decomp change at end:")
+print(pct_change_ncc[109], pct_change_npop[109], global_fp_gdpper_change[109])
+print(pct_change_ncc[109]/global_fp_gdpper_change[109], pct_change_npop[109]/global_fp_gdpper_change[109])
 
 # --------------------------------------------------------------------------------------
 
@@ -426,7 +448,6 @@ ax2[0].set_title("Global temperature change", fontsize=20)
 ax2[1].plot(
     years[:-2],
     global_gdpper_change[:-1],
-    label="NorESM2-DIAM",
     linewidth=3,
     color="darkblue",
 )
@@ -434,9 +455,30 @@ ax2[1].scatter(years[:-2], global_gdpper_change[:-1], color="darkblue", s=75)
 ax2[1].plot(
     years[:-2],
     global_fp_gdpper_change[:-1],
-    label="DIAM expectation",
+    label="All",
     linewidth=3,
     color="cornflowerblue",
+)
+ax2[1].plot(
+    years[:-2],
+    pct_change_ncc[:nyears-1],
+    label="Population only",
+    linewidth=3,
+    color="forestgreen",
+)
+ax2[1].plot(
+    years[:-2],
+    pct_change_npop[:nyears-1],
+    label="Climate change only",
+    linewidth=3,
+    color="lightcoral",
+)
+ax2[1].plot(
+    years[:-2],
+    global_fp_gdpper_change[:-1] - pct_change_ncc[:nyears-1] - pct_change_npop[:nyears-1],
+    label="Interaction effect",
+    linewidth=3,
+    color="darkgoldenrod",
 )
 ax2[1].set_title("Global GDP per capita change", fontsize=20)
 
@@ -448,6 +490,7 @@ for ax in ax2:
     ax.yaxis.set_tick_params(labelsize=16)
 
 ax2[0].legend(fontsize=20)
+ax2[1].legend(fontsize=20)
 
 fig2.text(0.01, 0.98, "(a)", fontsize=18, wrap=True)
 fig2.text(0.01, 0.49, "(b)", fontsize=18, wrap=True)
