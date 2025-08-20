@@ -19,7 +19,7 @@ alpha = 0.36  # capital’s share of income (capital share + labor share = 1)
 delta = 0.06  # The (annual) rate of depreciation of the capital stock
 price = get_price()
 
-file_path = ""  # "/home/jennybj/uio/home/"
+file_path = "../../data/output_coupling/"
 
 # --------------------------------------------------------------------------------------
 
@@ -39,11 +39,11 @@ global_population = np.sum(population, axis=1)
 
 # READ IN DATA
 
-years, ss_emissions = np.loadtxt(file_path + "coupling/emissions.txt", unpack=True)
-
-output_files = sorted(glob.glob(file_path + "coupling/output_year_*.txt"))
+# All the data from NorESM2-DIAM used here can be downloaded from https://doi.org/10.11582/2025.90v981qk
+years, ss_emissions = np.loadtxt(file_path + "emissions.txt", unpack=True)
+output_files = sorted(glob.glob(file_path + "output_year_*.txt"))
+fp_output_files = sorted(glob.glob(file_path + "fp_output_year_*.txt"))
 nyears = len(output_files)
-fp_output_files = sorted(glob.glob(file_path + "coupling/fp_output_year_*.txt"))
 
 # Make empty arrays:
 expected_temperature = np.zeros((nyears, ncells))
@@ -157,7 +157,6 @@ def add_global_value(
 # --------------------------------------------------------------------------------------
 
 # CALCULATIONS
-
 
 # Calculate wealth:
 wealth = descale(wealth_scaled, ai)
@@ -370,7 +369,7 @@ start_temp_countries = np.average(expected_temp_countries[:10, :], axis=0)
 
 # DECOMPOSITION INTO POPULATION AND CLIMATE CHANGE
 
-gdpcap_full, gdpcap_npop, gdpcap_ncc = np.loadtxt("gdp_file.txt", skiprows=11, usecols=(5,6,7), unpack=True)
+gdpcap_full, gdpcap_npop, gdpcap_ncc = np.loadtxt("../../data/processed/gdp_file.txt", skiprows=11, usecols=(5,6,7), unpack=True)
 
 pct_change_full = (gdpcap_full/gdpcap_full[0] -1) * 100
 pct_change_npop = (gdpcap_npop/gdpcap_npop[0] -1) * 100
@@ -422,7 +421,7 @@ ax1.xaxis.set_tick_params(labelsize=12)
 ax1.yaxis.set_tick_params(labelsize=12)
 bx1.yaxis.set_tick_params(labelsize=12, color="grey")
 
-fig1.savefig("figures/difference_emissions.pdf")
+fig1.savefig("../../figures/difference_emissions.pdf")
 
 print("Sum of emission difference: ", np.sum(diff_emissions))
 
@@ -497,8 +496,8 @@ fig2.text(0.01, 0.49, "(b)", fontsize=18, wrap=True)
 
 fig2.subplots_adjust(left=0.1, right=0.98, top=0.96, bottom=0.05, hspace=0.18)
 
-fig2.savefig("figures/population_weighted_temperature_and_GDP_per_capita.pdf")
-fig2.savefig("figures/population_weighted_temperature_and_GDP_per_capita.png")
+fig2.savefig("../../figures/population_weighted_temperature_and_GDP_per_capita.pdf")
+fig2.savefig("../../figures/population_weighted_temperature_and_GDP_per_capita.png")
 
 fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(14, 10))
 
@@ -519,7 +518,7 @@ ax3.xaxis.set_tick_params(labelsize=16)
 ax3.yaxis.set_tick_params(labelsize=16)
 ax3.legend(fontsize=20)
 
-fig3.savefig("figures/area_weighted_temperature.pdf")
+fig3.savefig("../../figures/area_weighted_temperature.pdf")
 
 # --------------------------------------------------------------------------------------
 
@@ -892,8 +891,8 @@ fig4.subplots_adjust(
     left=0.055, right=0.9, top=0.95, bottom=0.05, hspace=0.1, wspace=0.1
 )
 
-fig4.savefig("figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf")
-fig4.savefig("figures/country_gdpper_percent_all_noresm2-diam_2090_2099.png")
+fig4.savefig("../../figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf")
+fig4.savefig("../../figures/country_gdpper_percent_all_noresm2-diam_2090_2099.png")
 
 plt.close()
 
