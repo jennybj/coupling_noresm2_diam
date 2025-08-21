@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from netCDF4 import Dataset
 
-sys.path.insert(0, "../modules")
+sys.path.insert(0, "..")
 from module_coupling import calculate_annual_mean
 
 # -------------------------------------------------------------------------------------------
