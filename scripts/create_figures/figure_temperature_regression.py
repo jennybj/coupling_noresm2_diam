@@ -18,8 +18,8 @@ from module_coupling import get_coordinate_data, sort_in_diam_order, sort_in_dia
 
 # SPECIFY
 
-# # The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_from_NorESM2/
-path = '../../data/input_from_NorESM2/' # CHANGE path to local
+# # The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_to_regression/
+path = '../../data/input_to_regression/' # CHANGE path to local
 
 pi_file = path + 'N1850_f19_tn14_20190730esm.TREFHT.nc'
 histssp_file = path + 'onlyCO2.nc'
