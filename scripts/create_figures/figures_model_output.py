@@ -9,8 +9,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn.apionly as sns
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap, TwoSlopeNorm
+import sys as sys
 
-# sys.path.insert(0, '../modules')
+sys.path.insert(0, '..')
 from module_coupling import *
 
 # --------------------------------------------------------------------------------------

@@ -6,7 +6,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import sys as sys
 
+sys.path.insert(0, '..')
 from module_coupling import damage_function
 
 #-----------------------------------------------------------------------

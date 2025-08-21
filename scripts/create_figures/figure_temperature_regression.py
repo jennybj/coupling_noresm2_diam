@@ -8,7 +8,9 @@ from matplotlib import cm
 from netCDF4 import Dataset
 import statsmodels.api as sm
 from scipy import interpolate
+import sys as sys
 
+sys.path.insert(0, '..')
 from module_coupling import get_coordinate_data, sort_in_diam_order, sort_in_diam_order_3D, \
                             regrid_from_noresm_to_diam, calculate_annual_mean
 
