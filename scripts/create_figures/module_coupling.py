@@ -11,7 +11,7 @@ from datetime import datetime
 
 #-----------------------------------------------------------------------------------------------
 
-file_path = '/home/jennybj/Documents/coupling_noresm2_diam/'  # '/cluster/home/jennybj/coupling/'
+file_path = '/home/jennybj/Documents/coupling_noresm2_diam/data/input/'
 
 # READ IN ECONOMIC DATA:
 
@@ -125,7 +125,7 @@ def get_initial_population():
 
 def get_population():
 
-    population = np.loadtxt(file_path + 'regpop4.pop')[:,3:].T
+    population = np.loadtxt(file_path + '../../data/processed/regpop4.pop')[:,3:].T
     #nyears = population.shape[0]
     #population = np.tile(pop,(nyears,1))
 
