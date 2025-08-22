@@ -9,16 +9,17 @@ from netCDF4 import Dataset
 from scipy.interpolate import interp2d
 from scipy.ndimage import gaussian_filter
 
+sys.path.insert(0, '..')
 from module_coupling import *
 
 #----------------------------------------------------------------------------------------
 
 # DEFINE
 
-case_name = 'full_couple_population'
+case_name = 'full_couple_population' # CHANGE to wanted NorESM2 case name
 
 # File names:
-outfile = 'input_emissions_' + case_name + '.nc'
+outfile = '../../data/input/input_emissions_' + case_name + '.nc'
 
 # Constants:
 earth_radius = 6.3781e6
