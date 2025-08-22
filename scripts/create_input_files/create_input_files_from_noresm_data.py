@@ -5,7 +5,9 @@
 import numpy as np
 import statsmodels.api as sm
 from netCDF4 import Dataset
+import sys as sys
 
+sys.path.insert(0, '..')
 from module_coupling import (
     calculate_annual_mean,
     get_coordinate_data,
@@ -18,14 +20,20 @@ from module_coupling import (
 
 # SPECIFY
 
-path = "/home/jennybj/Documents/koding/filer/scenarios/"
+# # The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_to_regression/
+path = '../../data/input_to_regression/' # CHANGE path to local
 
-pi_file = path + "N1850_f19_tn14_20190730esm.nc"
+pi_file = path + "N1850_f19_tn14_20190730esm.TREFHT.nc"
 histssp_file = path + "onlyCO2.nc"
 couple_e1_file = path + "full_couple_baseline.nc"
 couple_e2_file = path + "full_couple_baseline_e2.nc"
 
+# # The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_emission_data/
+hist_co2_file = "../../data/input_emission_data/emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc"
+ssp_co2_file = "../../data/input_emission_data/emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc"
+
 temperature_files = [pi_file, histssp_file, couple_e1_file, couple_e2_file]
+co2_files = [hist_co2_file, ssp_co2_file]
 
 diam_latitudes = np.arange(-90.0, 90.0, 1)
 diam_longitudes = np.arange(-180.0, 180.0, 1)
@@ -38,6 +46,9 @@ print(ncells)
 coordinates = list(zip(list_lats, list_longs))
 weights = np.zeros(ncells)
 
+# Note that some grid cells contains multiple countries.
+# In that case, only the first occurance of a grid cell is given a weight (otherwise 0),
+# so that one grid cell isn't counted several times when calculating average temperatures.
 for icell in range(ncells):
     if coordinates[icell] not in coordinates[:icell]:
         weights[icell] = np.cos(np.deg2rad(list_lats[icell]))
@@ -48,14 +59,15 @@ for icell in range(ncells):
 # READ IN DATA
 
 
-cumulative_co2_e1 = np.round(np.loadtxt(
-    "full_couple_baseline_cumulative_emissions.txt", usecols=1),4
+cumulative_co2_e1 = np.loadtxt(
+    path + "full_couple_baseline_cumulative_emissions.txt", usecols=1
 )
-cumulative_co2_e2 = np.round(np.loadtxt(
-    "full_couple_baseline_e2_cumulative_emissions.txt", usecols=1),4
+cumulative_co2_e2 = np.loadtxt(
+    path + "full_couple_baseline_e2_cumulative_emissions.txt", usecols=1
 )
 
 in_temperature = []
+in_co2 = []
 
 for i, temp_file in enumerate(temperature_files):
     ncfile = Dataset(temp_file)
@@ -67,13 +79,20 @@ for i, temp_file in enumerate(temperature_files):
 
     ncfile.close()
 
+ncfile = Dataset(hist_co2_file)
+in_co2_hist = ncfile.variables["CO2_flux"][100 * 12 : -12]
+ncfile.close()
+
+ncfile = Dataset(ssp_co2_file)
+in_co2_ssp = ncfile.variables["CO2_flux"][12:-12]
+ncfile.close()
 
 month_lengths = np.array([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])
 in_temperature_pi = np.average(
     in_temperature[0][: 100 * 12, :, :], axis=0, weights=np.tile(month_lengths, 100)
 )
 
-cumulative_co2 = np.loadtxt('NorESM2_HIST_SSP370_cumulative_emissions_global_temperature_v3.txt', usecols=1)
+in_co2 = np.concatenate((in_co2_hist, in_co2_ssp))
 
 nyears = in_temperature[1].shape[0] // 12
 nlats = noresm_latitudes.shape[0]
@@ -96,6 +115,40 @@ print("PI temp: ", pi_temp)
 in_temperature_pi = regrid_from_noresm_to_diam(in_temperature_pi)
 
 temperature_pi = sort_in_diam_order(in_temperature_pi)  # T bar i
+
+# -------------------------------------------------------------------------------------------
+
+# CALCULATE ANNUAL CUMULATIVE EMISSIONS IN GtC
+
+co2 = calculate_annual_mean(in_co2)
+
+# Convert from kg m-2 s-1 to kg s-1:
+for ilat in range(nlats):
+    cell_area = (
+        np.pi
+        / 180
+        * earth_radius**2
+        * np.abs(
+            np.sin(np.deg2rad(noresm_latitudes[ilat] - diff_lat / 2))
+            - np.sin(np.deg2rad(noresm_latitudes[ilat] + diff_lat / 2))
+        )
+        * diff_lon
+    )
+
+    co2[:, ilat, :] *= cell_area  # kg m-2 s-1 to kg s-1
+
+# A = 2*pi*R^2 |sin(lat1)-sin(lat2)| |lon1-lon2|/360
+# = (pi/180)R^2 |sin(lat1)-sin(lat2)| |lon1-lon2|
+
+# Convert from CO2 kg s-1 to GtC:
+co2 *= 365 * 24 * 60 * 60  # kg s-1 to kg
+co2 /= 1e12  # kg to Gt
+co2 /= 3.67  # GtCO2 to GtC
+
+co2 = np.sum(co2, axis=(1, 2))
+
+# Calculate cumulutive emissions:
+cumulative_co2 = np.cumsum(co2)  # S t
 
 # -------------------------------------------------------------------------------------------
 
@@ -125,7 +178,62 @@ dtemp_all_land = temp_all_land - temp_pi_land
 
 # -------------------------------------------------------------------------------------------
 
+# WRITE TEMPERATURES TO FILES
+
+file = open("../../data/input/NorESM2_HIST_SSP370_regional_temperatures.txt", "w")
+
+for icell in range(ncells):
+    file.writelines(["%16.1f" % list_lats[icell]])
+    file.writelines(["%16.1f" % list_longs[icell]])
+    file.writelines(["%16.7f" % item for item in temperatures[0][icell, :]])
+    file.write("\n")
+
+file.close()
+
+file = open("../../data/input/NorESM2_picontrol_regional_temperatures.txt", "w")
+
+for icell in range(ncells):
+    file.writelines(["%8i" % int(icell+1)])
+    file.writelines(["%8i" % int(list_lats[icell])])
+    file.writelines(["%8i" % int(list_longs[icell])])
+    file.writelines(["%16.7f" % temperature_pi[icell]])
+    file.writelines(["%16.7f" % weights[icell]])
+    file.write("\n")
+
+file.close()
+
+# WRITE CUMULATIVE EMISSIONS TO FILE
+
+file = open("../../data/input/NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt", "w")
+
+cum = np.zeros(nyears + 1)
+cum[1:] = cumulative_co2[:-1]
+
+file.writelines("# Column 1: Year\n")
+file.writelines("# Column 2: Cumulative emissions\n")
+file.writelines(
+    "# Column 3: Area-weighted temperature of the grid cells included in the model\n"
+)
+file.writelines(
+    "# Column 4: Area-weighted temperature change from pre-industrial of the grid cells included in the model\n"
+)
+
+
+for iyear in range(nyears):
+    year = 1850 + iyear
+
+    file.writelines(["% 8d" % year])
+    file.writelines(["%16.4f" % cum[iyear]])
+    file.writelines(["%16.4f" % temp_all_land[iyear]])
+    file.writelines(["%16.4f" % dtemp_all_land[iyear]])
+    file.write("\n")
+
+# -------------------------------------------------------------------------------------------
+
 # CALCULATE REGRESSION
+
+x1 = np.zeros(nyears)
+x1[1:] = cumulative_co2[:-2]
 
 all_co2 = np.concatenate((cumulative_co2_e1[:-1], cumulative_co2_e2[:-1]))
 
@@ -133,7 +241,7 @@ rmse_emissions_residuals = np.zeros(ncells)
 rsquared_emissions = np.zeros(ncells)
 coeffs = np.zeros((ncells, 2))
 
-x2 = np.concatenate((all_co2, cumulative_co2))
+x2 = np.concatenate((all_co2, x1))
 xs = np.vstack((x2, x2**2)).T
 
 for icell in range(ncells):
@@ -155,7 +263,7 @@ expected_temperature_e2 = np.zeros((ncells, cumulative_co2_e2[:-1].shape[0]))
 
 for icell in range(ncells):
     expected_temperature_all[icell, :] = (
-        coeffs[icell, 0] * cumulative_co2 + coeffs[icell, 1] * cumulative_co2**2
+        coeffs[icell, 0] * x1 + coeffs[icell, 1] * x1**2
     )
     expected_temperature_e1[icell, :] = (
         coeffs[icell, 0] * cumulative_co2_e1[:-1]
@@ -210,21 +318,25 @@ for icell in range(ncells):
 
 # WRITE COEFFICIENTS AND RMSE TO FILE
 
-file = open("NorESM2_HIST_SSP370_coefficients_v3.txt", "w")
+file = open("../../data/input/NorESM2_HIST_SSP370_coefficients_and_RMSE.txt", "w")
 
-file.writelines("# Column 1: Latitude\n")
-file.writelines("# Column 2: Longitude\n")
-file.writelines("# Column 3: Gamma linear coefficient\n")
-file.writelines("# Column 4: Gamma quadratic coefficient\n")
-file.writelines("# Column 5: rho\n")
+file.writelines("# Column 1: Grid cell\n")
+file.writelines("# Column 2: Latitude\n")
+file.writelines("# Column 3: Longitude\n")
+file.writelines("# Column 4: Gamma linear coefficient\n")
+file.writelines("# Column 5: Gamma quadratic coefficient\n")
+file.writelines("# Column 6: rho\n")
 
 
 for icell in range(ncells):
-    file.writelines(["%16.1f" % list_lats[icell]])
-    file.writelines(["%16.1f" % list_longs[icell]])
-    file.writelines(["%16.12f" % coeffs[icell, 0]])
-    file.writelines(["%16.12f" % coeffs[icell, 1]])
-    file.writelines(["%16.12f" % rhos[icell]])
+    file.writelines(["%8i" % int(icell+1)])
+    file.writelines(["%8i" % int(list_lats[icell])])
+    file.writelines(["%8i" % int(list_longs[icell])])
+    file.writelines(["%12.8f" % coeffs[icell, 0]])
+    file.writelines(["%12.8f" % coeffs[icell, 1]])
+    file.writelines(["%12.8f" % rhos[icell]])
     file.write("\n")
+
+# -------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------

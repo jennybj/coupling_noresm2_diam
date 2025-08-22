@@ -45,13 +45,6 @@ for i in range(ncells):
     country_names.append(name)
 
 
-cumulative_emissions = np.loadtxt(
-    file_path +
-    'NorESM2_HIST_SSP370_cumulative_emissions_global_temperature_v3.txt',
-    usecols=1, comments='#')
-
-orig_emissions = cumulative_emissions[1:] - cumulative_emissions[:-1]
-
 #----------------------------------------------------------------------------------------
 
 # DEFINE CONSTANTS
@@ -112,6 +105,13 @@ def get_price():
 
     chit = get_chit()
 
+    cumulative_emissions = np.loadtxt(
+        file_path +
+        'NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt',
+        usecols=1, comments='#')
+
+    orig_emissions = cumulative_emissions[1:] - cumulative_emissions[:-1]
+
     globalgdp1990 = np.sum(pop * gdpnetper)
     x1990 = 1e3 * (orig_emissions[140]) / chit[0]
     price = energyshare * globalgdp1990 / x1990
@@ -155,7 +155,7 @@ def get_initial_ai():
 def get_pi_temperature():
 
     pi_temperature = np.loadtxt(file_path +
-                                'NorESM2_picontrol_regional_temperatures_v4.txt',
+                                'NorESM2_picontrol_regional_temperatures.txt',
                                 usecols=3, comments='#')
 
     return pi_temperature
@@ -164,7 +164,7 @@ def get_pi_temperature():
 def get_coefficients():
 
     gamma1, gamma2, rho = np.loadtxt(file_path +
-                              'NorESM2_HIST_SSP370_coefficients_and_RMSE_v4.txt', comments='#',
+                              'NorESM2_HIST_SSP370_coefficients_and_RMSE.txt', comments='#',
                               usecols=(3,4,5), unpack=True)
 
     return gamma1, gamma2, rho
