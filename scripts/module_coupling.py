@@ -11,7 +11,7 @@ from datetime import datetime
 
 #-----------------------------------------------------------------------------------------------
 
-file_path = '/home/jennybj/Documents/coupling_noresm2_diam/data/input/'
+file_path = '../data/input/' # CHANGE to input data folder
 
 # READ IN ECONOMIC DATA:
 
@@ -38,8 +38,8 @@ for i in range(ncells):
     diam_latitudes[i] = float(line[1])
     diam_longitudes[i] = float(line[2])
     pop[i] = float(line[-3])
-    gdpnet[i] = float(line[-2]) * 1e-3
-    gdpnetper[i] = round(float(line[-1]) * 1e-3,6) # NB!! To be consistent with number of decimals Henri use
+    gdpnet[i] = float(line[-2])
+    gdpnetper[i] = float(line[-1]) * 1e-3 # NB!! To be consistent with number of decimals Henri use
 
     name = ' '.join(line[3:-6])
     country_names.append(name)
@@ -112,7 +112,7 @@ def get_price():
 
     orig_emissions = cumulative_emissions[1:] - cumulative_emissions[:-1]
 
-    globalgdp1990 = np.sum(pop * gdpnetper)
+    globalgdp1990 = np.sum(gdpnet)
     x1990 = 1e3 * (orig_emissions[140]) / chit[0]
     price = energyshare * globalgdp1990 / x1990
 
@@ -125,7 +125,7 @@ def get_initial_population():
 
 def get_population():
 
-    population = np.loadtxt(file_path + '../../data/processed/regpop4.pop')[:,3:].T
+    population = np.loadtxt('../data/processed/regpop4.pop')[:,3:].T # CHANGE path
     #nyears = population.shape[0]
     #population = np.tile(pop,(nyears,1))
 
@@ -191,7 +191,7 @@ def get_number_of_line_in_file(file_name):
 def get_year_current(case_name):
     """ Get the latest year run by NorESM2. Year 1990 is the initial year. """
 
-    file = 'rpointer.atm'  # '/cluster/work/users/jennybj/noresm/' + case_name + '/run/rpointer.atm'
+    file = '/cluster/work/users/jennybj/noresm/' + case_name + '/run/rpointer.atm' # CHANGE path
     place = len(case_name) + 7
 
     if not os.path.exists(file):
@@ -340,7 +340,7 @@ def get_noresm_regional_temperatures(year_current, case_name):
 
     ts = datetime.timestamp(datetime.now())
 
-    path = ''  # '/cluster/work/users/jennybj/noresm/' + case_name + '/run/'
+    path = '/cluster/work/users/jennybj/noresm/' + case_name + '/run/' # CHANGE path
     file_name = case_name + '.cam.h0.' + str(year_current) + '-'
     months = [
         '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'
@@ -535,7 +535,7 @@ def make_emissions_file(case_name, emissions_file):
     ts = datetime.timestamp(datetime.now())
 
     # File names:
-    outfile = 'input_emissions_' + case_name + '.nc'  # '/cluster/home/jennybj/input_emissions_' + case_name + '.nc'
+    outfile = '/cluster/home/jennybj/input_emissions_' + case_name + '.nc' # CHANGE path to that specified by "co2flux_fuel_file" in "user_nl_cam"
 
     # Constants:
     earth_radius = 6.3781e6
