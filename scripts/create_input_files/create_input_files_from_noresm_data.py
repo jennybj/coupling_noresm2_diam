@@ -7,7 +7,7 @@ import statsmodels.api as sm
 from netCDF4 import Dataset
 import sys as sys
 
-sys.path.insert(0, '..')
+sys.path.insert(0, '..') # CHANGE path to location on module
 from module_coupling import (
     calculate_annual_mean,
     get_coordinate_data,

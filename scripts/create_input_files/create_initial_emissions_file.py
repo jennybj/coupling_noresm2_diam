@@ -9,7 +9,7 @@ from netCDF4 import Dataset
 from scipy.interpolate import interp2d
 from scipy.ndimage import gaussian_filter
 
-sys.path.insert(0, '..')
+sys.path.insert(0, '..') # CHANGE path to location on module
 from module_coupling import *
 
 #----------------------------------------------------------------------------------------

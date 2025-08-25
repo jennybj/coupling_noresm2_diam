@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys as sys
 
-sys.path.insert(0, '..')
+sys.path.insert(0, '..') # CHANGE path to location on module
 from module_coupling import get_chit
 
 #-----------------------------------------------------------------------

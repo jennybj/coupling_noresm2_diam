@@ -11,7 +11,7 @@ import seaborn.apionly as sns
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap, TwoSlopeNorm
 import sys as sys
 
-sys.path.insert(0, '..')
+sys.path.insert(0, '..') # CHANGE path to location on module
 from module_coupling import *
 
 # --------------------------------------------------------------------------------------

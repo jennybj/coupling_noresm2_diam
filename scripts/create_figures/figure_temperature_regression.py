@@ -10,7 +10,7 @@ import statsmodels.api as sm
 from scipy import interpolate
 import sys as sys
 
-sys.path.insert(0, '..')
+sys.path.insert(0, '..') # CHANGE path to location on module
 from module_coupling import get_coordinate_data, sort_in_diam_order, sort_in_diam_order_3D, \
                             regrid_from_noresm_to_diam, calculate_annual_mean
 
