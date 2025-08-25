@@ -133,7 +133,7 @@ with open("user_nl_cam", "a") as f:
   f.write("&co2_cycle_nl\n")
   f.write(" co2_flag               = .true.\n")
   f.write(" co2_readflux_fuel      = .true.\n")
-  f.write(" co2flux_fuel_file      = '/cluster/home/jennybj/input_emissions_" + case + ".nc'\n")
+  f.write(" co2flux_fuel_file      = '/cluster/home/jennybj/input_emissions_" + case + ".nc'\n") # CHANGE path to where the emissions file will be located. Make sure that this is the same path as specified in make_emissions_file in module_coupling.py.
 
 with open("user_nl_clm", "a") as f:
   f.write("\n")
