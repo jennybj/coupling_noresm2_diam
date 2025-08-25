@@ -25,9 +25,8 @@ latitudes, longitudes = get_coordinate_data()
 
 ncells = latitudes.shape[0]
 
-file_path = '/cluster/home/jennybj/coupling/'  # NB!
-dr_path = '/cluster/work/users/jennybj/coupling/'
-
+file_path = '/cluster/home/jennybj/coupling/'  # CHANGE path to location of "emissions.txt" (and output from this script)
+dr_path = '/cluster/work/users/jennybj/coupling/' # CHANGE path to location of decision rules
 
 #--------------------------------------------------------------------------------------
 
@@ -206,15 +205,6 @@ def get_capital_scaled(iyear, wealth_scaled, z):
     data = np.loadtxt(file, skiprows=1, delimiter=',')  # (wealth,shock)
     lats = data[::npoints, 0]
     lons = data[::npoints, 1]
-    #wealth_points = np.array([
-    #    0.9428194326399915, 1.0371013759039907, 1.1313833191679898,
-    #    1.225665262431989, 1.3199472056959882, 1.4142291489599874,
-    #    1.5085110922239866, 1.6027930354879858, 1.697074978751985,
-    #    1.7913569220159842, 1.8856388652799834, 1.9799208085439826,
-    #    2.0742027518079817, 2.1684846950719807, 2.2627666383359797,
-    #    2.3570485815999787, 2.4513305248639776, 2.5456124681279766,
-    #    2.6398944113919756, 2.7341763546559745, 2.8284582979199735
-    #])  #
     wealth_points = data[:, 2].reshape((ncells, npoints))
     decision_rules = data[:, 3:].reshape((ncells, npoints, npoints))
 
@@ -231,13 +221,11 @@ def get_capital_scaled(iyear, wealth_scaled, z):
                 icell] < wealth_points[icell, 0] or z[icell] > z_points[
                     icell, -1] or z[icell] < z_points[icell, 0]:
 
-            #print('Extrapolating for grid cell ', icell)
-            #print(wealth_points[icell, :], z_points[icell, :])
-            #print(np.array([wealth_scaled[icell], z[icell]]))
             nextrap += 1
 
         capital[icell] = f_interp(np.array([wealth_scaled[icell], z[icell]]))
 
+        """
         # Test the interpolation method:
         if icell == 0:
 
@@ -269,6 +257,7 @@ def get_capital_scaled(iyear, wealth_scaled, z):
                                 1 - (z_points[icell, j2] - z[icell]) /
                                 (z_points[icell, j2] - z_points[icell, j1]))
             print(mycap, capital[icell])
+        """
 
     print('Decision rules done in ', datetime.timestamp(datetime.now()) - ts)
     print('Extrapolated ', nextrap, ' grid cells')
