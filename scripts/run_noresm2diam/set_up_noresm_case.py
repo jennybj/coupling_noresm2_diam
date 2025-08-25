@@ -35,7 +35,7 @@ restart_case = 'onlyCO2'
 restart_dir = '/cluster/home/jennybj/restart/onlyCO2/' # CHANGE path to where the restart files are located
 
 # Specify input directory:
-input_dir = '/cluster/home/jennybj/input_noresm_diam/' # CHANGE path to where the input files as well as couple_iterations.sh and couple_with_decision_rules.py are located
+input_dir = '/cluster/home/jennybj/input_noresm_diam/' # CHANGE path to where couple_iterations.sh, couple_with_decision_rules.py, and module_coupling.py are located
 
 # Specify environment changes:
 batch_xml = {'JOB_WALLCLOCK_TIME': '02:00:00'}
@@ -121,9 +121,6 @@ for variable, value in run_xml.items():
         print('Failed to change an xml variable: ' + command_run)
         sys.exit()
 
-# Add module to env_mach_specific.xml:
-copy2(input_dir + 'env_mach_specific.xml', case_dir + case)
-print('Copied: env_mach_specific.xml to ', case_dir + case)
 
 #------------------------------------------------------------------------------------------
 
@@ -177,9 +174,16 @@ if err != 0:
 # COPY AND PREPARE COUPLE/POST SCRIPT
 
 # Copy coupling scripts:
-for file in glob.glob(input_dir + 'couple_iterations.*'):
-    copy2(file, case_dir + case)
-    print('Copied: ', file, ' to ', case_dir + case)
+coupling_scripts = ['couple_iterations.sh', 'couple_with_decision_rules.py', 'module_coupling.py']
+for file in coupling_scripts:
+
+    try:
+        copy2(input_dir + file, case_dir + case)
+        print('Copied: ', file, ' to ', case_dir + case)
+
+    except:
+        print('Failed to copy file: ', file)
+        sys.exit()
 
 # Make script executable:
 err = os.system('chmod +x couple_iterations.sh')
