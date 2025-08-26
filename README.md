@@ -199,7 +199,7 @@ NorESM2 needs to be run on an HPC system.
 
 - Next, make sure that you copy all the needed input data for the coupling:
 
-  - Restart data for the NorESM2 case must be downloaded from [DOI link](https://doi.org/10.11582/2025.tdi6hhfl), from the folder `onlyCO2/rest/1990-01-01-00000/` and placed in a folder as specified in `set_up_noresm_case.py` as `restart_dir` or copied directly into the NorESM2 case's run folder.
+  - Restart data for the NorESM2 case must be downloaded from [DOI](https://doi.org/10.11582/2025.tdi6hhfl), from the folder `onlyCO2/rest/1990-01-01-00000/` and placed in a folder as specified in `set_up_noresm_case.py` as `restart_dir` or copied directly into the NorESM2 case's run folder.
   - The scripts needed for the coupling—`module_coupling.py`, `couple_with_decision_rules.py`, and `couple_iterations.sh`—must be placed in a folder as specified in `set_up_noresm_case.py` as `input_dir` or copied directly into the NorESM2 case's folder.
   - The decision rules, as created by `decrule_calc.jl`, must be placed in a folder as specified in `couple_with_decision_rules.py` as `dr_path`.
   - The emissions calculated from standalone DIAM—`emissions.txt`—must be placed in a folder as specified in `couple_with_decision_rules.py` as `file_path`. This is also where the output from the coupled run will be placed.
@@ -252,6 +252,13 @@ The provided code reproduces:
 
 ## References
 
+Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model for investigating global and regional climate–economy interactions***. [Manuscript submitted for publication]. 
+
+Bjordal, J. (2025). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
+
+Nordhaus, Azam, Corderi, Hood, Makarova Victor, Mohammed,  Miltner, and Weiss (2006.) ***The G-Econ Database on Gridded Output: Methods and Data, Yale Unversity***. 
+
+United Nations, Department of Economic and Social Affairs, Population Division (2024). ***World Population Prospects 2024, Online Edition***.
 
 
 ---
