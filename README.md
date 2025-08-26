@@ -69,7 +69,38 @@ GitHub refer to this repository and Dropbox refer to [this Dropbox folder](LINK 
 
 ### Software Requirements
 
-- [x]The replication package contains two programs to install necessary dependencies.
+- [x] The replication package contains two programs to install the necessary dependencies.
+
+**Julia 1.10.4**
+
+Run `setup/packages.jl` to install all necessary Julia packages.
+
+**Python 3.7.3**
+
+To run the Python scripts in `scripts/create_figures/` and `scripts/create_input_files/`, use the setup from `setup/environment.yml`.  
+The easiest way is to create a new conda environment from the `environment.yml` file.  
+This can be done in the terminal as follows:
+
+```bash
+conda env create -f environment.yml
+conda activate base_env
+```
+
+The first command need only be run once, while the second activates the conda environment `base_env` (as specified by the file) and must be activated before running the scripts.
+
+**Python 3.10.4 on HPC system**
+
+To run the coupling scripts (which must be done on a HPC system), use the setup from `scripts/running_noresm2diam/environment_coupling.yml`. Move it to the system, and run:
+
+```bash
+conda env create -f environment_coupling.yml
+```
+The environment is activated by the script `couple_iterations.sh
+
+
+To set up and run NorESM2, see [NorESM GitHub](https://github.com/NorESMhub/NorESM) and [NorESM documentation](https://noresm-docs.readthedocs.io/en/noresm2/).  
+We have used the version available under the tag `release-noresm2.0.9`.
+
 
 
 
