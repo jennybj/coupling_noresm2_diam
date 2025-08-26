@@ -1,5 +1,5 @@
 ---
-contributors:
+Contributors:
   - Jenny Bjordal
   - Henri Cornec
   - Anthony A. Smith, Jr.
@@ -14,14 +14,13 @@ This repository contains the code necessary to replicate the data presented in B
 
 ## Data Availability and Provenance Statements
 
-
+<!--
 ### Statement about Rights
-
 - [x] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript. 
 - [x] I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permission are documented in the [LICENSE.txt](LICENSE.txt) file.
+-->
 
-
-### (Optional, but recommended) License for Data
+### License for Data
 
 The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt for details.
 
@@ -35,8 +34,8 @@ The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt
 
 | Data name                        | File name                  | Location   | Provided | Citation               |
 |----------------------------------|----------------------------|------------|----------|------------------------|
-| "World Population Prospects 2024"| `undp_pop_growth_2024.xlsx`| `data/raw/`| TRUE     | UNDP (2024)            |
-| "G-ECON v4.0"                    | `Gecon40_post_final.csv`   | `data/raw/`| TRUE     | Nordhaus et al. (2006) |
+| "World Population Prospects 2024"| `undp_pop_growth_2024.xlsx`| `data/raw/`| TRUE     | UN DESA, Population Division, 2024 |
+| "G-ECON v4.0"                    | `Gecon40_post_final.csv`   | `data/raw/`| TRUE     | Nordhaus et al. 2006 |
 
 
 #### "World Population Prospects 2024"
@@ -50,12 +49,19 @@ The paper uses sub-national economic and population data from the G-ECON v.4.0 d
 
 ## Dataset list
 
+| Data file                                                        | Source                         | Location | Notes                                                                 |
+|------------------------------------------------------------------|--------------------------------|----------|----------------------------------------------------------------------|
+| `data/raw/emissions.txt`                                         | Model Output                   | GitHub   | Not required. Reduces iterations for `scripts/decrule_calc.jl`.      |
+| `data/raw/undp_pop_growth_2024.xlsx`                             | UN DESA, Population Division, 2024 | Dropbox  | Historical Estimates and Medium Variant Projections used.             |
+| `data/raw/Gecon40_post_final.csv`                                | Nordhaus et al. 2006           | GitHub   |                                                                      |
+| `onlyCO2/rest/1990-01-01-00000/*`                                | Bjordal, 2025                  | [DOI](https://doi.org/10.11582/2025.tdi6hhfl) | Restart files for running NorESM2 from 1990.                         |
+| `data/input_to_regression/N1850_f19_tn14_20190730esm.TREFHT.nc`  | NorESM2 output                 | Dropbox  | PiControl temperature data.                                          |
+| `data/input_to_regression/onlyCO2.nc`                            | NorESM2 output                 | Dropbox  | HIST and SSP3-7.0 temperature data with only CO2 emissions.          |
+| `data/input_to_regression/full_couple_baseline.nc`               | NorESM2 output                 | Dropbox  | Temperature data from 1990–2100, only CO2 emissions.                 |
+| `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | Dropbox  | Temperature data from 1990–2100, only CO2 emissions.                 |
+| `data/input_emission_data/*`                                     | NorESM2 input                  | Dropbox  | Standard CO2 emissions input files. For details see NorESM dev group |
 
-
-| Data file | Source | Notes    |Provided |
-|-----------|--------|----------|---------|
-
-
+GitHub refer to this repository and Dropbox refer to [this Dropbox folder](LINK HERE).
 
 ## Computational requirements
 
