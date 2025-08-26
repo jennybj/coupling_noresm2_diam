@@ -33,11 +33,20 @@ The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt
 
 ### Details on each Data Source
 
+| Data name                        | File name                  | Location   | Provided | Citation               |
+|----------------------------------|----------------------------|------------|----------|------------------------|
+| "World Population Prospects 2024"| `undp_pop_growth_2024.xlsx`| `data/raw/`| TRUE     | UNDP (2024)            |
+| "G-ECON v4.0"                    | `Gecon40_post_final.csv`   | `data/raw/`| TRUE     | Nordhaus et al. (2006) |
 
-| Data.Name  | Data.Files | Location | Provided | Citation |
-| -- | -- | -- | -- | -- | 
 
+#### "World Population Prospects 2024"
+Data on historical country-level population levels and future population projections were downloaded from the United Nations Department of Economic and Social Affairs [UN DESA], Population Division, 2024. We use the complete .xlsx file format. Data can be downloaded from [here](https://population.un.org/wpp/assets/Excel\%20Files/1_Indicator\%20(Standard)/EXCEL_FILES/1_General/WPP2024_GEN_F01_DEMOGRAPHIC_INDICATORS_FULL.xlsx). The data are licensed under a CC-BY 3.0.
 
+Datafile: `data/raw/undp_pop_growth_2024.xlsx`
+
+#### G-ECON v4.0
+
+The paper uses sub-national economic and population data from the G-ECON v.4.0 database. Available for download [here](https://gecon.yale.edu/data-and-documentation-g-econ-project) under Point 5 in the Data Sets Section.
 
 ## Dataset list
 
