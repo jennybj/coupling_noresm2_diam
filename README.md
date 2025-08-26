@@ -106,40 +106,18 @@ We have used the version available under the tag `release-noresm2.0.9`.
 
 ### Controlled Randomness
 
-> INSTRUCTIONS: Some estimation code uses random numbers, almost always provided by pseudorandom number generators (PRNGs). For reproducibility purposes, these should be provided with a deterministic seed, so that the sequence of numbers provided is the same for the original author and any replicators. While this is not always possible, it is a requirement by many journals' policies. The seed should be set once, and not use a time-stamp. If using parallel processing, special care needs to be taken. If using multiple programs in sequence, care must be taken on how to call these programs, ideally from a main program, so that the sequence is not altered. If no PRNG is used, check the other box.
-
 - [x] Random seed is set at line 192 of program \texttt{scripts/standalone\_noresm2diam.jl}.
 - [x]  No Pseudo random generator is used elsewhere in the analysis described here.
 
 ### Memory, Runtime, Storage Requirements
 
+Portions of this code were last run on a 6-core Apple M2-Pro laptop with MacOS version 15.5 with 50GB of free space.
 
-#### Summary
+Portions of the code were last run on a 3-node cluster (1x cascadelake, 2x icelake) with a SLURM cluster manager.
 
-Approximate time needed to reproduce the analyses on a standard (CURRENT YEAR) desktop machine:
+NorESM2 (including the coupling scripts) was run on an \textbf{Atos BullSequana XH2000, using 10 CPU nodes (each with 128 cores and 256 GiB of memory)}. The machine, named Betzy, is provided by Sigma2 AS, and more details can be found [here](https://documentation.sigma2.no/hpc_machines/betzy.html). With this setup, the coupled model takes approximately one hour per year of simulation.
 
-- [ ] <10 minutes
-- [ ] 10-60 minutes
-- [ ] 1-2 hours
-- [ ] 2-8 hours
-- [ ] 8-24 hours
-- [ ] 1-3 days
-- [ ] 3-14 days
-- [ ] > 14 days
-
-Approximate storage space needed:
-
-- [ ] < 25 MBytes
-- [ ] 25 MB - 250 MB
-- [ ] 250 MB - 2 GB
-- [ ] 2 GB - 25 GB
-- [ ] 25 GB - 250 GB
-- [ ] > 250 GB
-
-- [ ] Not feasible to run on a desktop machine, as described below.
-
-#### Details
-
+The rest of the python scripts (not for coupling) can be run on any laptop. Each script can be run in less than 5 minutes, and in total they produce output requiring storage of approximately 90 MB.
 
 
 ## Description of programs/code
