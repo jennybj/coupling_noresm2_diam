@@ -115,18 +115,49 @@ Portions of this code were last run on a 6-core Apple M2-Pro laptop with MacOS v
 
 Portions of the code were last run on a 3-node cluster (1x cascadelake, 2x icelake) with a SLURM cluster manager.
 
-NorESM2 (including the coupling scripts) was run on an \textbf{Atos BullSequana XH2000, using 10 CPU nodes (each with 128 cores and 256 GiB of memory)}. The machine, named Betzy, is provided by Sigma2 AS, and more details can be found [here](https://documentation.sigma2.no/hpc_machines/betzy.html). With this setup, the coupled model takes approximately one hour per year of simulation.
+NorESM2 (including the coupling scripts) was run on an Atos BullSequana XH2000, using 10 CPU nodes (each with 128 cores and 256 GiB of memory). The machine, named Betzy, is provided by Sigma2 AS, and more details can be found [here](https://documentation.sigma2.no/hpc_machines/betzy.html). With this setup, the coupled model takes approximately one hour per year of simulation.
 
 The rest of the python scripts (not for coupling) can be run on any laptop. Each script can be run in less than 5 minutes, and in total they produce output requiring storage of approximately 90 MB.
 
 
-## Description of programs/code
+## Description of code
+
+### General
+
+- The programs in `scripts/julia_helper/` are auxiliary Julia scripts used in other portions of the code that simplify the workflow in other programs, e.g., by modifying the creation of arrays or creating more readable output files.
+- The program `scripts/module_coupling.py` reads in various data and performs calculations used by the various Python scripts in `scripts/create_figures/` and `scripts/create_input_files/` as well as by the coupling script `scripts/run_noresm2diam/couple_with_decision_rules.py`.
+
+### Generate input files
+
+- The program `scripts/regpop4.jl` will create the regional population numbers and growth rates found in `regpop4.pop` and `regpop4.grate`, as well as `parse2.gin6` which is used in model calibration.
+- The program `scripts/create_input_files/create_initial_emissions_file.py` creates the emissions file used by NorESM2 in the first year, i.e., year 1990.
+- The program `scripts/create_input_files/create_input_files_from_noresm_data.py` creates the input files `NorESM2_picontrol_regional_temperatures.txt`, `NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt`, and `NorESM2_HIST_SSP370_coefficients_and_RMSE.txt`.
+
+### Running stand-alone DIAM
+
+- The program `scripts/decrule_calc.jl` will calculate decision rules used in the coupled run as well as generate the output files for a so-called fixed-point run where all shocks \( z_{it} \) are set to 0.
+- The program `scripts/standalone_noresm2diam.jl` will initiate the standalone model run reported in the paper and generate a few corresponding output files.
+
+### Running NorESM2-DIAM
+
+- The program `scripts/run_noresm2diam/set_up_noresm_case.py` creates a new NorESM2 case (our simulation) to be used in the coupling.
+- The program `scripts/run_noresm2diam/couple_iterations.sh` loads modules and activates the correct conda environment before initializing the coupling script `scripts/run_noresm2diam/couple_with_decision_rules.py`.
+- The program `scripts/run_noresm2diam/couple_with_decision_rules.py` couples the two models. It reads in the last year temperature data from NorESM2, uses the decision rules as calculated by `scripts/decrule_calc.jl`, calculates the emissions of next year, and writes the emissions to an input file for NorESM2 to read.
+- The program `scripts/run_noresm2diam/calculate_fixed_point_values.py` is not needed for the coupling. It simply calculates the same data as the DIAM standalone (the fixed point) and writes this output to files of the same format as the coupling script, to make future calculations/comparisons easier.
+
+### Calculations and figures
+
+- The program `scripts/create_figures/figure_damage_function.py` produces a figure showing the damage function.
+- The program `scripts/create_figures/figure_greening_function.py` produces a figure showing the greening function.
+- The program `scripts/create_figures/figure_compare_cumulative_emissions.py` reads in emissions from the CMIP6 scenarios, the Shared Socioeconomic Pathways (SSPs), as well as the emissions from the DIAM stand-alone model, calculates the cumulative emissions since 1850, and produces a figure showing these cumulative emission paths.
+- The program `scripts/create_figures/figures_model_output.py` reads in the data produced by the coupled model, performs calculations—at grid cell, country, and global level—and produces figures.
 
 
 
-### (Optional, but recommended) License for Code
+### License for Code
 
 The code is licensed under a MIT license. See [LICENSE.md](LICENSE.md) for details.
+
 
 ## Instructions to Replicators
 
