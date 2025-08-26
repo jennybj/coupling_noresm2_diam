@@ -153,7 +153,6 @@ The rest of the python scripts (not for coupling) can be run on any laptop. Each
 - The program `scripts/create_figures/figures_model_output.py` reads in the data produced by the coupled model, performs calculations—at grid cell, country, and global level—and produces figures.
 
 
-
 ### License for Code
 
 The code is licensed under a MIT license. See [LICENSE.md](LICENSE.md) for details.
@@ -161,6 +160,76 @@ The code is licensed under a MIT license. See [LICENSE.md](LICENSE.md) for detai
 
 ## Instructions to Replicators
 
+When running the coupled NorESM2-DIAM we have to set up a NorESM2 case (detailed below), which is the simulation we run with NorESM2. This simulation needs a name, hereafter know as the `CASENAME, which will need to be specified several places. In the code, this should be indicated by `# CHANGE.
+
+### Setup
+- Before running any program in the replication package, make sure to edit the file paths provided in all the scripts. For the python scripts, the file paths are followed by the comment `# CHANGE so that you can search through the code before running it.
+- Run the two programs in  `setup/` once on a new system to set up the
+  working environment. Details provided above under [Software Requirements](#software-requirements).
+- Download the data files referenced above and double-check that files are in the correct directories as specified by your file paths. 
+- Before running any of the python script, make sure that the conda environment is activated: 
+  ```bash
+  conda activate base_env
+  ```
+
+### Generate input files
+
+- Run `scripts/regpop4.jl` to create necessary input files for population data.
+- Run `scripts/create_input_files/create_initial_emissions_file.py` to create the necessary emissions input file for NorESM2. Make sure to change `case_name` to the wanted `CASENAME`, so that the name of the file is `input_emissions_CASENAME.py`.
+```bash
+python create_initial_emissions.py
+```
+Run `scripts/create_input_files/create_input_files_from_noresm_data.py to create input files need by both DIAM standalone and the coupled NorESM2-DIAM.
+```bash
+python create_input_files_from_noresm_data.py
+```
+
+### Running stand-alone DIAM
+
+- Run `scripts/decrule_calc.jl` to write decision rule files and fixed-point output.
+- Run `scripts/standalone_noresm2diam.jl` to simulate the stand-alone model and create appropriate output files.
+
+### Running NorESM2-DIAM
+
+NorESM2 needs to be run on an HPC system.
+
+- First, you need to download and set up the NorESM2 model code. This is described here: [NorESM2 Access Guide](https://noresm-docs.readthedocs.io/en/noresm2/access/access.html). For challenges with downloading and running NorESM2 in general, we refer to the *NorESM developers group*. For general NorESM2 input data (not specific to the coupling), we also refer to this group and their [User's guide](https://noresm-docs.readthedocs.io/en/noresm2/index.html).  
+  Note that setting up NorESM2 could potentially be challenging and might require help from the people that run the HPC system you use.  
+  It is a good idea to check if you manage to run a standard NorESM2 simulation (a few days or months) before trying the coupled version. The coupled version isn’t necessarily harder to run, but starting with a standard simulation can make it easier to troubleshoot any issues that come up later.
+
+- Next, make sure that you copy all the needed input data for the coupling:
+
+  - Restart data for the NorESM2 case must be downloaded from [DOI link](https://doi.org/10.11582/2025.tdi6hhfl), from the folder `onlyCO2/rest/1990-01-01-00000/` and placed in a folder as specified in `set_up_noresm_case.py` as `restart_dir` or copied directly into the NorESM2 case's run folder.
+  - The scripts needed for the coupling—`module_coupling.py`, `couple_with_decision_rules.py`, and `couple_iterations.sh`—must be placed in a folder as specified in `set_up_noresm_case.py` as `input_dir` or copied directly into the NorESM2 case's folder.
+  - The decision rules, as created by `decrule_calc.jl`, must be placed in a folder as specified in `couple_with_decision_rules.py` as `dr_path`.
+  - The emissions calculated from standalone DIAM—`emissions.txt`—must be placed in a folder as specified in `couple_with_decision_rules.py` as `file_path`. This is also where the output from the coupled run will be placed.
+  - The initial emission files for NorESM2—`input_emissions_CASENAME.py`—must be placed in a folder as specified in `user_nl_cam` as `co2flux_fuel_file`. This is set both in `module_coupling.py` and `set_up_noresm_case.py`, so make sure these are the same.
+  - The input files `NorESM2_picontrol_regional_temperatures.txt`, `NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt`, `NorESM2_HIST_SSP370_coefficients_and_RMSE.txt`, and `parse2.gin6` must be placed in a folder as specified in `module_coupling.py` as `file_path`. These can be in the same folder as above, but it’s not required.
+
+- Set up a NorESM2 case by running `set_up_noresm_case.py`:
+
+```bash
+python set_up_noresm_case.py CASENAME
+```
+This script is by no means fool proof, and might not work on your specific HPC system. (At least not without significant changes.) If not, follow the steps in the script and do them manually in the terminal. You can also see the [User's guide](https://noresm-docs.readthedocs.io/en/noresm2/index.html) for details on how to set up a case if you find the script confusing. 
+- Make sure that all the scripts and input files are in the correct folders!
+- Start the coupled run:
+```bash
+cd /path/to/case_dir/CASENAME
+./case.submit
+```
+The run is started from the case folder, which is the `case\_dir` you specified in `set_up_noresm_case.py` followed by the `CASENAME. 
+
+### Calculations and figures
+
+- Run the programs in `scripts/create_figures/` to create figures 1, 2, 4, 5, 6, 7, and 10 in the paper. (These also calculate the data presented in the figures.)
+
+```bash
+python figure***.py
+```
+
+### Details for selected scripts
+- `scripts/decrule\_calc.jl`: Calculates decision rules and writes them to a .csv format. Note that the main function `iterate()` is called twice in the script. Once using the converged emissions path and once using the SSP 3-7.0 Emissions Pathway. Both will converge to the same fixed point, but the latter requires significantly more iterations.
 
 
 ### Details
