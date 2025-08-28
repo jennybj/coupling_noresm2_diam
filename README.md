@@ -222,7 +222,7 @@ The run is started from the case folder, which is the `case\_dir` you specified 
 
 ### Calculations and figures
 
-- Run the programs in `scripts/create_figures/` to create figures 2, 3, 4, 6, 7, 8, and 11 in the paper. (These also calculate the data presented in the figures.)
+- Run the programs in `scripts/create_figures/` to create figures 2, 3, 4, 5, 7, 8, and 11 in the paper. (These also calculate the data presented in the figures.)
 
 ```bash
 python figure***.py
@@ -251,9 +251,9 @@ The provided code reproduces:
 | Fig. 1 | population map|  |  | |
 | Fig. 2 | `scripts/create_figures/figure_damage_function.py`| 40-52 | `figures/figure_damage_function.pdf` | |
 | Fig. 3 | `scripts/create_figures/figure_greening_function.py`| 29-39 | `figures/figure_greening_function.pdf` | |
-| Fig. 4 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_damage_function.pdf` | |
-| Fig. 5 | Regional warming at 1 degree | | | |
-| Fig. 6 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | |
+| Fig. 4 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | |
+| Fig. 5 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_damage_function.pdf` | |
+| Fig. 6 | Regional warming at 1 degree | | | |
 | Fig. 7 | `scripts/create_figures/figures_model_output.py`| 398-425 | `figures/difference_emissions.pdf` | |
 | Fig. 8 | `scripts/create_figures/figures_model_output.py`| 434-500 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | |
 | Fig. 9 | temperature maps | | | |
