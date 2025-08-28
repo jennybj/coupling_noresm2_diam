@@ -28,7 +28,7 @@ cm = 1/2.54  # centimeters in inches
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(6*cm, 4.5*cm))
 
-ax.plot(years, greening, color='g', linewidth=1)
+ax.plot(years[:130], greening[:130], color='g', linewidth=1)
 ax.set_ylabel('Fraction of green energy', fontsize=6)
 ax.set_xlabel(r'Year', fontsize=6)
 ax.xaxis.set_tick_params(labelsize=5)

@@ -11,7 +11,7 @@ from datetime import datetime
 
 #-----------------------------------------------------------------------------------------------
 
-file_path = '../data/input/' # CHANGE to input data folder
+file_path = '../../data/input/' # CHANGE to input data folder
 
 # READ IN ECONOMIC DATA:
 
@@ -97,6 +97,7 @@ def get_chit():
     chi = (1 + np.exp(np.log(0.01 / 0.99) * (years - n_05) /
                       (n_01 - n_05)))**(-1)
     chit = chi / chi[0]
+    chit[110:] = 0
 
     return chit
 
