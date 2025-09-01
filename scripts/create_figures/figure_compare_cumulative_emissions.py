@@ -11,14 +11,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from netCDF4 import Dataset
 
-sys.path.insert(0, '..') # CHANGE path to location on module
+sys.path.insert(0, "..")  # CHANGE path to location on module
 from module_coupling import calculate_annual_mean
 
 # -------------------------------------------------------------------------------------------
 
 # SPECIFY
 
-path = "../../data/input_emission_data/" # CHANGE to local path
+path = "../../data/input_emission_data/"  # CHANGE to local path
 
 # The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_emission_data
 hist_co2_file = (
@@ -321,7 +321,7 @@ years_diam2 = np.arange(1990, 1990 + dyears2)
 years_gcb = np.arange(1850, 1850 + cyears)
 nyears_hist = cumulative_co2_noresm_hist.shape[0]
 
-fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(14, 10))
+fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(10, 7))
 
 ax1.plot(
     years_noresm[130:nyears_hist],
