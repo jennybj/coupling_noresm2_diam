@@ -3,15 +3,15 @@
 # import sys as sys
 import glob as glob
 import os as os
+import sys as sys
 from collections import defaultdict
 
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn.apionly as sns
 from matplotlib.colors import LinearSegmentedColormap, ListedColormap, TwoSlopeNorm
-import sys as sys
 
-sys.path.insert(0, '..') # CHANGE path to location on module
+sys.path.insert(0, "..")  # CHANGE path to location on module
 from module_coupling import *
 
 # --------------------------------------------------------------------------------------
@@ -229,6 +229,13 @@ for iyear in range(nyears):
 sum_gdp_detrended = np.sum(gdp_detrended, axis=1)
 sum_fp_gdp_detrended = np.sum(fp_gdp_detrended, axis=1)
 
+global_gdp_change = (
+    100 * (sum_gdp_detrended - sum_fp_gdp_detrended[0]) / sum_fp_gdp_detrended[0]
+)
+global_fp_gdp_change = (
+    100 * (sum_fp_gdp_detrended - sum_fp_gdp_detrended[0]) / sum_fp_gdp_detrended[0]
+)
+
 global_gdpper_change = (
     100
     * (sum_gdpper_detrended - sum_fp_gdpper_detrended[0])
@@ -370,24 +377,38 @@ start_temp_countries = np.average(expected_temp_countries[:10, :], axis=0)
 
 # DECOMPOSITION INTO POPULATION AND CLIMATE CHANGE
 
-gdpcap_full, gdpcap_npop, gdpcap_ncc = np.loadtxt("../../data/processed/gdp_file.txt", skiprows=11, usecols=(5,6,7), unpack=True)
+gdpcap_full, gdpcap_npop, gdpcap_ncc = np.loadtxt(
+    "../../data/processed/gdp_file.txt", skiprows=11, usecols=(5, 6, 7), unpack=True
+)
 
-pct_change_full = (gdpcap_full/gdpcap_full[0] -1) * 100
-pct_change_npop = (gdpcap_npop/gdpcap_npop[0] -1) * 100
-pct_change_ncc = (gdpcap_ncc/gdpcap_ncc[0] -1) * 100
+pct_change_full = (gdpcap_full / gdpcap_full[0] - 1) * 100
+pct_change_npop = (gdpcap_npop / gdpcap_npop[0] - 1) * 100
+pct_change_ncc = (gdpcap_ncc / gdpcap_ncc[0] - 1) * 100
 print("DECOMPOSE:")
 print(pct_change_full)
 print(global_fp_gdpper_change)
 print(gdpcap_full[0], gdpcap_npop[0], gdpcap_ncc[0], sum_fp_gdpper_detrended[0])
 
-pct_change_full = ((gdpcap_full - 1e-6*sum_fp_gdpper_detrended[0])/(1e-6*sum_fp_gdpper_detrended[0])) * 100
-pct_change_npop = ((gdpcap_npop - 1e-6*sum_fp_gdpper_detrended[0])/(1e-6*sum_fp_gdpper_detrended[0])) * 100
-pct_change_ncc = ((gdpcap_ncc - 1e-6*sum_fp_gdpper_detrended[0])/(1e-6*sum_fp_gdpper_detrended[0])) * 100
+pct_change_full = (
+    (gdpcap_full - 1e-6 * sum_fp_gdpper_detrended[0])
+    / (1e-6 * sum_fp_gdpper_detrended[0])
+) * 100
+pct_change_npop = (
+    (gdpcap_npop - 1e-6 * sum_fp_gdpper_detrended[0])
+    / (1e-6 * sum_fp_gdpper_detrended[0])
+) * 100
+pct_change_ncc = (
+    (gdpcap_ncc - 1e-6 * sum_fp_gdpper_detrended[0])
+    / (1e-6 * sum_fp_gdpper_detrended[0])
+) * 100
 print(pct_change_full)
 
 print("Decomp change at end:")
 print(pct_change_ncc[109], pct_change_npop[109], global_fp_gdpper_change[109])
-print(pct_change_ncc[109]/global_fp_gdpper_change[109], pct_change_npop[109]/global_fp_gdpper_change[109])
+print(
+    pct_change_ncc[109] / global_fp_gdpper_change[109],
+    pct_change_npop[109] / global_fp_gdpper_change[109],
+)
 
 # --------------------------------------------------------------------------------------
 
@@ -431,7 +452,7 @@ print("Sum of emission difference: ", np.sum(diff_emissions))
 
 # PLOT AVERAGE TEMPERATURE AGAINST TIME
 
-fig2, ax2 = plt.subplots(nrows=2, ncols=1, figsize=(10, 13))
+fig2, ax2 = plt.subplots(nrows=3, ncols=1, figsize=(10, 17))
 
 # Plot temperature:
 ax2[0].plot(years[:-1], pop_temp, label="NorESM2-DIAM", linewidth=3, color="darkblue")
@@ -439,7 +460,7 @@ ax2[0].scatter(years[:-1], pop_temp, color="darkblue", s=75)
 ax2[0].plot(
     years[:-1],
     expected_pop_temp,
-    label="DIAM stand-alone",
+    label="Standalone model",
     linewidth=3,
     color="cornflowerblue",
 )
@@ -447,53 +468,75 @@ ax2[0].set_title("Global temperature change", fontsize=20)
 
 ax2[1].plot(
     years[:-2],
+    global_gdp_change[:-1],
+    linewidth=3,
+    color="darkblue",
+)
+ax2[1].scatter(years[:-2], global_gdp_change[:-1], color="darkblue", s=75)
+ax2[1].plot(
+    years[:-2],
+    global_fp_gdp_change[:-1],
+    linewidth=3,
+    color="cornflowerblue",
+)
+ax2[1].set_title("Global GDP change", fontsize=20)
+
+
+ax2[2].plot(
+    years[:-2],
     global_gdpper_change[:-1],
     linewidth=3,
     color="darkblue",
 )
-ax2[1].scatter(years[:-2], global_gdpper_change[:-1], color="darkblue", s=75)
-ax2[1].plot(
+ax2[2].scatter(years[:-2], global_gdpper_change[:-1], color="darkblue", s=75)
+ax2[2].plot(
     years[:-2],
     global_fp_gdpper_change[:-1],
     label="All",
     linewidth=3,
     color="cornflowerblue",
 )
-ax2[1].plot(
+ax2[2].plot(
     years[:-2],
-    pct_change_ncc[:nyears-1],
+    pct_change_ncc[: nyears - 1],
     label="Population only",
     linewidth=3,
     color="forestgreen",
 )
-ax2[1].plot(
+ax2[2].plot(
     years[:-2],
-    pct_change_npop[:nyears-1],
+    pct_change_npop[: nyears - 1],
     label="Climate change only",
     linewidth=3,
     color="lightcoral",
 )
-ax2[1].plot(
+ax2[2].plot(
     years[:-2],
-    global_fp_gdpper_change[:-1] - pct_change_ncc[:nyears-1] - pct_change_npop[:nyears-1],
+    global_fp_gdpper_change[:-1]
+    - pct_change_ncc[: nyears - 1]
+    - pct_change_npop[: nyears - 1],
     label="Interaction effect",
     linewidth=3,
     color="darkgoldenrod",
 )
-ax2[1].set_title("Global GDP per capita change", fontsize=20)
+ax2[2].set_title("Global GDP per capita change", fontsize=20)
 
-ax2[1].set_xlabel("Year", fontsize=20)
+ax2[2].set_xlabel("Year", fontsize=20)
 ax2[0].set_ylabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=20)
-ax2[1].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=20)
+ax2[1].set_ylabel(r"$\Delta$GDP (%)", fontsize=20)
+ax2[2].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=20)
 for ax in ax2:
     ax.xaxis.set_tick_params(labelsize=16)
     ax.yaxis.set_tick_params(labelsize=16)
 
 ax2[0].legend(fontsize=20)
-ax2[1].legend(fontsize=20)
+ax2[2].legend(fontsize=20)
 
+# fig2.text(0.01, 0.98, "(a)", fontsize=18, wrap=True)
+# fig2.text(0.01, 0.49, "(b)", fontsize=18, wrap=True)
 fig2.text(0.01, 0.98, "(a)", fontsize=18, wrap=True)
-fig2.text(0.01, 0.49, "(b)", fontsize=18, wrap=True)
+fig2.text(0.01, 0.66, "(b)", fontsize=18, wrap=True)
+fig2.text(0.01, 0.33, "(c)", fontsize=18, wrap=True)
 
 fig2.subplots_adjust(left=0.1, right=0.98, top=0.96, bottom=0.05, hspace=0.18)
 
@@ -505,7 +548,7 @@ fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(14, 10))
 ax3.plot(
     years[:-1],
     expected_area_temp,
-    label="DIAM stand-alone",
+    label="Standalone model",
     linewidth=3,
     color="cornflowerblue",
 )
@@ -880,7 +923,7 @@ ax4[1, 1].set_xlabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=14
 ax4[0, 0].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=14)
 ax4[1, 0].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=14)
 
-ax4[0, 0].set_title("DIAM stand-alone", fontsize=14)
+ax4[0, 0].set_title("Standalone model", fontsize=14)
 ax4[0, 1].set_title("NorESM2-DIAM", fontsize=14)
 
 fig4.text(0.01, 0.98, "(a)", fontsize=12, wrap=True)
