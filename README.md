@@ -106,7 +106,7 @@ We have used the version available under the tag `release-noresm2.0.9`.
 
 ### Controlled Randomness
 
-- [x] Random seed is set at line 192 of program \texttt{scripts/standalone\_noresm2diam.jl}.
+- [x] Random seed is set at line 192 of program 'scripts/standalone\_noresm2diam.jl'.
 - [x]  No Pseudo random generator is used elsewhere in the analysis described here.
 
 ### Memory, Runtime, Storage Requirements
@@ -128,8 +128,8 @@ The rest of the python scripts (not for coupling) can be run on any laptop. Each
 - The program `scripts/module_coupling.py` reads in various data and performs calculations used by the various Python scripts in `scripts/create_figures/` and `scripts/create_input_files/` as well as by the coupling script `scripts/run_noresm2diam/couple_with_decision_rules.py`.
 
 ### Generate input files
-
-- The program `scripts/regpop4.jl` will create the regional population numbers and growth rates found in `regpop4.pop` and `regpop4.grate`, as well as `parse2.gin6` which is used in model calibration.
+- The program `scripts/regpop3.jl` will create `parse2.gin6` which is used in model calibration.
+- The program `scripts/regpop4.jl` will create the regional population numbers and growth rates found in `regpop4.pop` and `regpop4.grate`. Must be run after regpop3.jl
 - The program `scripts/create_input_files/create_initial_emissions_file.py` creates the emissions file used by NorESM2 in the first year, i.e., year 1990.
 - The program `scripts/create_input_files/create_input_files_from_noresm_data.py` creates the input files `NorESM2_picontrol_regional_temperatures.txt`, `NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt`, and `NorESM2_HIST_SSP370_coefficients_and_RMSE.txt`.
 
@@ -222,7 +222,7 @@ The run is started from the case folder, which is the `case\_dir` you specified 
 
 ### Calculations and figures
 
-- Run the programs in `scripts/create_figures/` to create figures 1, 2, 4, 5, 6, 7, and 10 in the paper. (These also calculate the data presented in the figures.)
+- Run the programs in `scripts/create_figures/` to create figures 2, 3, 4, 5, 7, 8, and 11 in the paper. (These also calculate the data presented in the figures.)
 
 ```bash
 python figure***.py
@@ -248,16 +248,17 @@ The provided code reproduces:
 
 | Figure/Table #    | Program                  | Line Numbers | Output file                      | Note                            |
 |-------------------|--------------------------|-------------|----------------------------------|---------------------------------|
-| Fig. 1 | `scripts/create_figures/figure_damage_function.py`| 40-52 | `figures/figure_damage_function.pdf` | |
-| Fig. 2 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_damage_function.pdf` | |
-| Fig. 3 | population map|  |  | |
-| Fig. 4 | `scripts/create_figures/figure_greening_function.py`| 29-39 | `figures/figure_greening_function.pdf` | |
-| Fig. 5 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | |
-| Fig. 6 | `scripts/create_figures/figures_model_output.py`| 398-425 | `figures/difference_emissions.pdf` | |
-| Fig. 7 | `scripts/create_figures/figures_model_output.py`| 434-500 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | |
-| Fig. 8 | temperature maps | | | |
-| Fig. 9 | GDP per capita maps | | | |
-| Fig. 10 | `scripts/create_figures/figures_model_output.py`| 661-895 | `figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf` | |
+| Fig. 1 | population map|  |  | |
+| Fig. 2 | `scripts/create_figures/figure_damage_function.py`| 40-52 | `figures/figure_damage_function.pdf` | |
+| Fig. 3 | `scripts/create_figures/figure_greening_function.py`| 29-39 | `figures/figure_greening_function.pdf` | |
+| Fig. 4 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | |
+| Fig. 5 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_damage_function.pdf` | |
+| Fig. 6 | Regional warming at 1 degree | | | |
+| Fig. 7 | `scripts/create_figures/figures_model_output.py`| 398-425 | `figures/difference_emissions.pdf` | |
+| Fig. 8 | `scripts/create_figures/figures_model_output.py`| 434-500 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | |
+| Fig. 9 | temperature maps | | | |
+| Fig. 10 | GDP per capita maps | | | |
+| Fig. 11 | `scripts/create_figures/figures_model_output.py`| 661-895 | `figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf` | |
 
 
 ## References
