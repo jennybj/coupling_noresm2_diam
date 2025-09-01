@@ -361,7 +361,7 @@ ax1.plot(
 ax1.plot(
     years_diam2[:110],
     cumulative_co2_diam2[:110],
-    label="DIAM stand-alone",
+    label="Standalone model",
     color="#f4d570",
     linewidth=3,
 )
