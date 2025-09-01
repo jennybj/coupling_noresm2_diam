@@ -16,7 +16,7 @@ This repository contains the code necessary to replicate the data presented in B
 
 <!--
 ### Statement about Rights
-- [x] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript. 
+- [x] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript.
 - [x] I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permission are documented in the [LICENSE.txt](LICENSE.txt) file.
 -->
 
@@ -77,8 +77,8 @@ Run `setup/packages.jl` to install all necessary Julia packages.
 
 **Python 3.7.3**
 
-To run the Python scripts in `scripts/create_figures/` and `scripts/create_input_files/`, use the setup from `setup/environment.yml`.  
-The easiest way is to create a new conda environment from the `environment.yml` file.  
+To run the Python scripts in `scripts/create_figures/` and `scripts/create_input_files/`, use the setup from `setup/environment.yml`.
+The easiest way is to create a new conda environment from the `environment.yml` file.
 This can be done in the terminal as follows:
 
 ```bash
@@ -98,7 +98,7 @@ conda env create -f environment_coupling.yml
 The environment is activated by the script `couple_iterations.sh
 
 
-To set up and run NorESM2, see [NorESM GitHub](https://github.com/NorESMhub/NorESM) and [NorESM documentation](https://noresm-docs.readthedocs.io/en/noresm2/).  
+To set up and run NorESM2, see [NorESM GitHub](https://github.com/NorESMhub/NorESM) and [NorESM documentation](https://noresm-docs.readthedocs.io/en/noresm2/).
 We have used the version available under the tag `release-noresm2.0.9`.
 
 
@@ -166,8 +166,8 @@ When running the coupled NorESM2-DIAM we have to set up a NorESM2 case (detailed
 - Before running any program in the replication package, make sure to edit the file paths provided in all the scripts. For the python scripts, the file paths are followed by the comment `# CHANGE so that you can search through the code before running it.
 - Run the two programs in  `setup/` once on a new system to set up the
   working environment. Details provided above under [Software Requirements](#software-requirements).
-- Download the data files referenced above and double-check that files are in the correct directories as specified by your file paths. 
-- Before running any of the python script, make sure that the conda environment is activated: 
+- Download the data files referenced above and double-check that files are in the correct directories as specified by your file paths.
+- Before running any of the python script, make sure that the conda environment is activated:
   ```bash
   conda activate base_env
   ```
@@ -193,8 +193,8 @@ python create_input_files_from_noresm_data.py
 
 NorESM2 needs to be run on an HPC system.
 
-- First, you need to download and set up the NorESM2 model code. This is described here: [NorESM2 Access Guide](https://noresm-docs.readthedocs.io/en/noresm2/access/access.html). For challenges with downloading and running NorESM2 in general, we refer to the *NorESM developers group*. For general NorESM2 input data (not specific to the coupling), we also refer to this group and their [User's guide](https://noresm-docs.readthedocs.io/en/noresm2/index.html).  
-  Note that setting up NorESM2 could potentially be challenging and might require help from the people that run the HPC system you use.  
+- First, you need to download and set up the NorESM2 model code. This is described here: [NorESM2 Access Guide](https://noresm-docs.readthedocs.io/en/noresm2/access/access.html). For challenges with downloading and running NorESM2 in general, we refer to the *NorESM developers group*. For general NorESM2 input data (not specific to the coupling), we also refer to this group and their [User's guide](https://noresm-docs.readthedocs.io/en/noresm2/index.html).
+  Note that setting up NorESM2 could potentially be challenging and might require help from the people that run the HPC system you use.
   It is a good idea to check if you manage to run a standard NorESM2 simulation (a few days or months) before trying the coupled version. The coupled version isn’t necessarily harder to run, but starting with a standard simulation can make it easier to troubleshoot any issues that come up later.
 
 - Next, make sure that you copy all the needed input data for the coupling:
@@ -211,14 +211,14 @@ NorESM2 needs to be run on an HPC system.
 ```bash
 python set_up_noresm_case.py CASENAME
 ```
-This script is by no means fool proof, and might not work on your specific HPC system. (At least not without significant changes.) If not, follow the steps in the script and do them manually in the terminal. You can also see the [User's guide](https://noresm-docs.readthedocs.io/en/noresm2/index.html) for details on how to set up a case if you find the script confusing. 
+This script is by no means fool proof, and might not work on your specific HPC system. (At least not without significant changes.) If not, follow the steps in the script and do them manually in the terminal. You can also see the [User's guide](https://noresm-docs.readthedocs.io/en/noresm2/index.html) for details on how to set up a case if you find the script confusing.
 - Make sure that all the scripts and input files are in the correct folders!
 - Start the coupled run:
 ```bash
 cd /path/to/case_dir/CASENAME
 ./case.submit
 ```
-The run is started from the case folder, which is the `case\_dir` you specified in `set_up_noresm_case.py` followed by the `CASENAME. 
+The run is started from the case folder, which is the `case\_dir` you specified in `set_up_noresm_case.py` followed by the `CASENAME.
 
 ### Calculations and figures
 
@@ -251,9 +251,9 @@ The provided code reproduces:
 | Fig. 1 | population map|  |  | |
 | Fig. 2 | `scripts/create_figures/figure_damage_function.py`| 40-52 | `figures/figure_damage_function.pdf` | |
 | Fig. 3 | `scripts/create_figures/figure_greening_function.py`| 29-39 | `figures/figure_greening_function.pdf` | |
-| Fig. 4 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | |
-| Fig. 5 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_damage_function.pdf` | |
-| Fig. 6 | Regional warming at 1 degree | | | |
+| Fig. 4 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_temperature_regression.pdf` | |
+| Fig. 5 | Regional warming at 1 degree | | | |
+| Fig. 6 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | |
 | Fig. 7 | `scripts/create_figures/figures_model_output.py`| 398-425 | `figures/difference_emissions.pdf` | |
 | Fig. 8 | `scripts/create_figures/figures_model_output.py`| 434-500 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | |
 | Fig. 9 | temperature maps | | | |
@@ -263,11 +263,11 @@ The provided code reproduces:
 
 ## References
 
-Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model for investigating global and regional climate–economy interactions***. [Manuscript submitted for publication]. 
+Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model for investigating global and regional climate–economy interactions***. [Manuscript submitted for publication].
 
 Bjordal, J. (2025). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
 
-Nordhaus, Azam, Corderi, Hood, Makarova Victor, Mohammed,  Miltner, and Weiss (2006.) ***The G-Econ Database on Gridded Output: Methods and Data, Yale Unversity***. 
+Nordhaus, Azam, Corderi, Hood, Makarova Victor, Mohammed,  Miltner, and Weiss (2006.) ***The G-Econ Database on Gridded Output: Methods and Data, Yale Unversity***.
 
 United Nations, Department of Economic and Social Affairs, Population Division (2024). ***World Population Prospects 2024, Online Edition***.
 
