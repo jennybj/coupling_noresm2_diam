@@ -69,11 +69,15 @@ GitHub refer to this repository and Dropbox refer to [this Dropbox folder](LINK 
 
 ### Software Requirements
 
-- [x] The replication package contains two programs to install the necessary dependencies.
+- [x] The replication package contains two programs to install the necessary dependencies for Julia and Python. R scripts are installed within the scripts.
 
 **Julia 1.10.4**
 
 Run `setup/packages.jl` to install all necessary Julia packages.
+
+**R 4.3.1**
+
+The two R scripts automatically install 'tidyr' and 'readxl'.
 
 **Python 3.7.3**
 
