@@ -129,11 +129,18 @@ The rest of the python scripts (not for coupling) can be run on any laptop. Each
 ### General
 
 - The programs in `scripts/julia_helper/` are auxiliary Julia scripts used in other portions of the code that simplify the workflow in other programs, e.g., by modifying the creation of arrays or creating more readable output files.
+- The programs in `scripts/population/` generate a series of output files used to calculate subnational population levels and growth rates.
 - The program `scripts/module_coupling.py` reads in various data and performs calculations used by the various Python scripts in `scripts/create_figures/` and `scripts/create_input_files/` as well as by the coupling script `scripts/run_noresm2diam/couple_with_decision_rules.py`.
 
 ### Generate input files
+#### Generate Population Files
+- The program `scripts/create_nordhaus_v40.jl` will create `nordhaus_v40_population.csv` used in `undp_rename.R`  and `make_nordhauspop.R`.
+- The program `scripts/undp_rename.R` will create `undp_wide.csv` used in `regpop3.jl` and `regpop4.jl`.
+- The programs `scripts/create_parse2_gin5.jl` and `scripts/make_nordhauspop.R` will create `parse2.gin5` and `nord40_gpw_population.csv` respectively. Both are used in in `regpop3.jl` and `regpop4.jl`.
 - The program `scripts/regpop3.jl` will create `parse2.gin6` which is used in model calibration.
-- The program `scripts/regpop4.jl` will create the regional population numbers and growth rates found in `regpop4.pop` and `regpop4.grate`. Must be run after regpop3.jl
+- The program `scripts/regpop4.jl` will create the regional population numbers and growth rates found in `regpop4.pop` and `regpop4.grate`. Must be run after `regpop3.jl`
+
+#### Generate Emissions Files and Coefficients
 - The program `scripts/create_input_files/create_initial_emissions_file.py` creates the emissions file used by NorESM2 in the first year, i.e., year 1990.
 - The program `scripts/create_input_files/create_input_files_from_noresm_data.py` creates the input files `NorESM2_picontrol_regional_temperatures.txt`, `NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt`, and `NorESM2_HIST_SSP370_coefficients_and_RMSE.txt`.
 
