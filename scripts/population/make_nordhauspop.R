@@ -1,4 +1,6 @@
 rm(list = ls())
+install.packages("tidyverse")
+install.packages("readxl")
 library(tidyverse)
 library(readxl)
 setwd("/Users/henricornec/Dropbox/noresm/population_growth/shares_method")
