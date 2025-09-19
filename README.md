@@ -171,7 +171,7 @@ The code is licensed under a MIT license. See [LICENSE.md](LICENSE.md) for detai
 
 ## Instructions to Replicators
 
-When running the coupled NorESM2-DIAM we have to set up a NorESM2 case (detailed below), which is the simulation we run with NorESM2. This simulation needs a name, hereafter know as the `CASENAME, which will need to be specified several places. In the code, this should be indicated by `# CHANGE.
+When running the coupled NorESM2-DIAM we have to set up a NorESM2 case (detailed below), which is the simulation we run with NorESM2. This simulation needs a name, hereafter know as the `CASENAME`, which will need to be specified several places. In the code, this should be indicated by `# CHANGE`.
 
 ### Setup
 - Before running any program in the replication package, make sure to edit the file paths provided in all the scripts. For the python scripts, the file paths are followed by the comment `# CHANGE so that you can search through the code before running it.
@@ -229,7 +229,7 @@ This script is by no means fool proof, and might not work on your specific HPC s
 cd /path/to/case_dir/CASENAME
 ./case.submit
 ```
-The run is started from the case folder, which is the `case\_dir` you specified in `set_up_noresm_case.py` followed by the `CASENAME.
+The run is started from the case folder, which is the `case\_dir` you specified in `set_up_noresm_case.py` followed by the `CASENAME`.
 
 ### Calculations and figures
 
