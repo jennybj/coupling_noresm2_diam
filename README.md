@@ -157,11 +157,11 @@ The rest of the python scripts (not for coupling) can be run on any laptop. Each
 - The program `scripts/run_noresm2diam/calculate_fixed_point_values.py` is not needed for the coupling. It simply calculates the same data as the DIAM standalone (the fixed point) and writes this output to files of the same format as the coupling script, to make future calculations/comparisons easier.
 
 ### Calculations and figures
-
 - The program `scripts/create_figures/figure_damage_function.py` produces a figure showing the damage function.
 - The program `scripts/create_figures/figure_greening_function.py` produces a figure showing the greening function.
 - The program `scripts/create_figures/figure_compare_cumulative_emissions.py` reads in emissions from the CMIP6 scenarios, the Shared Socioeconomic Pathways (SSPs), as well as the emissions from the DIAM stand-alone model, calculates the cumulative emissions since 1850, and produces a figure showing these cumulative emission paths.
 - The program `scripts/create_figures/figures_model_output.py` reads in the data produced by the coupled model, performs calculations—at grid cell, country, and global level—and produces figures.
+- The program `scripts/create_figures/make_figures.jl` reads in output produced by the coupled model and the standalone model and creates the map figures in the paper.
 
 
 ### License for Code
@@ -185,7 +185,7 @@ When running the coupled NorESM2-DIAM we have to set up a NorESM2 case (detailed
 
 ### Generate input files
 
-- Run `scripts/regpop4.jl` to create necessary input files for population data.
+- Refer to the "Generate Population Input Files" Section and run the programs in the order described there. 
 - Run `scripts/create_input_files/create_initial_emissions_file.py` to create the necessary emissions input file for NorESM2. Make sure to change `case_name` to the wanted `CASENAME`, so that the name of the file is `input_emissions_CASENAME.py`.
 ```bash
 python create_initial_emissions.py
