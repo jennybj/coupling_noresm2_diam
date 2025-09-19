@@ -259,20 +259,20 @@ The provided code reproduces:
 
 | Figure/Table #    | Program                  | Line Numbers | Output file                      | Note                            |
 |-------------------|--------------------------|-------------|----------------------------------|---------------------------------|
-| Fig. 1 | loggdp map| `scripts/create_figures/make_figures.jl`| 53-63 | |
-| Fig. 2 | population map| `scripts/create_figures/make_figures.jl`  | 69-85 | |
+| Fig. 1 | `scripts/create_figures/make_figures.jl`| 53-63 | `figures/loggdp_1990.pdf` | |
+| Fig. 2 |`scripts/create_figures/make_figures.jl`  | 69-85 | `figures/pop2100_roma.pdf` | |
 | Fig. 3 | `scripts/create_figures/figure_damage_function.py`| 40-52 | `figures/figure_damage_function.pdf` | |
-| Fig. 4 | productivity map| `scripts/create_figures/make_figures.jl`  | 91-122 | |
+| Fig. 4 |`scripts/create_figures/make_figures.jl`  | 91-122 |`figures/productivity_1990.pdf`| |
 | Fig. 5 | `scripts/create_figures/figure_greening_function.py`| 29-39 | `figures/figure_greening_function.pdf` | |
 | Fig. 6 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_temperature_regression.pdf` | |
-| Fig. 7 | Regional warming at 1 degree | `scripts/create_figures/make_figures.jl` | 91-122 | |
+| Fig. 7 |`scripts/create_figures/make_figures.jl` | 91-122 |`figures/reg_warming.pdf` | |
 | Fig. 8 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | |
 | Fig. 9 | `scripts/create_figures/figures_model_output.py`| 398-425 | `figures/difference_emissions.pdf` | |
 | Fig. 10 | `scripts/create_figures/figures_model_output.py`| 434-500 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | |
-| Fig. 11 | temperature maps | `scripts/create_figures/make_figures.jl` | 163-370 | |
-| Fig. 12 | GDP per capita maps | `scripts/create_figures/make_figures.jl` |380-477| |
+| Fig. 11 | `scripts/create_figures/make_figures.jl` | 163-370 | `figures/temp.pdf`||
+| Fig. 12 | `scripts/create_figures/make_figures.jl` |380-477| `figures/gdp.pdf`| |
 | Fig. 13 | `scripts/create_figures/figures_model_output.py`| 661-895 | `figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf` | |
-| Fig. 14 | S.D. of GDP | `scripts/create_figures/make_figures.jl` |485-529| |
+| Fig. 14 | `scripts/create_figures/make_figures.jl` |485-529|`figures/sd_loggdp.pdf` | |
 
 ## References
 
