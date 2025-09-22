@@ -757,6 +757,7 @@ pscat4 = ax4[1, 1].scatter(
     s=np.sqrt(population_countries[0, :] * 1e3 / 1e3),
 )
 
+
 # Add country names:
 for c, country in enumerate(all_countries):
     if country in text_countires:
@@ -835,7 +836,7 @@ add_global_value(
 add_global_value(
     ax=ax4[1, 0],
     x=np.average(expected_pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
-    y=global_gdpper_change,
+    y=global_fp_gdpper_change,
     color=100
     * (
         np.average(global_population[10 * (ndecades - 1) : 10 * ndecades])
@@ -863,6 +864,7 @@ add_global_value(
     text=True,
 )
 
+
 # Generate legend to indicate GDP size:
 add_bubble_label(
     fig=fig4,
@@ -887,6 +889,7 @@ add_bubble_label(
     title="Initial\npopulation",
 )
 
+
 # Generate color bar to indicate 2000 temperature:
 cbar_ax = fig4.add_axes([0.91, 0.52, 0.02, 0.25])
 cbar = fig4.colorbar(pscat1, ticks=color_bins[1:-1], cax=cbar_ax)
@@ -909,6 +912,7 @@ cbar.set_label(
 )
 cbar.ax.tick_params(labelsize=10)
 
+
 for ax in ax4.flatten():
     ax.xaxis.set_tick_params(labelsize=12)
     ax.yaxis.set_tick_params(labelsize=12)
@@ -922,6 +926,7 @@ ax4[1, 0].set_xlabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=14
 ax4[1, 1].set_xlabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=14)
 ax4[0, 0].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=14)
 ax4[1, 0].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=14)
+
 
 ax4[0, 0].set_title("Standalone model", fontsize=14)
 ax4[0, 1].set_title("NorESM2-DIAM", fontsize=14)
@@ -938,7 +943,208 @@ fig4.subplots_adjust(
 fig4.savefig("../../figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf")
 fig4.savefig("../../figures/country_gdpper_percent_all_noresm2-diam_2090_2099.png")
 
+
 plt.close()
 
 
 # --------------------------------------------------------------------------------------
+
+fig5, ax5 = plt.subplots(nrows=3, ncols=1, figsize=(7.5, 15))
+
+pscat1 = ax5[0].scatter(
+    dtemp_countries_decade,
+    dgdpper_countries,
+    cmap=population_cmap,
+    norm=divnorm,
+    edgecolors=edgecolors,
+    linewidth=0.2,
+    alpha=0.8,
+    label=None,
+    c=dpopulation_country_decade,
+    s=np.sqrt(population_countries[0, :] * 1e3 / 1e3),
+)
+
+pscat2 = ax5[1].scatter(
+    dtemp_countries_decade,
+    dgdpper_countries,
+    cmap=gdp_cmap,
+    vmin=vmin,
+    vmax=vmax,
+    edgecolors=edgecolors,
+    linewidth=0.2,
+    alpha=0.8,
+    label=None,
+    c=start_temp_countries,
+    s=np.sqrt(expected_gdpper_start),
+)
+
+pscat3 = ax5[2].scatter(
+    dtemp_countries_decade - expected_dtemp_countries_decade,
+    dgdpper_countries - expected_dgdpper_countries,
+    cmap=gdp_cmap,
+    vmin=vmin,
+    vmax=vmax,
+    edgecolors=edgecolors,
+    linewidth=0.2,
+    alpha=0.8,
+    label=None,
+    c=start_temp_countries,
+    s=np.sqrt(expected_gdpper_start),
+)
+
+# Add country names:
+for c, country in enumerate(all_countries):
+    if country in text_countires:
+        ax5[0].text(
+            dtemp_countries_decade[c],
+            dgdpper_countries[c],
+            country,
+            fontsize=10,
+            zorder=2,
+        )
+        ax5[1].text(
+            dtemp_countries_decade[c],
+            dgdpper_countries[c],
+            country,
+            fontsize=10,
+            zorder=2,
+        )
+        ax5[2].text(
+            dtemp_countries_decade[c] - expected_dtemp_countries_decade[c],
+            dgdpper_countries[c] - expected_dgdpper_countries[c],
+            country,
+            fontsize=10,
+            zorder=2,
+        )
+
+
+# Add global value:
+add_global_value(
+    ax=ax5[0],
+    x=np.average(pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
+    y=global_gdpper_change,
+    color=100
+    * (
+        np.average(global_population[10 * (ndecades - 1) : 10 * ndecades])
+        - np.average(global_population[:10])
+    )
+    / np.average(global_population[:10]),
+    size=50,
+    cmap=population_cmap,
+    norm=divnorm,
+    text=True,
+)
+add_global_value(
+    ax=ax5[1],
+    x=np.average(pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
+    y=global_gdpper_change,
+    color=expected_pop_temp_start,
+    size=np.sqrt(np.average(sum_fp_gdpper_detrended[:10])),
+    cmap=gdp_cmap,
+    vmin=vmin,
+    vmax=vmax,
+    text=True,
+)
+
+add_global_value(
+    ax=ax5[2],
+    x=np.average(pop_temp[10 * (ndecades - 1) : 10 * ndecades])
+    - np.average(expected_pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
+    y=global_gdpper_change - global_fp_gdpper_change,
+    color=expected_pop_temp_start,
+    size=np.sqrt(np.average(sum_fp_gdpper_detrended[:10])),
+    cmap=gdp_cmap,
+    vmin=vmin,
+    vmax=vmax,
+    text=True,
+)
+
+
+# Generate legend to indicate population size:
+add_bubble_label(
+    fig=fig5,
+    position=[0.83, 0.577, 0.02, 0.4],
+    labels=["10$^5$", "10$^{6}$", "10$^{7}$", "10$^{8}$", "10$^{9}$"],
+    label_values=[
+        np.sqrt(1e5 / 1e3),
+        np.sqrt(1e6 / 1e3),
+        np.sqrt(1e7 / 1e3),
+        np.sqrt(1e8 / 1e3),
+        np.sqrt(1e9 / 1e3),
+    ],
+    title="Initial\npopulation",
+)
+
+# Generate legend to indicate GDP size:
+add_bubble_label(
+    fig=fig5,
+    position=[0.83, 0.243, 0.02, 0.4],
+    labels=["100$", "1000$", "10 000$", "100 000$"],
+    label_values=[np.sqrt(1e2), np.sqrt(1e3), np.sqrt(1e4), np.sqrt(1e5)],
+    title="Initial\nGDP/capita",
+)
+
+# Generate color bar to indicate population change:
+cbar_ax = fig5.add_axes([0.86, 0.699, 0.02, 0.14])
+cbar = fig5.colorbar(pscat1, cax=cbar_ax)
+cbar.set_label(
+    "Population change (%)",
+    fontsize=12,
+    rotation=270,
+    labelpad=18,
+)
+cbar.ax.tick_params(labelsize=10)
+
+# Generate color bar to indicate 2000 temperature:
+cbar_ax = fig5.add_axes([0.86, 0.369, 0.02, 0.14])
+cbar = fig5.colorbar(pscat2, ticks=color_bins[1:-1], cax=cbar_ax)
+cbar.set_label(
+    "Initial temperature (\N{DEGREE SIGN}C)",
+    fontsize=12,
+    rotation=270,
+    labelpad=18,
+)
+cbar.ax.tick_params(labelsize=10)
+
+for ax in ax5:
+    ax.xaxis.set_tick_params(labelsize=12)
+    ax.yaxis.set_tick_params(labelsize=12)
+
+    # Add the 0-line:
+    ax.axhline(0, color="grey", alpha=0.6, linestyle="--", linewidth=1)
+
+
+ax5[0].set_xlim(1, 7)
+ax5[1].set_xlim(1, 7)
+ax5[0].set_ylim(-60, 50)
+ax5[1].set_ylim(-60, 50)
+ax5[2].set_xlim(-0.6, 0.8)
+ax5[2].set_ylim(-3, 5)
+
+ax5[0].set_xlabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=14)
+ax5[1].set_xlabel(r"$\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=14)
+ax5[2].set_xlabel(
+    r"Difference in $\Delta$temperature " + "(\N{DEGREE SIGN}C)", fontsize=14
+)
+ax5[0].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=14)
+ax5[1].set_ylabel(r"$\Delta$GDP/capita (%)", fontsize=14)
+ax5[2].set_ylabel(r"Difference in $\Delta$GDP/capita (%)", fontsize=14)
+
+ax5[0].set_title("NorESM2-DIAM", fontsize=14)
+ax5[1].set_title("NorESM2-DIAM", fontsize=14)
+ax5[2].set_title("NorESM2-DIAM - Standalone model", fontsize=14)
+
+fig5.text(0.01, 0.98, "(a)", fontsize=12, wrap=True)
+fig5.text(0.01, 0.65, "(b)", fontsize=12, wrap=True)
+fig5.text(0.01, 0.33, "(c)", fontsize=12, wrap=True)
+
+fig5.subplots_adjust(left=0.11, right=0.83, top=0.97, bottom=0.04, hspace=0.22)
+
+fig5.savefig(
+    "../../figures/country_difference_gdpper_percent_all_noresm2-diam_2090_2099.pdf"
+)
+fig5.savefig(
+    "../../figures/country_difference_gdpper_percent_all_noresm2-diam_2090_2099.png"
+)
+
+plt.close()
