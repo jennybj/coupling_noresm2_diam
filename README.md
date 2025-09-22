@@ -237,6 +237,7 @@ The run is started from the case folder, which is the `case\_dir` you specified 
 
 ```bash
 python figure***.py
+julia make_figures.jl
 ```
 
 ### Details for selected scripts
