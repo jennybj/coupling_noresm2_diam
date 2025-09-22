@@ -12,7 +12,7 @@ from scipy.ndimage import gaussian_filter
 
 # -----------------------------------------------------------------------------------------------
 
-file_path = "../../data/input/"  # CHANGE to input data folder
+file_path = "/home/jennybj/Documents/coupling_noresm2_diam/data/input/"  # CHANGE to input data folder
 
 # READ IN ECONOMIC DATA:
 
@@ -123,7 +123,9 @@ def get_initial_population():
 
 
 def get_population():
-    population = np.loadtxt("../../data/processed/regpop4.pop")[:, 3:].T  # CHANGE path
+    population = np.loadtxt(
+        "/home/jennybj/Documents/coupling_noresm2_diam/data/processed/regpop4.pop"
+    )[:, 3:].T  # CHANGE path
     return population
 
 
