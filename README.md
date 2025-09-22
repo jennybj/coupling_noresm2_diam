@@ -61,7 +61,7 @@ The paper uses sub-national economic and population data from the G-ECON v.4.0 d
 | `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | Dropbox  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_emission_data/*`                                     | NorESM2 input                  | Dropbox  | Standard CO2 emissions input files. For details see NorESM dev group |
 
-GitHub refer to this repository and Dropbox refer to [this Dropbox folder](LINK HERE).
+GitHub refer to this repository and Dropbox refer to [this Dropbox folder](https://www.dropbox.com/scl/fo/mm9utacdrk42fmzv6juh4/AIUr4sSBMterks3Tjsd3YEU?rlkey=plm6rqom86dqasan7cf13ge0r&st=hcc7c3e3&dl=0).
 
 ## Computational requirements
 
@@ -233,7 +233,7 @@ The run is started from the case folder, which is the `case\_dir` you specified 
 
 ### Calculations and figures
 
-- Run the programs in `scripts/create_figures/` to create figures 2, 3, 4, 5, 7, 8, and 11 in the paper. (These also calculate the data presented in the figures.)
+- Run the programs in `scripts/create_figures/` to create figures 3, 5, 6, 8, 9, 10, and 13 in the paper. (These also calculate the data presented in the figures.)
 
 ```bash
 python figure***.py
@@ -252,10 +252,6 @@ python figure***.py
 
 The provided code reproduces:
 
-- [ ] All numbers provided in text in the paper
-- [ ] All tables and figures in the paper
-- [ ] Selected tables and figures in the paper, as explained and justified below.
-
 
 | Figure/Table #    | Program                  | Line Numbers | Output file                      | Note                            |
 |-------------------|--------------------------|-------------|----------------------------------|---------------------------------|
@@ -267,11 +263,11 @@ The provided code reproduces:
 | Fig. 6 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_temperature_regression.pdf` | |
 | Fig. 7 |`scripts/create_figures/make_figures.jl` | 91-122 |`figures/reg_warming.pdf` | |
 | Fig. 8 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | |
-| Fig. 9 | `scripts/create_figures/figures_model_output.py`| 398-425 | `figures/difference_emissions.pdf` | |
-| Fig. 10 | `scripts/create_figures/figures_model_output.py`| 434-500 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | |
+| Fig. 9 | `scripts/create_figures/figures_model_output.py`| 419-446 | `figures/difference_emissions.pdf` | |
+| Fig. 10 | `scripts/create_figures/figures_model_output.py`| 455-543 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | |
 | Fig. 11 | `scripts/create_figures/make_figures.jl` | 163-370 | `figures/temp.pdf`||
 | Fig. 12 | `scripts/create_figures/make_figures.jl` |380-477| `figures/gdp.pdf`| |
-| Fig. 13 | `scripts/create_figures/figures_model_output.py`| 661-895 | `figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf` | |
+| Fig. 13 | `scripts/create_figures/figures_model_output.py`| 952-1145 | `figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf` | |
 | Fig. 14 | `scripts/create_figures/make_figures.jl` |485-529|`figures/sd_loggdp.pdf` | |
 
 ## References
