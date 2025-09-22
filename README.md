@@ -69,7 +69,7 @@ GitHub refer to this repository and Dropbox refer to [this Dropbox folder](https
 
 ### Software Requirements
 
-- [x] The replication package contains two programs to install the necessary dependencies for Julia and Python. R scripts are installed within the scripts.
+The replication package contains two programs to install the necessary dependencies for Julia and Python. R scripts are installed within the scripts.
 
 **Julia 1.10.4**
 
