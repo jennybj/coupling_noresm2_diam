@@ -159,8 +159,7 @@ def descale(in_variable, iyear):
     dum, ai = get_ai(iyear)
     expected_temperature = get_expected_temperature(iyear)
 
-    out_variable = in_variable * (population[:, iyear - 1990] * ai *
-                                  damages(expected_temperature))
+    out_variable = in_variable * (population[:, iyear - 1990] * ai)
 
     return out_variable
 
