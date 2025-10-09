@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-- family-names: "Jenny"
-  given-names: "Bjordal"
+- family-names: "Bjordal"
+  given-names: "Jenny"
   orcid: "https://orcid.org/0000-0002-3789-8059"
 - family-names: "Cornec"
   given-names: "Henri"
