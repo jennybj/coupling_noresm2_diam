@@ -6,6 +6,9 @@ Contributors:
   - Trude Storelvmo
 ---
 
+[![DOI](https://zenodo.org/badge/948414289.svg)](https://doi.org/10.5281/zenodo.17176879)
+
+
 # README and Guidance
 
 ## Overview
