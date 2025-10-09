@@ -264,6 +264,15 @@ cumulative_co2_gcb = np.array(
 cumulative_co2_gcb = cumulative_co2_gcb - cumulative_co2_gcb[0]
 cumulative_co2_gcb = cumulative_co2_gcb / 3.664e9
 cyears = cumulative_co2_gcb.shape[0]
+years_gcb = np.arange(1850, 1850 + cyears)
+
+print(cumulative_co2_gcb)
+
+with open("cumulative_emissions_from_ourworldindata.txt", "w") as f:
+    for iyear in range(cyears):
+        f.write("%16i" % years_gcb[iyear])
+        f.write("%16.8f" % cumulative_co2_gcb[iyear])
+        f.write("\n")
 
 # -------------------------------------------------------------------------------------------
 
@@ -318,7 +327,6 @@ print(diff_emiss)
 years_noresm = np.arange(1850, 1850 + nyears)
 years_diam = np.arange(1990, 1990 + dyears)
 years_diam2 = np.arange(1990, 1990 + dyears2)
-years_gcb = np.arange(1850, 1850 + cyears)
 nyears_hist = cumulative_co2_noresm_hist.shape[0]
 
 fig1, ax1 = plt.subplots(nrows=1, ncols=1, figsize=(10, 7))
