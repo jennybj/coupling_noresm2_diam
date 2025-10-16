@@ -170,6 +170,17 @@ def get_coefficients():
     return gamma1, gamma2, rho
 
 
+def get_srm_coefficients():
+    a_coeff, b_coeff, const = np.loadtxt(
+        file_path + "SRM_coefficients.txt",
+        comments="#",
+        usecols=(2, 3, 4),
+        unpack=True,
+    )
+
+    return a_coeff, b_coeff, const
+
+
 def get_country_names():
     return country_names
 
