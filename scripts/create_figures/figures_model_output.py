@@ -205,7 +205,6 @@ fp_gdp = descale(fp_wealth_scaled, fp_ai) - (1 - delta) * descale(
 )
 fp_sum_gdp = np.sum(fp_gdp, axis=1)
 
-
 # Detrend the GDP:
 gdp_detrended = np.zeros((nyears, ncells))
 fp_gdp_detrended = np.zeros((nyears, ncells))
@@ -372,6 +371,7 @@ for c, country in enumerate(chosen_countries):
         )
 
 start_temp_countries = np.average(expected_temp_countries[:10, :], axis=0)
+
 
 # --------------------------------------------------------------------------------------
 
@@ -678,7 +678,7 @@ text_countires = [
     "Sudan",
     "Canada",
     "New Zealand",
-    "Spain",
+    "Greece",
     "Somalia",
     "Brazil",
     "India",
@@ -695,7 +695,7 @@ zorders = []
 for c, country in enumerate(all_countries):
     if country in text_countires:
         edgecolors.append("black")
-        zorders.append(2)
+        zorders.append(5)
     else:
         edgecolors.append("none")
         zorders.append(1)
@@ -789,6 +789,7 @@ for c, country in enumerate(all_countries):
             fontsize=10,
             zorder=2,
         )
+
 # ax4[0, 0].plot(expected_model(polyline), polyline)
 # ax4[0, 1].plot(model(polyline), polyline)
 
@@ -956,7 +957,7 @@ pscat1 = ax5[0].scatter(
     dgdpper_countries,
     cmap=population_cmap,
     norm=divnorm,
-    edgecolors=edgecolors,
+    edgecolor=edgecolors,
     linewidth=0.2,
     alpha=0.8,
     label=None,
@@ -968,9 +969,9 @@ pscat2 = ax5[1].scatter(
     dtemp_countries_decade,
     dgdpper_countries,
     cmap=gdp_cmap,
+    edgecolor=edgecolors,
     vmin=vmin,
     vmax=vmax,
-    edgecolors=edgecolors,
     linewidth=0.2,
     alpha=0.8,
     label=None,
@@ -984,7 +985,6 @@ pscat3 = ax5[2].scatter(
     cmap=gdp_cmap,
     vmin=vmin,
     vmax=vmax,
-    edgecolors=edgecolors,
     linewidth=0.2,
     alpha=0.8,
     label=None,
@@ -992,28 +992,60 @@ pscat3 = ax5[2].scatter(
     s=np.sqrt(expected_gdpper_start),
 )
 
+text_x = dtemp_countries_decade - expected_dtemp_countries_decade
+text_y = dgdpper_countries - expected_dgdpper_countries
+
 # Add country names:
 for c, country in enumerate(all_countries):
     if country in text_countires:
+        if country == "United States":
+            text_x[c] -= 0.25
+        elif country == "China":
+            text_y[c] += 0.1
+        elif country == "Saudi Arabia":
+            text_y[c] -= 0.3
+        elif country == "New Zealand":
+            text_y[c] -= 0.1
+        elif country == "Somalia":
+            text_y[c] -= 0.1
+        print(
+            country,
+            dtemp_countries_decade[c] - expected_dtemp_countries_decade[c],
+            dgdpper_countries[c] - expected_dgdpper_countries[c],
+        )
         ax5[0].text(
             dtemp_countries_decade[c],
             dgdpper_countries[c],
             country,
             fontsize=10,
-            zorder=2,
+            zorder=3,
         )
         ax5[1].text(
             dtemp_countries_decade[c],
             dgdpper_countries[c],
             country,
             fontsize=10,
-            zorder=2,
+            zorder=3,
         )
         ax5[2].text(
-            dtemp_countries_decade[c] - expected_dtemp_countries_decade[c],
-            dgdpper_countries[c] - expected_dgdpper_countries[c],
+            text_x[c],
+            text_y[c],
             country,
             fontsize=10,
+            zorder=3,
+        )
+        ax5[2].scatter(
+            dtemp_countries_decade[c] - expected_dtemp_countries_decade[c],
+            dgdpper_countries[c] - expected_dgdpper_countries[c],
+            cmap=gdp_cmap,
+            vmin=vmin,
+            vmax=vmax,
+            edgecolors="k",
+            linewidth=0.2,
+            alpha=0.8,
+            label=None,
+            c=start_temp_countries[c],
+            s=np.sqrt(expected_gdpper_start[c]),
             zorder=2,
         )
 
@@ -1045,7 +1077,7 @@ add_global_value(
     vmax=vmax,
     text=True,
 )
-
+"""
 add_global_value(
     ax=ax5[2],
     x=np.average(pop_temp[10 * (ndecades - 1) : 10 * ndecades])
@@ -1057,7 +1089,24 @@ add_global_value(
     vmin=vmin,
     vmax=vmax,
     text=True,
+)"""
+
+ax5[2].scatter(
+    np.average(pop_temp[10 * (ndecades - 1) : 10 * ndecades])
+    - np.average(expected_pop_temp[10 * (ndecades - 1) : 10 * ndecades]),
+    global_gdpper_change - global_fp_gdpper_change,
+    cmap=gdp_cmap,
+    vmin=vmin,
+    vmax=vmax,
+    c=expected_pop_temp_start,
+    linewidth=1,
+    edgecolor="black",
+    s=np.sqrt(np.average(sum_fp_gdpper_detrended[:10])),
+    alpha=0.8,
+    zorder=6,
 )
+
+ax5[2].text(-0.25, 0, "GLOBAL", fontsize=12, zorder=7)
 
 
 # Generate legend to indicate population size:
