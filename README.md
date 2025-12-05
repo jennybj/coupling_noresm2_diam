@@ -72,10 +72,10 @@ The four SSP CO2 emissions files are avaiable from the NorESM2 input database. A
 | `data/raw/undp_pop_growth_2024.xlsx`                             | UN DESA, Population Division, 2024 | Dropbox  | Historical Estimates and Medium Variant Projections used.             |
 | `data/raw/Gecon40_post_final.csv`                                | Nordhaus et al. 2006           | GitHub   |                                                                      |
 | `onlyCO2/rest/1990-01-01-00000/*`                                | Bjordal, 2025                  | [DOI](https://doi.org/10.11582/2025.tdi6hhfl) | Restart files for running NorESM2 from 1990.                         |
-| `data/input_to_regression/N1850_f19_tn14_20190730esm.TREFHT.nc`  | NorESM2 output                 | Dropbox  | PiControl temperature data.                                          |
-| `data/input_to_regression/onlyCO2.nc`                            | NorESM2 output                 | Dropbox  | HIST and SSP3-7.0 temperature data with only CO2 emissions.          |
-| `data/input_to_regression/full_couple_baseline.nc`               | NorESM2 output                 | Dropbox  | Temperature data from 1990–2100, only CO2 emissions.                 |
-| `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | Dropbox  | Temperature data from 1990–2100, only CO2 emissions.                 |
+| `data/input_to_regression/N1850_f19_tn14_20190730esm.TREFHT.nc`  | NorESM2 output                 | GitHub  | PiControl temperature data.                                          |
+| `data/input_to_regression/onlyCO2.nc`                            | NorESM2 output                 | GitHub  | HIST and SSP3-7.0 temperature data with only CO2 emissions.          |
+| `data/input_to_regression/full_couple_baseline.nc`               | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
+| `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_emission_data/*`                                     | NorESM2 input                  | NorESM2/CESM input data directory*  | Standard CO2 emissions input files. For details see The NorESM developers group (2020) |
 
 GitHub refer to this repository and Dropbox refer to [this Dropbox folder](https://www.dropbox.com/scl/fo/mm9utacdrk42fmzv6juh4/AIUr4sSBMterks3Tjsd3YEU?rlkey=plm6rqom86dqasan7cf13ge0r&st=hcc7c3e3&dl=0).
