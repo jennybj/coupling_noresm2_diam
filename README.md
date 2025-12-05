@@ -39,6 +39,11 @@ The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt
 |----------------------------------|----------------------------|------------|----------|------------------------|
 | "World Population Prospects 2024"| `undp_pop_growth_2024.xlsx`| `data/raw/`| TRUE     | UN DESA, Population Division, 2024 |
 | "G-ECON v4.0"                    | `Gecon40_post_final.csv`   | `data/raw/`| TRUE     | Nordhaus et al. 2006 |
+| Historical CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc` | `data/input_emission_data/`| Available for download from original source | U.S. National Science Foundation, 2023 |
+| SSP1-2.6 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-IMAGE-ssp126_201401-210112_fv_1.9x2.5_c20221115.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
+| SSP2-4.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-MESSAGE-GLOBIOM-ssp245_201401-210112_fv_1.9x2.5_c20230419.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
+| SSP3-7.0 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
+| SSP5-8.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
 
 
 #### "World Population Prospects 2024"
@@ -49,6 +54,15 @@ Datafile: `data/raw/undp_pop_growth_2024.xlsx`
 #### G-ECON v4.0
 
 The paper uses sub-national economic and population data from the G-ECON v.4.0 database. Available for download [here](https://gecon.yale.edu/data-and-documentation-g-econ-project) under Point 5 in the Data Sets Section.
+
+#### Historical CO2 emissions
+
+The historical CO2 emissions file is available from the CESM input databsae. Accesssing and downloading CESM input data is described in the CESM Quickstart Guide (U.S. National Science Foundation, 2023). A direct download can be found [here](https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata/atm/cam/ggas/).) 
+
+#### SSP CO2 emissions
+
+The four SSP CO2 emissions files are avaiable from the NorESM2 input database. Accessing and downloading NorESM2 input data is described in the NorESM2 User’s Guide (The NorESM developers group, 2020). A direct download can be found [here](https://ns16001b.web.sigma2.no/datalake/inputdata/atm/cam/ggas/).
+
 
 ## Dataset list
 
@@ -62,9 +76,11 @@ The paper uses sub-national economic and population data from the G-ECON v.4.0 d
 | `data/input_to_regression/onlyCO2.nc`                            | NorESM2 output                 | Dropbox  | HIST and SSP3-7.0 temperature data with only CO2 emissions.          |
 | `data/input_to_regression/full_couple_baseline.nc`               | NorESM2 output                 | Dropbox  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | Dropbox  | Temperature data from 1990–2100, only CO2 emissions.                 |
-| `data/input_emission_data/*`                                     | NorESM2 input                  | Dropbox  | Standard CO2 emissions input files. For details see NorESM dev group |
+| `data/input_emission_data/*`                                     | NorESM2 input                  | NorESM2/CESM input data directory*  | Standard CO2 emissions input files. For details see The NorESM developers group (2020) |
 
 GitHub refer to this repository and Dropbox refer to [this Dropbox folder](https://www.dropbox.com/scl/fo/mm9utacdrk42fmzv6juh4/AIUr4sSBMterks3Tjsd3YEU?rlkey=plm6rqom86dqasan7cf13ge0r&st=hcc7c3e3&dl=0).
+
+*As described above.
 
 ## Computational requirements
 
@@ -280,9 +296,13 @@ Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model
 
 Bjordal, J. (2025). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
 
-Nordhaus, Azam, Corderi, Hood, Makarova Victor, Mohammed,  Miltner, and Weiss (2006.) ***The G-Econ Database on Gridded Output: Methods and Data, Yale Unversity***.
+Nordhaus, Azam, Corderi, Hood, Makarova Victor, Mohammed,  Miltner, and Weiss (2006). ***The G-Econ Database on Gridded Output: Methods and Data, Yale Unversity***.
+
+The NorESM developers group (2020). ***Welcome to the NorESM2 User’s Guide! — NorESM documentation***, https://noresm-docs.readthedocs.io/en/latest/.
 
 United Nations, Department of Economic and Social Affairs, Population Division (2024). ***World Population Prospects 2024, Online Edition***.
+
+ U.S. National Science Foundation (2023). ***CESM Quickstart Guide (CESM2.1)***, https://escomp.github.io/CESM/release-cesm2/index.html.
 
 
 ---
