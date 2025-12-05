@@ -37,7 +37,7 @@ The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt
 
 | Data name                        | File name                  | Location   | Provided | Citation               |
 |----------------------------------|----------------------------|------------|----------|------------------------|
-| "World Population Prospects 2024"| `undp_pop_growth_2024.xlsx`| `data/raw/`| TRUE     | UN DESA, Population Division, 2024 |
+| "World Population Prospects 2024"| `undp_pop_growth_2024.xlsx`| `data/raw/`| Available for download from original source | UN DESA, Population Division, 2024 |
 | "G-ECON v4.0"                    | `Gecon40_post_final.csv`   | `data/raw/`| TRUE     | Nordhaus et al. 2006 |
 | Historical CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc` | `data/input_emission_data/`| Available for download from original source | U.S. National Science Foundation, 2023 |
 | SSP1-2.6 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-IMAGE-ssp126_201401-210112_fv_1.9x2.5_c20221115.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
@@ -49,7 +49,7 @@ The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt
 #### "World Population Prospects 2024"
 Data on historical country-level population levels and future population projections were downloaded from the United Nations Department of Economic and Social Affairs [UN DESA], Population Division, 2024. We use the complete .xlsx file format. Data can be downloaded from [here](https://population.un.org/wpp/assets/Excel\%20Files/1_Indicator\%20(Standard)/EXCEL_FILES/1_General/WPP2024_GEN_F01_DEMOGRAPHIC_INDICATORS_FULL.xlsx). The data are licensed under a CC-BY 3.0.
 
-Datafile: `data/raw/undp_pop_growth_2024.xlsx`
+Note that we have renamed the datafile: `data/raw/undp_pop_growth_2024.xlsx`
 
 #### G-ECON v4.0
 
@@ -69,7 +69,7 @@ The four SSP CO2 emissions files are avaiable from the NorESM2 input database. A
 | Data file                                                        | Source                         | Location | Notes                                                                 |
 |------------------------------------------------------------------|--------------------------------|----------|----------------------------------------------------------------------|
 | `data/raw/emissions.txt`                                         | Model Output                   | GitHub   | Not required. Reduces iterations for `scripts/decrule_calc.jl`.      |
-| `data/raw/undp_pop_growth_2024.xlsx`                             | UN DESA, Population Division, 2024 | Dropbox  | Historical Estimates and Medium Variant Projections used.             |
+| `data/raw/undp_pop_growth_2024.xlsx`                             | UN DESA, Population Division, 2024 | United Nations Population Division* | Historical Estimates and Medium Variant Projections used.             |
 | `data/raw/Gecon40_post_final.csv`                                | Nordhaus et al. 2006           | GitHub   |                                                                      |
 | `onlyCO2/rest/1990-01-01-00000/*`                                | Bjordal, 2025                  | [DOI](https://doi.org/10.11582/2025.tdi6hhfl) | Restart files for running NorESM2 from 1990.                         |
 | `data/input_to_regression/N1850_f19_tn14_20190730esm.TREFHT.nc`  | NorESM2 output                 | GitHub  | PiControl temperature data.                                          |
