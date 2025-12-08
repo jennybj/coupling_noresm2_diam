@@ -2,12 +2,13 @@
 
 # IMPORT MODULES
 
+import sys as sys
+
 import numpy as np
 import statsmodels.api as sm
 from netCDF4 import Dataset
-import sys as sys
 
-sys.path.insert(0, '..') # CHANGE path to location on module
+sys.path.insert(0, "..")  # CHANGE path to location on module
 from module_coupling import (
     calculate_annual_mean,
     get_coordinate_data,
@@ -21,7 +22,7 @@ from module_coupling import (
 # SPECIFY
 
 # # The files can be found at https://www.dropbox.com/home/noresm/Replication/data/input_to_regression/
-path = '../../data/input_to_regression/' # CHANGE path to local
+path = "../../data/input_to_regression/"  # CHANGE path to local
 
 pi_file = path + "N1850_f19_tn14_20190730esm.TREFHT.nc"
 histssp_file = path + "onlyCO2.nc"
@@ -193,7 +194,7 @@ file.close()
 file = open("../../data/input/NorESM2_picontrol_regional_temperatures.txt", "w")
 
 for icell in range(ncells):
-    file.writelines(["%8i" % int(icell+1)])
+    file.writelines(["%8i" % int(icell + 1)])
     file.writelines(["%8i" % int(list_lats[icell])])
     file.writelines(["%8i" % int(list_longs[icell])])
     file.writelines(["%16.7f" % temperature_pi[icell]])
@@ -204,7 +205,10 @@ file.close()
 
 # WRITE CUMULATIVE EMISSIONS TO FILE
 
-file = open("../../data/input/NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt", "w")
+file = open(
+    "../../data/input/NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt",
+    "w",
+)
 
 cum = np.zeros(nyears + 1)
 cum[1:] = cumulative_co2[:-1]
@@ -329,7 +333,7 @@ file.writelines("# Column 6: rho\n")
 
 
 for icell in range(ncells):
-    file.writelines(["%8i" % int(icell+1)])
+    file.writelines(["%8i" % int(icell + 1)])
     file.writelines(["%8i" % int(list_lats[icell])])
     file.writelines(["%8i" % int(list_longs[icell])])
     file.writelines(["%12.8f" % coeffs[icell, 0]])
