@@ -37,13 +37,13 @@ The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt
 
 | Data name                        | File name                  | Location   | Provided | Citation               |
 |----------------------------------|----------------------------|------------|----------|------------------------|
-| "World Population Prospects 2024"| `undp_pop_growth_2024.xlsx`| `data/raw/`| Available for download from original source | UN DESA, Population Division, 2024 |
+| "World Population Prospects 2024"| `undp_pop_growth_2024.xlsx`| `data/raw/`| TRUE | UN DESA, Population Division, 2024 |
 | "G-ECON v4.0"                    | `Gecon40_post_final.csv`   | `data/raw/`| TRUE     | Nordhaus et al. 2006 |
-| Historical CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc` | `data/input_emission_data/`| Available for download from original source | U.S. National Science Foundation, 2023 |
-| SSP1-2.6 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-IMAGE-ssp126_201401-210112_fv_1.9x2.5_c20221115.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
-| SSP2-4.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-MESSAGE-GLOBIOM-ssp245_201401-210112_fv_1.9x2.5_c20230419.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
-| SSP3-7.0 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
-| SSP5-8.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc` | `data/input_emission_data/`| Available for download from original source | The NorESM developers group, 2020 |
+| Historical CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_175001-201512_fv_1.9x2.5_c20181011.nc` | `data/input_emission_data/`| TRUE | U.S. National Science Foundation, 2023 |
+| SSP1-2.6 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-IMAGE-ssp126_201401-210112_fv_1.9x2.5_c20221115.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
+| SSP2-4.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-MESSAGE-GLOBIOM-ssp245_201401-210112_fv_1.9x2.5_c20230419.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
+| SSP3-7.0 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
+| SSP5-8.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
 
 
 #### "World Population Prospects 2024"
@@ -69,18 +69,16 @@ The four SSP CO2 emissions files are avaiable from the NorESM2 input database. A
 | Data file                                                        | Source                         | Location | Notes                                                                 |
 |------------------------------------------------------------------|--------------------------------|----------|----------------------------------------------------------------------|
 | `data/raw/emissions.txt`                                         | Model Output                   | GitHub   | Not required. Reduces iterations for `scripts/decrule_calc.jl`.      |
-| `data/raw/undp_pop_growth_2024.xlsx`                             | UN DESA, Population Division, 2024 | United Nations Population Division* | Historical Estimates and Medium Variant Projections used.             |
+| `data/raw/undp_pop_growth_2024.xlsx`                             | UN DESA, Population Division, 2024 | GitHub | Historical Estimates and Medium Variant Projections used.             |
 | `data/raw/Gecon40_post_final.csv`                                | Nordhaus et al. 2006           | GitHub   |                                                                      |
 | `onlyCO2/rest/1990-01-01-00000/*`                                | Bjordal, 2025                  | [DOI](https://doi.org/10.11582/2025.tdi6hhfl) | Restart files for running NorESM2 from 1990.                         |
 | `data/input_to_regression/N1850_f19_tn14_20190730esm.TREFHT.nc`  | NorESM2 output                 | GitHub  | PiControl temperature data.                                          |
 | `data/input_to_regression/onlyCO2.nc`                            | NorESM2 output                 | GitHub  | HIST and SSP3-7.0 temperature data with only CO2 emissions.          |
 | `data/input_to_regression/full_couple_baseline.nc`               | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
-| `data/input_emission_data/*`                                     | NorESM2 input                  | NorESM2/CESM input data directory*  | Standard CO2 emissions input files. For details see The NorESM developers group (2020) |
+| `data/input_emission_data/*`                                     | NorESM2 input                  | GitHub  | Standard CO2 emissions input files. For details see The NorESM developers group (2020) |
 
 GitHub refer to this repository and Dropbox refer to [this Dropbox folder](https://www.dropbox.com/scl/fo/mm9utacdrk42fmzv6juh4/AIUr4sSBMterks3Tjsd3YEU?rlkey=plm6rqom86dqasan7cf13ge0r&st=hcc7c3e3&dl=0).
-
-*As described above.
 
 ## Computational requirements
 
