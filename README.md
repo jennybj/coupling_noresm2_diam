@@ -77,8 +77,14 @@ The four SSP CO2 emissions files are avaiable from the NorESM2 input database. A
 | `data/input_to_regression/full_couple_baseline.nc`               | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_emission_data/*`                                     | NorESM2 input                  | GitHub  | Standard CO2 emissions input files. For details see The NorESM developers group (2020) |
+| `data/output_coupling/*`                                         | Output from NorESM2-DIAM       | GitHub  | The output files are compress with 7-zip and need to be unpacked.* |
 
-GitHub refer to this repository and Dropbox refer to [this Dropbox folder](https://www.dropbox.com/scl/fo/mm9utacdrk42fmzv6juh4/AIUr4sSBMterks3Tjsd3YEU?rlkey=plm6rqom86dqasan7cf13ge0r&st=hcc7c3e3&dl=0).
+GitHub refer to this repository.
+
+*Unpacking the compressed output files e.g. by:
+```bash
+7z x your_archive.7z
+```
 
 ## Computational requirements
 
