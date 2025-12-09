@@ -76,9 +76,9 @@ The four SSP CO2 emissions files are avaiable from the NorESM2 input database. A
 | `data/input_to_regression/full_couple_baseline.nc`               | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_emission_data/*`                                     | NorESM2 input                  | GitHub  | Standard CO2 emissions input files. For details see The NorESM developers group (2020) |
-| `onlyCO2/rest/1990-01-01-00000/*`                                | Bjordal, 2025b                 | Zenodo [DOI](10.5281/zenodo.17856602) | Restart files for running NorESM2 from 1990.                         |
+| `onlyCO2/rest/1990-01-01-00000/*`                                | Bjordal, 2025c                 | Zenodo [DOI](10.5281/zenodo.17856602) | Restart files for running NorESM2 from 1990.                         |
 | `data/output_coupling/*`                                         | Output from NorESM2-DIAM       | GitHub  | The output files are compress with 7-zip and need to be unpacked.* |
-| `data/output_noresm2/full_couple_population.TREFHT.nc`           | Output from NorESM2            | GitHub  | NorESM2 output from the coupled run. |
+| `data/output_noresm2/full_couple_population.TREFHT.nc`           | Output from NorESM2            | GitHub  | NorESM2 output from the coupled run.** |
 
 GitHub refer to this repository.
 
@@ -88,6 +88,7 @@ For the NorESM2 restart files, the full simulation from 1850 to 2100, with resta
 ```bash
 7z x your_archive.7z
 ```
+**The complete NorESM2 output with all variables are avaiable from the NIRD RDA [DOI](https://doi.org/10.11582/2025.31ney5y8) (Bjordal, 2025b).
 
 ## Computational requirements
 
@@ -302,6 +303,8 @@ The provided code reproduces:
 Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model for investigating global and regional climate–economy interactions***. [Manuscript submitted for publication].
 
 Bjordal, J. (2025). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
+
+Bjordal, J. (2025). ***NorESM2-DIAM prototype simulation, NorESM2 standard output*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.31ney5y8).
 
 Bjordal, J. (2025). ***NorESM2 restart files to be used for NorESM2-DIAM*** [Data set]. Zenodo. [DOI](https://doi.org/10.5281/zenodo.17856602)
 
