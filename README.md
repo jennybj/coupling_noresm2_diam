@@ -305,11 +305,11 @@ The provided code reproduces:
 
 Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model for investigating global and regional climate–economy interactions***. [Manuscript submitted for publication].
 
-Bjordal, J. (2025). ***NorESM2-DIAM prototype simulation, NorESM2 standard output*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.31ney5y8).
+Bjordal, J. (2025a). ***NorESM2-DIAM prototype simulation, NorESM2 standard output*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.31ney5y8).
 
-Bjordal, J. (2025). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
+Bjordal, J. (2025b). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
 
-Bjordal, J. (2025). ***NorESM2 restart files to be used for NorESM2-DIAM*** [Data set]. Zenodo. [DOI](https://doi.org/10.5281/zenodo.17856602)
+Bjordal, J. (2025c). ***NorESM2 restart files to be used for NorESM2-DIAM*** [Data set]. Zenodo. [DOI](https://doi.org/10.5281/zenodo.17856602)
 
 Nordhaus, Azam, Corderi, Hood, Makarova Victor, Mohammed,  Miltner, and Weiss (2006). ***The G-Econ Database on Gridded Output: Methods and Data, Yale Unversity***.
 
