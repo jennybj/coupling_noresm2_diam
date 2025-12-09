@@ -82,13 +82,13 @@ The four SSP CO2 emissions files are avaiable from the NorESM2 input database. A
 
 GitHub refer to this repository.
 
-For the NorESM2 restart files, the full simulation from 1850 to 2100, with restart files every 10 years until 1990 and every 5 years thereafter is available from the NIRD RDA [DOI](https://doi.org/10.11582/2025.tdi6hhfl) (Bjordal, 2025a)
+For the NorESM2 restart files, the full simulation from 1850 to 2100, with restart files every 10 years until 1990 and every 5 years thereafter is available from the NIRD RDA [DOI](https://doi.org/10.11582/2025.tdi6hhfl) (Bjordal, 2025b)
 
 *Unpacking the compressed output files e.g. by:
 ```bash
 7z x your_archive.7z
 ```
-**The complete NorESM2 output with all variables are avaiable from the NIRD RDA [DOI](https://doi.org/10.11582/2025.31ney5y8) (Bjordal, 2025b).
+**The complete NorESM2 output with all variables are avaiable from the NIRD RDA [DOI](https://doi.org/10.11582/2025.31ney5y8) (Bjordal, 2025a).
 
 ## Computational requirements
 
@@ -302,9 +302,9 @@ The provided code reproduces:
 
 Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model for investigating global and regional climate–economy interactions***. [Manuscript submitted for publication].
 
-Bjordal, J. (2025). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
-
 Bjordal, J. (2025). ***NorESM2-DIAM prototype simulation, NorESM2 standard output*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.31ney5y8).
+
+Bjordal, J. (2025). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
 
 Bjordal, J. (2025). ***NorESM2 restart files to be used for NorESM2-DIAM*** [Data set]. Zenodo. [DOI](https://doi.org/10.5281/zenodo.17856602)
 
