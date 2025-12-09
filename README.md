@@ -44,6 +44,7 @@ The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt
 | SSP2-4.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-MESSAGE-GLOBIOM-ssp245_201401-210112_fv_1.9x2.5_c20230419.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
 | SSP3-7.0 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
 | SSP5-8.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
+| NorESM2 input data             | blom.input_data_list, cam.input_data_list, cice.input_data_list  clm.input_data_list  cpl.input_data_list  mosart.input_data_list provied a list for each component | Zenodo [DOI](https://doi.org/10.5281/zenodo.17865023) | Bjordal, 2025c |
 
 
 #### "World Population Prospects 2024"
@@ -59,9 +60,10 @@ The paper uses sub-national economic and population data from the G-ECON v.4.0 d
 
 The historical CO2 emissions file is available from the CESM input databsae. Accesssing and downloading CESM input data is described in the CESM Quickstart Guide (U.S. National Science Foundation, 2023). A direct download can be found [here](https://svn-ccsm-inputdata.cgd.ucar.edu/trunk/inputdata/atm/cam/ggas/).) 
 
-#### SSP CO2 emissions
+#### SSP CO2 emissions and NorESM2 input data
 
 The four SSP CO2 emissions files are avaiable from the NorESM2 input database. Accessing and downloading NorESM2 input data is described in the NorESM2 User’s Guide (The NorESM developers group, 2020). A direct download can be found [here](https://ns16001b.web.sigma2.no/datalake/inputdata/atm/cam/ggas/).
+
 
 
 ## Dataset list
@@ -71,21 +73,25 @@ The four SSP CO2 emissions files are avaiable from the NorESM2 input database. A
 | `data/raw/emissions.txt`                                         | Model Output                   | GitHub   | Not required. Reduces iterations for `scripts/decrule_calc.jl`.      |
 | `data/raw/undp_pop_growth_2024.xlsx`                             | UN DESA, Population Division, 2024 | GitHub | Historical Estimates and Medium Variant Projections used.             |
 | `data/raw/Gecon40_post_final.csv`                                | Nordhaus et al. 2006           | GitHub   |                                                                      |
-| `onlyCO2/rest/1990-01-01-00000/*`                                | Bjordal, 2025                  | [DOI](https://doi.org/10.11582/2025.tdi6hhfl) | Restart files for running NorESM2 from 1990.                         |
 | `data/input_to_regression/N1850_f19_tn14_20190730esm.TREFHT.nc`  | NorESM2 output                 | GitHub  | PiControl temperature data.                                          |
 | `data/input_to_regression/onlyCO2.nc`                            | NorESM2 output                 | GitHub  | HIST and SSP3-7.0 temperature data with only CO2 emissions.          |
 | `data/input_to_regression/full_couple_baseline.nc`               | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
 | `data/input_to_regression/full_couple_baseline_e2.nc`            | NorESM2 output                 | GitHub  | Temperature data from 1990–2100, only CO2 emissions.                 |
-| `data/input_emission_data/*`                                     | NorESM2 input                  | GitHub  | Standard CO2 emissions input files. For details see The NorESM developers group (2020) |
+| `data/input_emission_data/*`                                     | NorESM2 input                  | GitHub  | Standard CO2 emissions input files. For details see The NorESM developers group (2020). |
+| `onlyCO2/rest/1990-01-01-00000/*`                                | Bjordal, 2025d                 | Zenodo [DOI](10.5281/zenodo.17856602) | Restart files for running NorESM2 from 1990.                         |
+| NorESM2 input data (Zenodo)                                      | Bjordal, 2025c                 | Zenodo [DOI](https://doi.org/10.5281/zenodo.17865023) | Necessary input files for the prototype simulation. | 
 | `data/output_coupling/*`                                         | Output from NorESM2-DIAM       | GitHub  | The output files are compress with 7-zip and need to be unpacked.* |
-| `data/output_noresm2/full_couple_population.TREFHT.nc`           | Output from NorESM2            | GitHub  | NorESM2 output from the coupled run. |
+| `data/output_noresm2/full_couple_population.TREFHT.nc`           | Output from NorESM2            | GitHub  | NorESM2 output from the coupled run.** |
 
 GitHub refer to this repository.
+
+For the NorESM2 restart files, the full simulation from 1850 to 2100, with restart files every 10 years until 1990 and every 5 years thereafter is available from the NIRD RDA [DOI](https://doi.org/10.11582/2025.tdi6hhfl) (Bjordal, 2025b)
 
 *Unpacking the compressed output files e.g. by:
 ```bash
 7z x your_archive.7z
 ```
+**The complete NorESM2 output with all variables are avaiable from the NIRD RDA [DOI](https://doi.org/10.11582/2025.31ney5y8) (Bjordal, 2025a).
 
 ## Computational requirements
 
@@ -299,7 +305,13 @@ The provided code reproduces:
 
 Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model for investigating global and regional climate–economy interactions***. [Manuscript submitted for publication].
 
+Bjordal, J. (2025). ***NorESM2-DIAM prototype simulation, NorESM2 standard output*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.31ney5y8).
+
 Bjordal, J. (2025). ***NorESM2-LME Historical and SSP3-7.0 with only CO2 emissions*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.tdi6hhfl).
+
+Bjordal, J. (2025). ***NorESM2 inputdata used by NorESM2-DIAM*** [Data set]. Zenodo.[DOI](https://doi.org/10.5281/zenodo.17865023).
+
+Bjordal, J. (2025). ***NorESM2 restart files to be used for NorESM2-DIAM*** [Data set]. Zenodo. [DOI](https://doi.org/10.5281/zenodo.17856602)
 
 Nordhaus, Azam, Corderi, Hood, Makarova Victor, Mohammed,  Miltner, and Weiss (2006). ***The G-Econ Database on Gridded Output: Methods and Data, Yale Unversity***.
 
