@@ -447,6 +447,81 @@ T_preind = readdlm(open(input_path * "NorESM2_picontrol_regional_temperatures_v4
     end
 
     # ===============================
+    # Helper Function for Euler Error
+    # ===============================
+    function ϕ_trans(w, z, k_this, k_next, T1, T2, T3, w_grid, z_grid, nyear, nregion)
+        k_interp = h_hat(w, z, k_this, w_grid, z_grid)
+        Gval = G(k_interp, z, T1)
+        if nyear > gn_horizon-1
+            gn = 0.0
+        else
+            gn = gn_mat[nregion, nyear+1]
+        end
+
+        h_interp = h_hat(Gval, z, k_next, w_grid, z_grid)
+        return inv(Gval - (1 + ga) * (1 + gn) * d(T2, T3) * h_interp) * partial_G_k(k_interp, z, T1)
+    end
+
+    # ===============================
+    # Euler Error Calculation
+    # ===============================
+    function transition_euler(kprime_mat, temppath, ϵ, ρ, nregion; M=5, nyears=T_horizon)
+        abscissa, weights = gausshermite(M)
+        k_grid, z_grid, w_grid = generate_grids(ρ, ϵ, 0.0)
+
+        # Output Arrays
+        rel_val = zeros(N_w, N_z, nyears+1)
+        max_rel = zeros(nyears+1)
+        mean_rel = zeros(nyears+1)
+        true_mean_rel = zeros(nyears+1)
+
+        # Quadrature Arrays
+        z_i_m = zeros(M)
+        phi_vec = zeros(M)
+
+        for t in 1:nyears+1
+            k_this = kprime_mat[:, :, t] # Select decision rule
+            T1 = temppath[t]
+            # Conditional statements for year t2 and beyond (see notes)
+            T2 = t < nyears+1 ? temppath[t+1] : T1
+            T3 = t < nyears ? temppath[t+2] : T2
+            k_next = t < nyears+1 ? kprime_mat[:, :, t+1] : k_this
+
+            if t > gn_horizon
+                gn = 0.0
+            else
+                gn = gn_mat[nregion, t]
+            end
+
+            for j in 1:N_w, l in 1:N_z
+                w = w_grid[j]; z = z_grid[l]
+                # Quadrature Routine
+                for m in 1:M
+                    z_i_m[m] = ρ * z + sqrt(2) * ϵ * abscissa[m]
+                    phi_vec[m] = ϕ_trans(w, z_i_m[m], k_this, k_next, T1, T2, T3, w_grid, z_grid, t, nregion)
+                end
+                phi = π^(-0.5) * sum(weights .* phi_vec)
+                denom = w - (1 + ga) * (1 + gn) * d(T1, T2) * h_hat(w, z, k_this, w_grid, z_grid)
+                rel_val[j, l, t] = 1 - ((β^(-1) * (1 + ga) * d(T1, T2) * inv(phi)) / denom) # Relative Euler Error
+
+                if rel_val[j,l,t] > 0.006
+                    println("Critical Error:     ", rel_val[j,l,t])
+                    println("Region:       ", nregion)
+                    println("N_w:       ", j)
+                    println("N_z:       ", l)
+                    println("Year:       ", t)
+                end
+            end
+
+            max_rel[t] = maximum(abs.(rel_val[:, :, t])) # Maximum absolute Error
+            mean_rel[t] = mean(abs.(rel_val[:, :, t])) # Mean absolute error
+            true_mean_rel[t] = mean(rel_val[:, :, t]) # Mean Error
+        end
+
+        return max_rel, mean_rel, true_mean_rel
+    end
+
+    # ===============================
     # Iterative emissions adjustment
     # ===============================
     function iterate(M, γ_1, γ_2, ρ, ϵ, T_preind, emis_scaled; maxiter=500, toler=1e-8, nyears = T_horizon)
@@ -585,4 +660,45 @@ function write_to_csv(data::Array{Float64, 4}; ncells = ncells, nyears = 150)
 end
 
 write_to_csv(kprime)
+
+
+
+
+
+
+# Write Error Grid for later calculations
+z_grid = zeros(ncells, N_z)
+for i in 1:ncells
+    stdev = (ϵ[i] == 0) ? 1.0 : sqrt(ϵ[i]^2 / (1 - ρ[i]^2))
+    z_grid[i,:] = creategrid(-3 * stdev, 3 * stdev, N_z)
+end
+
+io = open(output_path*"z_grid.txt", "w")
+writearrays(io, (12 ,15.8), z_grid)
+close(io)
+
+# Euler error calculation
+res = @showprogress pmap((i->transition_euler(kprime[i,:,:,:], reg_temp[i,:], ϵ[i], ρ[i], i)), 1:ncells)
+max_rel_euler = zeros(ncells, 151)
+mean_rel_euler = zeros(ncells, 151)
+true_mean_euler = zeros(ncells, 151)
+for i in 1:ncells
+    matrix1, matrix2, matrix3 = res[i]
+    max_rel_euler[i,:] = matrix1
+    mean_rel_euler[i,:]= matrix2
+    true_mean_euler[i,:] = matrix3
+end
+
+# Write out Euler Error Files
+io = open(output_path*"max_relative_err.txt", "w")
+writearrays(io, (12 , 15.8), max_rel_euler)
+close(io)
+
+io = open(output_path*"mean_relative_err.txt", "w")
+writearrays(io, (12 ,15.8), mean_rel_euler)
+close(io)
+
+io = open(output_path*"true_mean_relative_err.txt", "w")
+writearrays(io, (12 ,15.8), true_mean_euler)
+close(io)
 
