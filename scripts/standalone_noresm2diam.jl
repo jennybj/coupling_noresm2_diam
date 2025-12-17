@@ -191,9 +191,20 @@ end
 
 Random.seed!(123)
 function draw_shocks(last_z)
+    # Compute last_z for unique cells (average across duplicates)
+    unique_last_z = zeros(n_unique_cells)
+    for i in 1:ncells
+        unique_last_z[cell_to_unique[i]] = last_z[i]  # All duplicates should have same z
+    end
+    # Draw shocks for unique cells only
+    unique_this_z = zeros(n_unique_cells)
+    for idx in 1:n_unique_cells
+        unique_this_z[idx] = unique_ρ[idx] * unique_last_z[idx] + rand(Normal(0, unique_ϵ[idx]))
+    end
+    # Map back to all cells
     this_z = zeros(ncells)
     for i in 1:ncells
-        this_z[i] = ρ[i]*last_z[i] + rand(Normal(0, ϵ[i]^2))
+        this_z[i] = unique_this_z[cell_to_unique[i]]
     end
     return this_z
 end
