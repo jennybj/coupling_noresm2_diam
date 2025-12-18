@@ -176,7 +176,7 @@ The rest of the python scripts (not for coupling) can be run on any laptop. Each
 
 ### Running standalone DIAM
 
-- The program `scripts/decrule_calc.jl` will calculate decision rules used in the coupled run as well as generate the output files for a so-called fixed-point run where all shocks \( z_{it} \) are set to 0.
+- The program `scripts/decrule_calc.jl` will calculate decision rules used in the coupled run as well as generate the output files for a so-called fixed-point run where all shocks \( z_{it} \) are set to 0. It also contains code calculating the absolute and relative Euler errors as detailed in the appendix.
 - The program `scripts/standalone_noresm2diam.jl` will initiate the standalone model run reported in the paper and generate a few corresponding output files.
 
 ### Running NorESM2-DIAM
