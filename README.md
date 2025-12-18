@@ -174,7 +174,7 @@ The rest of the python scripts (not for coupling) can be run on any laptop. Each
 - The program `scripts/create_input_files/create_initial_emissions_file.py` creates the emissions file used by NorESM2 in the first year, i.e., year 1990.
 - The program `scripts/create_input_files/create_input_files_from_noresm_data.py` creates the input files `NorESM2_picontrol_regional_temperatures.txt`, `NorESM2_HIST_SSP370_cumulative_emissions_global_temperature.txt`, and `NorESM2_HIST_SSP370_coefficients_and_RMSE.txt`.
 
-### Running stand-alone DIAM
+### Running standalone DIAM
 
 - The program `scripts/decrule_calc.jl` will calculate decision rules used in the coupled run as well as generate the output files for a so-called fixed-point run where all shocks \( z_{it} \) are set to 0.
 - The program `scripts/standalone_noresm2diam.jl` will initiate the standalone model run reported in the paper and generate a few corresponding output files.
@@ -189,7 +189,7 @@ The rest of the python scripts (not for coupling) can be run on any laptop. Each
 ### Calculations and figures
 - The program `scripts/create_figures/figure_damage_function.py` produces a figure showing the damage function.
 - The program `scripts/create_figures/figure_greening_function.py` produces a figure showing the greening function.
-- The program `scripts/create_figures/figure_compare_cumulative_emissions.py` reads in emissions from the CMIP6 scenarios, the Shared Socioeconomic Pathways (SSPs), as well as the emissions from the DIAM stand-alone model, calculates the cumulative emissions since 1850, and produces a figure showing these cumulative emission paths.
+- The program `scripts/create_figures/figure_compare_cumulative_emissions.py` reads in emissions from the CMIP6 scenarios, the Shared Socioeconomic Pathways (SSPs), as well as the emissions from the DIAM standalone model, calculates the cumulative emissions since 1850, and produces a figure showing these cumulative emission paths.
 - The program `scripts/create_figures/figures_model_output.py` reads in the data produced by the coupled model, performs calculations—at grid cell, country, and global level—and produces figures.
 - The program `scripts/create_figures/make_figures.jl` reads in output produced by the coupled model and the standalone model and creates the map figures in the paper.
 
@@ -225,10 +225,10 @@ Run `scripts/create_input_files/create_input_files_from_noresm_data.py to create
 python create_input_files_from_noresm_data.py
 ```
 
-### Running stand-alone DIAM
+### Running standalone DIAM
 
 - Run `scripts/decrule_calc.jl` to write decision rule files and fixed-point output.
-- Run `scripts/standalone_noresm2diam.jl` to simulate the stand-alone model and create appropriate output files.
+- Run `scripts/standalone_noresm2diam.jl` to simulate the standalone model and create appropriate output files.
 
 ### Running NorESM2-DIAM
 
