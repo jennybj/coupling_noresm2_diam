@@ -44,7 +44,7 @@ The data are licensed under a Creative Commons/CC-BY-NC license. See LICENSE.txt
 | SSP2-4.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-MESSAGE-GLOBIOM-ssp245_201401-210112_fv_1.9x2.5_c20230419.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
 | SSP3-7.0 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-AIM-ssp370_201401-210112_fv_1.9x2.5_c20190207.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
 | SSP5-8.5 CO2 emissions         | `emissions-cmip6_CO2_anthro_surface_ScenarioMIP_IAMC-REMIND-MAGPIE-ssp585_201401-210112_fv_1.9x2.5_c20190207_djlo20200102.nc` | `data/input_emission_data/`| TRUE | The NorESM developers group, 2020 |
-| NorESM2 input data             | blom.input_data_list, cam.input_data_list, cice.input_data_list  clm.input_data_list  cpl.input_data_list  mosart.input_data_list provied a list for each component | Zenodo [DOI](https://doi.org/10.5281/zenodo.17865023) | NorESM Climate Modeling Consortium, 2025 |
+| NorESM2 input data             | blom.input_data_list, cam.input_data_list, cice.input_data_list  clm.input_data_list  cpl.input_data_list  mosart.input_data_list provied a list for each component | Zenodo [DOI](https://doi.org/10.5281/zenodo.17865023) | As described in ***.input_data_list | NorESM Climate Modeling Consortium, 2025 |
 
 
 #### "World Population Prospects 2024"
