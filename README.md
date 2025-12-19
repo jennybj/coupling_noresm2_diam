@@ -234,13 +234,13 @@ python create_input_files_from_noresm_data.py
 
 NorESM2 needs to be run on an HPC system.
 
-- First, you need to download and set up the NorESM2 model code. This is described here: [NorESM2 Access Guide](https://noresm-docs.readthedocs.io/en/noresm2/access/access.html). For challenges with downloading and running NorESM2 in general, we refer to the *NorESM developers group*. For general NorESM2 input data (not specific to the coupling), we also refer to this group and their [User's guide](https://noresm-docs.readthedocs.io/en/noresm2/index.html).
+- First, you need to download and set up the NorESM2 model code. This is described here: [NorESM2 Access Guide](https://noresm-docs.readthedocs.io/en/noresm2/access/access.html). For challenges with downloading and running NorESM2 in general, we refer to the *NorESM developers group*. For general NorESM2 input data (not specific to the coupling), we also refer to this group and their [User's guide](https://noresm-docs.readthedocs.io/en/noresm2/index.html), but the specific input data used in the coupled simulations have also been archived on Zenodo [DOI](https://doi.org/10.5281/zenodo.17865023) (NorESM Climate Modeling Consortium, 2025).
   Note that setting up NorESM2 could potentially be challenging and might require help from the people that run the HPC system you use.
   It is a good idea to check if you manage to run a standard NorESM2 simulation (a few days or months) before trying the coupled version. The coupled version isn’t necessarily harder to run, but starting with a standard simulation can make it easier to troubleshoot any issues that come up later.
 
 - Next, make sure that you copy all the needed input data for the coupling:
 
-  - Restart data for the NorESM2 case must be downloaded from [DOI](https://doi.org/10.11582/2025.tdi6hhfl), from the folder `onlyCO2/rest/1990-01-01-00000/` and placed in a folder as specified in `set_up_noresm_case.py` as `restart_dir` or copied directly into the NorESM2 case's run folder.
+  - Restart data for the NorESM2 case must be downloaded from Zenodo [DOI](10.5281/zenodo.17856602), and placed in a folder as specified in `set_up_noresm_case.py` as `restart_dir` or copied directly into the NorESM2 case's run folder.
   - The scripts needed for the coupling—`module_coupling.py`, `couple_with_decision_rules.py`, and `couple_iterations.sh`—must be placed in a folder as specified in `set_up_noresm_case.py` as `input_dir` or copied directly into the NorESM2 case's folder.
   - The decision rules, as created by `decrule_calc.jl`, must be placed in a folder as specified in `couple_with_decision_rules.py` as `dr_path`.
   - The emissions calculated from standalone DIAM—`emissions.txt`—must be placed in a folder as specified in `couple_with_decision_rules.py` as `file_path`. This is also where the output from the coupled run will be placed.
@@ -263,7 +263,7 @@ The run is started from the case folder, which is the `case\_dir` you specified 
 
 ### Calculations and figures
 
-- Run the programs in `scripts/create_figures/` to create figures 3, 5, 6, 8, 9, 10, and 13 in the paper. (These also calculate the data presented in the figures.)
+- Run the programs in `scripts/create_figures/` to create figures 2-15 in the paper. (These also calculate the data presented in the figures.)
 
 ```bash
 python figure***.py
@@ -274,32 +274,29 @@ julia make_figures.jl
 - `scripts/decrule\_calc.jl`: Calculates decision rules and writes them to a .csv format. Note that the main function `iterate()` is called twice in the script. Once using the converged emissions path and once using the SSP 3-7.0 Emissions Pathway. Both will converge to the same fixed point, but the latter requires significantly more iterations.
 
 
-### Details
-
-
-
 ## List of tables and programs
-
 
 The provided code reproduces:
 
-
 | Figure/Table #    | Program                  | Line Numbers | Output file                      | 
 |-------------------|--------------------------|-------------|----------------------------------|
-| Fig. 1 | `scripts/create_figures/make_figures.jl`| 53-63 | `figures/loggdp_1990.pdf` | 
-| Fig. 2 |`scripts/create_figures/make_figures.jl`  | 69-85 | `figures/pop2100_roma.pdf` | 
-| Fig. 3 | `scripts/create_figures/figure_damage_function.py`| 40-52 | `figures/figure_damage_function.pdf` | 
-| Fig. 4 |`scripts/create_figures/make_figures.jl`  | 91-122 |`figures/productivity_1990.pdf`| 
-| Fig. 5 | `scripts/create_figures/figure_greening_function.py`| 29-39 | `figures/figure_greening_function.pdf` | 
-| Fig. 6 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_temperature_regression.pdf` | 
-| Fig. 7 |`scripts/create_figures/make_figures.jl` | 91-122 |`figures/reg_warming.pdf` | 
-| Fig. 8 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | 
-| Fig. 9 | `scripts/create_figures/figures_model_output.py`| 419-446 | `figures/difference_emissions.pdf` | 
-| Fig. 10 | `scripts/create_figures/figures_model_output.py`| 455-543 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | 
-| Fig. 11 | `scripts/create_figures/make_figures.jl` | 163-370 | `figures/temp.pdf`|
-| Fig. 12 | `scripts/create_figures/make_figures.jl` |380-477| `figures/gdp.pdf`| 
-| Fig. 13 | `scripts/create_figures/figures_model_output.py`| 952-1145 | `figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf` | 
-| Fig. 14 | `scripts/create_figures/make_figures.jl` |485-529|`figures/sd_loggdp.pdf` | 
+| Fig. 2 | `scripts/create_figures/make_figures.jl`| 53-63 | `figures/loggdp_1990.pdf` | 
+| Fig. 3 |`scripts/create_figures/make_figures.jl`  | 69-85 | `figures/pop2100_roma.pdf` | 
+| Fig. 4 | `scripts/create_figures/figure_damage_function.py`| 40-52 | `figures/figure_damage_function.pdf` | 
+| Fig. 5 |`scripts/create_figures/make_figures.jl`  | 91-122 |`figures/productivity_1990.pdf`| 
+| Fig. 6 | `scripts/create_figures/figure_greening_function.py`| 29-39 | `figures/figure_greening_function.pdf` | 
+| Fig. 7 | `scripts/create_figures/figure_temperature_regression.py`| 202-217 | `figures/figure_temperature_regression.pdf` | 
+| Fig. 8 |`scripts/create_figures/make_figures.jl` | 91-122 |`figures/reg_warming.pdf` | 
+| Fig. 9 | `scripts/create_figures/figure_compare_cumulative_emissions.py`| 324-381 | `figures/figure_compare_cumulative_emissions.pdf` | 
+| Fig. 10 | `scripts/create_figures/figures_model_output.py`| 419-446 | `figures/difference_emissions.pdf` | 
+| Fig. 11 | `scripts/create_figures/figures_model_output.py`| 455-543 | `figures/population_weighted_temperature_and_GDP_per_capita.pdf` | 
+| Fig. 12 | `scripts/create_figures/make_figures.jl` | 163-370 | `figures/temp.pdf`|
+| Fig. 13 | `scripts/create_figures/make_figures.jl` |380-477| `figures/gdp.pdf`| 
+| Fig. 14 | `scripts/create_figures/figures_model_output.py`| 952-1145 | `figures/country_gdpper_percent_all_noresm2-diam_2090_2099.pdf` | 
+| Fig. 15 | `scripts/create_figures/make_figures.jl` |485-529|`figures/sd_loggdp.pdf` | 
+
+Fig. 1 is also included, as `figures/NorESM2-DIAM_schematic.pdf`. However, this is not created by a script, it was made in Google slides.
+
 
 ## References
 
