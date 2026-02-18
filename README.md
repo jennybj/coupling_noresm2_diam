@@ -13,7 +13,7 @@ Contributors:
 
 ## Overview
 
-This repository contains the code necessary to replicate the data presented in Bjordal et al., 2025, and in general, to run the coupled NorESM2-DIAM model. It also contains some of the input data (small size), and otherwise instructions as to where the remaining input data can be found.
+This repository contains the code necessary to replicate the data presented in Bjordal et al., 2026, and in general, to run the coupled NorESM2-DIAM model. It also contains some of the input data (small size), and otherwise instructions as to where the remaining input data can be found.
 
 ## Data Availability and Provenance Statements
 
@@ -303,7 +303,7 @@ The provided code reproduces:
 
 ## References
 
-Bjordal, Smith, Cornec, and Storelvmo (2025). ***NorESM2–DIAM: A coupled model for investigating global and regional climate–economy interactions***. [Manuscript submitted for publication].
+Bjordal, Smith, Cornec, and Storelvmo (2026). ***NorESM2–DIAM: a coupled model for investigating global and regional climate–economy interactions***. GMD. [DOI](https://doi.org/10.5194/gmd-19-1337-2026).
 
 Bjordal, J. (2025a). ***NorESM2-DIAM prototype simulation, NorESM2 standard output*** [Data set]. NIRD RDA. [DOI](https://doi.org/10.11582/2025.31ney5y8).
 
