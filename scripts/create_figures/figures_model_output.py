@@ -545,6 +545,22 @@ fig2.savefig("../../figures/population_weighted_temperature_and_GDP_per_capita.p
 
 fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(14, 10))
 
+ax3.scatter(
+    pop_temp[:-1] - expected_pop_temp[:-1],
+    global_gdp_change[:-1] - global_fp_gdp_change[:-1],
+    linewidth=3,
+)
+
+ax3.set_xlabel("Temperature change (\N{DEGREE SIGN}C)", fontsize=20)
+ax3.set_ylabel("GDP change (%)", fontsize=20)
+ax3.xaxis.set_tick_params(labelsize=16)
+ax3.yaxis.set_tick_params(labelsize=16)
+ax3.legend(fontsize=20)
+
+fig3.savefig("../../figures/deviations.pdf")
+
+fig3, ax3 = plt.subplots(nrows=1, ncols=1, figsize=(14, 10))
+
 ax3.plot(
     years[:-1],
     expected_area_temp,
