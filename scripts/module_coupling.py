@@ -286,9 +286,7 @@ def regrid_from_noresm_to_diam(noresm_variable):
     return variable_out
 
 
-def sort_in_diam_order(variable):
-    in_latitudes = np.arange(-90.0, 90.0, 1)
-    in_longitudes = np.arange(-180.0, 180.0, 1)
+def sort_in_diam_order(in_latitudes, in_longitudes, variable):
 
     out_variable = np.zeros(ncells)
     icell = 0
@@ -304,6 +302,7 @@ def sort_in_diam_order(variable):
 
 
 def sort_in_diam_order_3D(in_latitudes, in_longitudes, in_variable):
+
     ncells = diam_latitudes.shape[0]
     nyears = in_variable.shape[0]
 
@@ -321,6 +320,7 @@ def sort_in_diam_order_3D(in_latitudes, in_longitudes, in_variable):
 
 
 def from_diam_order_to_grid(in_variable):
+
     ncells = in_variable.shape[0]
     na = -999.9  # fill values for cells without data
 
